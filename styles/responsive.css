@@ -1,0 +1,2035 @@
+@media (min-width: 1351px) and (max-width: 1500px) {
+  .hero-wrapper {
+    padding: 100px 0;
+  }
+  .hero-data h1 {
+    font-size: 100px;
+  }
+  .hero-data p {
+    font-size: 28px;
+  }
+
+  .pro-inner-wrp {
+    padding: 50px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 700px;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px 50px;
+    font-size: 24px;
+  }
+
+  .swap-block {
+    width: 700px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 40px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 28px;
+  }
+  .swap-box h4 {
+    font-size: 30px;
+  }
+  .swap-box h4 small {
+    font-size: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 20px;
+  }
+  .swap-info h5 {
+    font-size: 22px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 20px;
+  }
+
+  .pool-wrp {
+    padding: 75px 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 16px;
+    min-height: 80px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    font-size: 20px;
+  }
+
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+
+  .profit-box {
+    padding: 15px;
+  }
+  .deposit-box {
+    padding: 15px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1350px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+  .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 150px;
+    padding: 10px 10px 14px;
+  }
+
+  .hero-wrapper {
+    padding: 100px 0;
+  }
+  .hero-data h1 {
+    font-size: 60px;
+  }
+  .hero-data p {
+    width: 50%;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .counter-rwbx {
+    width: 100%;
+  }
+  .count-box h2 {
+    font-size: 30px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 14px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 20px;
+  }
+  .protocol-data p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 18px;
+  }
+
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .pro-inner-wrp {
+    padding: 50px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 700px;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px 50px;
+    font-size: 24px;
+  }
+
+  .swap-block {
+    width: 700px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 40px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 28px;
+  }
+  .swap-box h4 {
+    font-size: 30px;
+  }
+  .swap-box h4 small {
+    font-size: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 20px;
+  }
+  .swap-info h5 {
+    font-size: 22px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 20px;
+  }
+
+  .pool-wrp {
+    padding: 75px 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 16px;
+    min-height: 80px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    font-size: 20px;
+  }
+
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+
+  .profit-box {
+    padding: 15px;
+  }
+  .deposit-box {
+    padding: 15px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+  }
+
+  .inner-header .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 180px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+  .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 150px;
+    padding: 10px 10px 14px;
+  }
+
+  .hero-wrapper {
+    padding: 100px 0;
+  }
+  .hero-data h1 {
+    font-size: 60px;
+  }
+  .hero-data p {
+    width: 50%;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .counter-rwbx {
+    width: 100%;
+  }
+  .count-box h2 {
+    font-size: 30px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 14px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 20px;
+  }
+  .protocol-data p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 18px;
+  }
+
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .pro-inner-wrp {
+    padding: 50px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 700px;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px 50px;
+    font-size: 24px;
+  }
+
+  .swap-block {
+    width: 700px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 40px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 28px;
+  }
+  .swap-box h4 {
+    font-size: 30px;
+  }
+  .swap-box h4 small {
+    font-size: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 20px;
+  }
+  .swap-info h5 {
+    font-size: 22px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 20px;
+  }
+
+  .pool-wrp {
+    padding: 75px 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 16px;
+    min-height: 80px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    font-size: 20px;
+  }
+
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+
+  .profit-box {
+    padding: 15px;
+  }
+  .deposit-box {
+    padding: 15px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+  }
+
+  .inner-header .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 180px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1024px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+  .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 150px;
+    padding: 10px 10px 14px;
+  }
+
+  .hero-wrapper {
+    padding: 100px 0;
+  }
+  .hero-data h1 {
+    font-size: 60px;
+  }
+  .hero-data p {
+    width: 50%;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .counter-rwbx {
+    width: 100%;
+  }
+  .count-box h2 {
+    font-size: 30px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 14px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 20px;
+  }
+  .protocol-data p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 18px;
+  }
+
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .pro-inner-wrp {
+    padding: 50px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 700px;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px 50px;
+    font-size: 24px;
+  }
+
+  .swap-block {
+    width: 700px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 40px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 28px;
+  }
+  .swap-box h4 {
+    font-size: 30px;
+  }
+  .swap-box h4 small {
+    font-size: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 20px;
+  }
+  .swap-info h5 {
+    font-size: 22px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 20px;
+  }
+
+  .pool-wrp {
+    padding: 75px 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 16px;
+    min-height: 80px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 17px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    font-size: 20px;
+  }
+
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+
+  .profit-box {
+    padding: 15px;
+  }
+  .deposit-box {
+    padding: 15px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+  }
+
+  .inner-header .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 180px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand {
+    margin-right: 30px;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    padding: 10px 10px;
+    font-size: 14px;
+  }
+  .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 150px;
+    padding: 10px 10px 14px;
+  }
+
+  .hero-wrapper {
+    padding: 100px 0;
+  }
+  .hero-data h1 {
+    font-size: 60px;
+  }
+  .hero-data p {
+    width: 50%;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .counter-rwbx {
+    width: 100%;
+  }
+  .count-box h2 {
+    font-size: 30px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 14px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 20px;
+  }
+  .protocol-data p {
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0 0 18px;
+  }
+
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .quicklink ul {
+    display: block;
+    justify-content: center;
+    text-align: center;
+  }
+  .quicklink ul li {
+    margin: 0 10px 10px 0;
+    display: inline-block;
+  }
+  .quicklink ul li a {
+    text-align: center;
+  }
+
+  .protocol-tabs-bx {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px;
+    font-size: 20px;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child a {
+    text-align: center;
+  }
+
+  .swap-block {
+    padding: 70px 50px;
+  }
+  .swap-box {
+    padding: 25px 15px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 20px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow:before {
+    font-size: 18px;
+    right: 15px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 20px;
+  }
+  .swap-arrrow a {
+    margin: -10px auto;
+    height: 40px;
+    width: 40px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .swap-box h4 {
+    font-size: 24px;
+  }
+  .swap-box h4 small {
+    display: block;
+    font-size: 18px;
+    padding-left: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 18px;
+  }
+
+  .swap-info {
+    padding: 20px;
+    display: block;
+  }
+  .swap-info h5 {
+    font-size: 18px;
+    line-height: 28px;
+    margin: 0 0 15px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 24px;
+  }
+  select.form-control {
+    background-size: 15px;
+  }
+  .inner-prodata .swap-block .btn-main {
+    padding: 15px;
+    font-size: 20px;
+  }
+
+  .swap-block .btn-group .dropdown-toggle img {
+    width: 25px;
+  }
+  .swap-block .btn-group .dropdown-menu {
+    left: 0 !important;
+    min-width: 300px;
+  }
+  .dropdown-block {
+    width: 100%;
+    padding: 20px;
+  }
+  .dropdown-block h2 {
+    font-size: 20px;
+  }
+
+  .inner-prodata .dropdown-block .form-group .slippage-input {
+    display: block;
+  }
+  .inner-prodata .dropdown-block .form-group .form-control {
+    margin: 10px 0 0;
+    width: 100%;
+  }
+  .inner-prodata .dropdown-block .form-group .slippage-input label {
+    margin: 10px 0 0;
+  }
+  .toggle-box h5 {
+    font-size: 18px;
+  }
+
+  .pool-wrp {
+    padding: 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 14px;
+  }
+  .pool-wrp .pool-box .pool-head h4 span {
+    height: 40px;
+    width: 40px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 14px;
+    min-height: 66px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 15px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0 0 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 20px;
+    display: block;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+  .profit-box {
+    padding: 15px;
+    margin: 0 0 20px;
+  }
+  .profit-box a.btn-main {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .deposit-box {
+    padding: 15px;
+    height: auto;
+    margin: 0 0 30px;
+  }
+  .deposit-box h2 {
+    font-size: 16px;
+  }
+  .deposit-box h6 {
+    font-size: 16px;
+    margin: 0 0 15px;
+  }
+  .profit-box ul li {
+    font-size: 14px;
+    margin-right: 20px;
+  }
+
+  .select2-container--open .select2-dropdown--below {
+    width: 300px !important;
+  }
+  .select2-search--dropdown {
+    padding: 15px;
+    margin: 0 0 15px;
+  }
+  .select2-results__option {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+  .select2-results__option img {
+    max-width: 25px;
+    margin-right: 10px;
+  }
+
+  .profit-box h2 {
+    font-size: 15px;
+  }
+  .deposit-box a.btn-main {
+    font-size: 13px;
+  }
+  .inner-header .navbar-light .navbar-nav .nav-link.publish-btn {
+    width: 180px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+
+  .hero-wrapper {
+    padding: 50px 0;
+  }
+  .hero-data h1 {
+    font-size: 40px;
+  }
+  .hero-data p {
+    font-size: 18px;
+    width: 100%;
+    line-height: 24px;
+  }
+
+  .counter-row {
+    padding: 25px;
+  }
+  .counter-rwbx {
+    width: 100%;
+  }
+  .count-box h2 {
+    font-size: 24px;
+  }
+  .count-box p {
+    font-size: 16px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 18px;
+  }
+  .protocol-data p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .evenrow .protocol-img img {
+    width: auto;
+    max-width: 100%;
+  }
+  .protocol-wrp .btn-main {
+    width: auto;
+  }
+
+  .protocol-governance-wrp {
+    padding: 50px 0;
+    margin: 0;
+  }
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .quicklink ul {
+    display: block;
+    justify-content: center;
+    text-align: center;
+  }
+  .quicklink ul li {
+    margin: 0 10px 10px 0;
+    display: inline-block;
+  }
+  .quicklink ul li a {
+    text-align: center;
+  }
+
+  .protocol-tabs-bx {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px;
+    font-size: 20px;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child a {
+    text-align: center;
+  }
+
+  .swap-block {
+    padding: 70px 50px;
+  }
+  .swap-box {
+    padding: 25px 15px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 20px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow:before {
+    font-size: 18px;
+    right: 15px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 20px;
+  }
+  .swap-arrrow a {
+    margin: -10px auto;
+    height: 40px;
+    width: 40px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .swap-box h4 {
+    font-size: 24px;
+  }
+  .swap-box h4 small {
+    display: block;
+    font-size: 18px;
+    padding-left: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 18px;
+  }
+
+  .swap-info {
+    padding: 20px;
+    display: block;
+  }
+  .swap-info h5 {
+    font-size: 18px;
+    line-height: 28px;
+    margin: 0 0 15px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 24px;
+  }
+  select.form-control {
+    background-size: 15px;
+  }
+  .inner-prodata .swap-block .btn-main {
+    padding: 15px;
+    font-size: 20px;
+  }
+
+  .swap-block .btn-group .dropdown-toggle img {
+    width: 25px;
+  }
+  .swap-block .btn-group .dropdown-menu {
+    left: 0 !important;
+    min-width: 300px;
+  }
+  .dropdown-block {
+    width: 100%;
+    padding: 20px;
+  }
+  .dropdown-block h2 {
+    font-size: 20px;
+  }
+
+  .inner-prodata .dropdown-block .form-group .slippage-input {
+    display: block;
+  }
+  .inner-prodata .dropdown-block .form-group .form-control {
+    margin: 10px 0 0;
+    width: 100%;
+  }
+  .inner-prodata .dropdown-block .form-group .slippage-input label {
+    margin: 10px 0 0;
+  }
+  .toggle-box h5 {
+    font-size: 18px;
+  }
+
+  .pool-wrp {
+    padding: 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+    margin: 0 0 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    font-size: 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    text-align: left;
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0 0 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+  .profit-box {
+    padding: 15px;
+    margin: 0 0 20px;
+  }
+  .profit-box a.btn-main {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .deposit-box {
+    padding: 15px;
+    height: auto;
+    margin: 0 0 30px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+    margin: 0 0 15px;
+  }
+  .profit-box ul li {
+    font-size: 16px;
+    margin-right: 20px;
+  }
+
+  .select2-container--open .select2-dropdown--below {
+    width: 300px !important;
+  }
+  .select2-search--dropdown {
+    padding: 15px;
+    margin: 0 0 15px;
+  }
+  .select2-results__option {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+  .select2-results__option img {
+    max-width: 25px;
+    margin-right: 10px;
+  }
+
+  .on-off-toggle {
+    display: block;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .navbar-light .navbar-nav li:last-child {
+    display: none;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    font-size: 16px;
+  }
+  .navbar-expand-md .navbar-nav li {
+    margin: 0 0 10px;
+  }
+}
+
+@media (min-width: 448px) and (max-width: 575px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+
+  .hero-wrapper {
+    padding: 50px 0;
+  }
+  .hero-data h1 {
+    font-size: 40px;
+  }
+  .hero-data p {
+    font-size: 18px;
+    width: 100%;
+    line-height: 24px;
+  }
+
+  .counter-row {
+    padding: 20px 20px 0;
+  }
+  .count-box h2 {
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 16px;
+    margin: 0 0 20px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 18px;
+  }
+  .protocol-data p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .evenrow .protocol-img img {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .protocol-governance-wrp {
+    padding: 50px 0;
+    margin: 0;
+  }
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .quicklink ul {
+    display: block;
+    justify-content: center;
+    text-align: center;
+  }
+  .quicklink ul li {
+    margin: 0 10px 10px 0;
+    display: inline-block;
+  }
+  .quicklink ul li a {
+    text-align: center;
+  }
+
+  .pro-inner-wrp {
+    padding: 40px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 300px;
+    margin: 0 auto 40px;
+  }
+  .protocol-tabs-bx .nav-tabs {
+    display: block;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li a:after {
+    height: 2px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .swap-block {
+    padding: 70px 15px;
+  }
+  .swap-box {
+    padding: 25px 15px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 20px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow:before {
+    font-size: 18px;
+    right: 15px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 20px;
+  }
+  .swap-arrrow a {
+    margin: -10px auto;
+    height: 40px;
+    width: 40px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .swap-box h4 {
+    font-size: 24px;
+  }
+  .swap-box h4 small {
+    display: block;
+    font-size: 18px;
+    padding-left: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 18px;
+  }
+
+  .swap-info {
+    padding: 20px;
+    display: block;
+  }
+  .swap-info h5 {
+    font-size: 18px;
+    line-height: 28px;
+    margin: 0 0 15px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 24px;
+  }
+  select.form-control {
+    background-size: 15px;
+  }
+  .inner-prodata .swap-block .btn-main {
+    padding: 15px;
+    font-size: 20px;
+  }
+
+  .swap-block .btn-group .dropdown-toggle img {
+    width: 25px;
+  }
+  .swap-block .btn-group .dropdown-menu {
+    left: 0 !important;
+    min-width: 300px;
+  }
+  .dropdown-block {
+    width: 100%;
+    padding: 20px;
+  }
+  .dropdown-block h2 {
+    font-size: 20px;
+  }
+
+  .inner-prodata .dropdown-block .form-group .slippage-input {
+    display: block;
+  }
+  .inner-prodata .dropdown-block .form-group .form-control {
+    margin: 10px 0 0;
+    width: 100%;
+  }
+  .inner-prodata .dropdown-block .form-group .slippage-input label {
+    margin: 10px 0 0;
+  }
+  .toggle-box h5 {
+    font-size: 18px;
+  }
+
+  .pool-wrp {
+    padding: 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+    margin: 0 0 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    width: 50%;
+    font-size: 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    text-align: left;
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0 0 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+  .profit-box {
+    padding: 15px;
+    margin: 0 0 20px;
+  }
+  .profit-box a.btn-main {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .deposit-box {
+    padding: 15px;
+    height: auto;
+    margin: 0 0 30px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+    margin: 0 0 15px;
+  }
+  .profit-box ul li {
+    font-size: 16px;
+    margin-right: 20px;
+  }
+
+  .select2-container--open .select2-dropdown--below {
+    width: 300px !important;
+  }
+  .select2-search--dropdown {
+    padding: 15px;
+    margin: 0 0 15px;
+  }
+  .select2-results__option {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+  .select2-results__option img {
+    max-width: 25px;
+    margin-right: 10px;
+  }
+
+  .on-off-toggle {
+    display: block;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .navbar-light .navbar-nav li:last-child {
+    display: none;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    font-size: 16px;
+  }
+  .navbar-expand-md .navbar-nav li {
+    margin: 0 0 10px;
+  }
+  .protocol-img {
+    padding: 15px 0;
+  }
+}
+
+@media (max-width: 447px) {
+  header {
+    padding: 15px 0;
+  }
+  .navbar-brand img {
+    width: 70px;
+  }
+
+  .hero-wrapper {
+    padding: 50px 0;
+  }
+  .hero-data h1 {
+    font-size: 40px;
+  }
+  .hero-data p {
+    font-size: 18px;
+    width: 100%;
+    line-height: 24px;
+  }
+
+  .counter-row {
+    padding: 20px 20px 0;
+  }
+  .count-box h2 {
+    font-size: 24px;
+    line-height: 24px;
+    margin: 0 0 5px;
+  }
+  .count-box p {
+    font-size: 16px;
+    margin: 0 0 20px;
+  }
+
+  .protocol-wrp {
+    padding: 50px 0;
+  }
+  .protocol-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .protocol-data h3 {
+    font-size: 28px;
+  }
+  .protocol-data h4 {
+    font-size: 18px;
+  }
+  .protocol-data p {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .evenrow .protocol-img img {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .protocol-governance-wrp {
+    padding: 50px 0;
+    margin: 0;
+  }
+  .protocol-governance-wrp .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .prouserlinks {
+    width: 100%;
+  }
+  .prouserlinks h6 {
+    font-size: 18px;
+  }
+  .polinksrow a {
+    font-size: 30px;
+  }
+  .polinksrow {
+    display: block;
+  }
+  .protocol-links {
+    margin: 0 0 60px;
+  }
+
+  .protocol-content {
+    padding: 20px;
+    margin: 0 0 30px;
+  }
+  .protocol-content h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .protocol-content h3 {
+    font-size: 18px;
+  }
+  .protocol-content p {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 0 15px;
+  }
+  .protocol-govern-tabs {
+    padding: 0;
+  }
+  .protocol-govern-tabs .nav-tabs li a {
+    padding: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a h4 {
+    font-size: 20px;
+  }
+  .protocol-govern-tabs .nav-tabs li a p {
+    font-size: 18px;
+  }
+
+  .quicklink ul {
+    display: block;
+    justify-content: center;
+    text-align: center;
+  }
+  .quicklink ul li {
+    margin: 0 10px 10px 0;
+    display: inline-block;
+  }
+  .quicklink ul li a {
+    text-align: center;
+  }
+
+  .pro-inner-wrp {
+    padding: 40px 0 0;
+  }
+  .protocol-tabs-bx {
+    width: 250px;
+    margin: 0 auto 40px;
+  }
+  .protocol-tabs-bx .nav-tabs {
+    display: block;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child {
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li:first-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li:last-child a {
+    text-align: center;
+  }
+  .protocol-tabs-bx .nav-tabs li a:after {
+    height: 2px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+  }
+  .protocol-tabs-bx .nav-tabs li a {
+    padding: 15px;
+    font-size: 18px;
+  }
+
+  .swap-block {
+    padding: 70px 15px;
+  }
+  .swap-box {
+    padding: 25px 15px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    font-size: 20px;
+  }
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow:before {
+    font-size: 18px;
+    right: 15px;
+  }
+  .inner-prodata .form-group {
+    margin: 0 0 20px;
+  }
+  .swap-arrrow a {
+    margin: -10px auto;
+    height: 40px;
+    width: 40px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .swap-box h4 {
+    font-size: 24px;
+  }
+  .swap-box h4 small {
+    display: block;
+    font-size: 18px;
+    padding-left: 20px;
+  }
+  .swap-box h4 span {
+    font-size: 18px;
+  }
+
+  .swap-info {
+    padding: 20px;
+    display: block;
+  }
+  .swap-info h5 {
+    font-size: 18px;
+    line-height: 28px;
+    margin: 0 0 15px;
+  }
+  .inner-prodata .swap-info .form-group .form-control {
+    font-size: 24px;
+  }
+  select.form-control {
+    background-size: 15px;
+  }
+  .inner-prodata .swap-block .btn-main {
+    padding: 15px;
+    font-size: 20px;
+  }
+
+  .swap-block .btn-group .dropdown-toggle img {
+    width: 25px;
+  }
+  .swap-block .btn-group .dropdown-menu {
+    left: 0 !important;
+    min-width: 275px;
+  }
+  .dropdown-block {
+    width: 100%;
+    padding: 20px;
+  }
+  .dropdown-block h2 {
+    font-size: 20px;
+  }
+
+  .inner-prodata .dropdown-block .form-group .slippage-input {
+    display: block;
+  }
+  .inner-prodata .dropdown-block .form-group .form-control {
+    margin: 10px 0 0;
+    width: 100%;
+  }
+  .inner-prodata .dropdown-block .form-group .slippage-input label {
+    margin: 10px 0 0;
+  }
+  .toggle-box h5 {
+    font-size: 18px;
+  }
+
+  .pool-wrp {
+    padding: 0;
+  }
+  .pool-wrp .pool-head {
+    padding: 15px;
+  }
+  .pool-wrp .pool-box .pool-head h4 {
+    font-size: 20px;
+    margin: 0 0 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li {
+    width: 50%;
+    font-size: 15px;
+  }
+  .pool-wrp .pool-box .pool-head ul li strong {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head ul li span {
+    font-size: 16px;
+  }
+  .pool-wrp .pool-box .pool-head a.collapse-txt {
+    text-align: left;
+    font-size: 18px;
+  }
+  .pool-wrp .card.card-body {
+    padding: 15px;
+  }
+  .pool-wrp .card.card-body .fee-info {
+    padding: 0 0 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 {
+    font-size: 20px;
+  }
+  .pool-wrp .card.card-body .fee-info h5 span {
+    font-size: 16px;
+  }
+  .pool-wrp .card.card-body .fee-info a {
+    font-size: 16px;
+  }
+  .profit-box {
+    padding: 15px;
+    margin: 0 0 20px;
+  }
+  .profit-box a.btn-main {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .deposit-box {
+    padding: 15px;
+    height: auto;
+    margin: 0 0 30px;
+  }
+  .deposit-box h2 {
+    font-size: 18px;
+  }
+  .deposit-box h6 {
+    font-size: 18px;
+    margin: 0 0 15px;
+  }
+  .profit-box ul li {
+    font-size: 16px;
+    margin-right: 20px;
+  }
+
+  .select2-container--open .select2-dropdown--below {
+    width: 250px !important;
+  }
+  .select2-search--dropdown {
+    padding: 15px;
+    margin: 0 0 15px;
+  }
+  .select2-results__option {
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+  .select2-results__option img {
+    max-width: 25px;
+    margin-right: 10px;
+  }
+
+  .on-off-toggle {
+    display: block;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .navbar-light .navbar-nav li:last-child {
+    display: none;
+  }
+  .navbar-light .navbar-nav .nav-link {
+    font-size: 16px;
+  }
+  .navbar-expand-md .navbar-nav li {
+    margin: 0 0 10px;
+  }
+  .protocol-img {
+    padding: 15px 0;
+  }
+
+  .inner-header .navbar-light .navbar-nav .nav-link.publish-btn {
+    display: block;
+    width: 100%;
+    margin: 20px 0 0;
+  }
+}
