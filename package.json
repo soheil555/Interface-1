@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "compile-contract-types": "typechain --target ethers-v5 --out-dir './abis/types' './abis/*.json'",
+    "compile-contract-types": "typechain --target ethers-v5 --out-dir './src/abis/types' './src/abis/*.json'",
     "postinstall": "yarn compile-contract-types"
   },
   "dependencies": {
