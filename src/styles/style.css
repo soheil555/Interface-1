@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 :root {
   scroll-behavior: initial;
 }
@@ -380,6 +381,7 @@ a.btn-main.publish-btn {
   width: 100%;
 }
 .hero-data h1 {
+  font-family: Monoton, cursive;
   font-size: 114px;
   font-weight: 600;
   color: #fff;
