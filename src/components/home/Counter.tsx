@@ -1,4 +1,10 @@
+import useCountDown from "../../hooks/useCountDown";
+
 const Counter = () => {
+  const { days, hours, minutes, seconds } = useCountDown(
+    new Date(1658609039612)
+  );
+
   return (
     <section className="counter-wrp">
       <div className="container">
@@ -8,33 +14,33 @@ const Counter = () => {
               <div className="col-md-3 col-sm-3">
                 <div className="count-box">
                   <h2>
-                    $<span className="counter">933B</span>+
+                    <span className="counter">{days}</span>
                   </h2>
-                  <p>Trade Volume</p>
+                  <p>Days</p>
                 </div>
               </div>
               <div className="col-md-3 col-sm-3">
                 <div className="count-box">
                   <h2>
-                    <span className="counter">95</span>M+
+                    <span className="counter">{hours}</span>
                   </h2>
-                  <p>All Time Trades</p>
+                  <p>Hours</p>
                 </div>
               </div>
               <div className="col-md-3 col-sm-3">
                 <div className="count-box">
                   <h2>
-                    <span className="counter">300</span>+
+                    <span className="counter">{minutes}</span>
                   </h2>
-                  <p>Integrations</p>
+                  <p>Minutes</p>
                 </div>
               </div>
               <div className="col-md-3 col-sm-3">
                 <div className="count-box">
                   <h2>
-                    <span className="counter">4400</span>+
+                    <span className="counter">{seconds}</span>
                   </h2>
-                  <p>Community Delegates</p>
+                  <p>Seconds</p>
                 </div>
               </div>
             </div>
