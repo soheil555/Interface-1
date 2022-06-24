@@ -1,5 +1,5 @@
 import { Button, Form, Stack } from "react-bootstrap";
-import { CHAINS, getAddChainParameters } from "../../../chains";
+import { CHAINS, getAddChainParameters } from "../../chains";
 import { useState, useCallback, useEffect } from "react";
 import { metaMask, metaMaskHooks } from "../../connectors/metaMask";
 

@@ -1,58 +1,41 @@
-import socialIcon1 from "../../../public/assets/images/social-ic1.svg";
-import socialIcon2 from "../../../public/assets/images/social-ic2.svg";
-import socialIcon3 from "../../../public/assets/images/social-ic3.svg";
-
+import { HStack, Image, Link, Box, VStack } from "@chakra-ui/react";
+import { BsTwitter, BsDiscord } from "react-icons/bs";
 const Footer = () => {
   return (
-    <footer>
-      <div className="container">
-        <div className="social-bx">
-          <a href="#" target="_blank">
-            <img src={socialIcon1.src} alt="" />
-          </a>
-          <a href="#" target="_blank">
-            <img src={socialIcon2.src} alt="" />
-          </a>
-          <a href="#" target="_blank">
-            <img src={socialIcon3.src} alt="" />
-          </a>
-        </div>
-        <div className="quicklink">
-          <ul>
-            <li>
-              <a href="#">Ecosystem</a>
-            </li>
-            <li>
-              <a href="#">Community</a>
-            </li>
-            <li>
-              <a href="#">Governance</a>
-            </li>
-            <li>
-              <a href="#">Developers</a>
-            </li>
-            <li>
-              <a href="#">Blog</a>
-            </li>
-            <li>
-              <a href="#">FAQ</a>
-            </li>
-            <li>
-              <a href="#">Protocol</a>
-            </li>
-            <li>
-              <a href="#">Disclaimer</a>
-            </li>
-            <li>
-              <a href="#">Trademark</a>
-            </li>
-            <li>
-              <a href="#">Policy</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+    <VStack align="center" justify="center" p={5} gap={5}>
+      <HStack gap={10}>
+        <Box fontSize="2xl">
+          <Link href="https://twitter.com/axoswap" isExternal>
+            <BsTwitter />
+          </Link>
+        </Box>
+
+        <Box fontSize="2xl">
+          <Link
+            href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits"
+            isExternal
+          >
+            <Image h={30} w={30} src="/assets/images/nftcalendar-logo.png" />
+          </Link>
+        </Box>
+
+        <Box fontSize="2xl">
+          <Link href="https://discord.gg/PJr44AxWAt" isExternal>
+            <BsDiscord />
+          </Link>
+        </Box>
+      </HStack>
+
+      <HStack gap={10}>
+        <Link href="https://docs.axoswap.io" isExternal>
+          Document
+        </Link>
+
+        <Link href="https://github.com/Axoswap-Polygon">Github</Link>
+
+        <Link href="#">Contact Us</Link>
+      </HStack>
+    </VStack>
   );
 };
 export default Footer;

@@ -1,84 +1,99 @@
-import { useState } from "react";
-import Link from "next/link";
+import {
+  Box,
+  Flex,
+  Image,
+  HStack,
+  Link,
+  Center,
+  Button,
+  useDisclosure,
+  Collapse,
+  VStack,
+} from "@chakra-ui/react";
+import NextLink from "next/link";
+import { IoLogoGithub } from "react-icons/io5";
 import ThemeToggler from "./ThemeToggler";
-import ThemeTogglerSM from "./ThemeTogglerSM";
-
-import logo from "../../../public/assets/images/logo@2x.png";
+import { Fade as Hamburger } from "hamburger-react";
+import type { IconType } from "react-icons";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isOpen, onToggle } = useDisclosure();
+
   return (
-    <header>
-      <div className="container">
-        <nav className="navbar navbar-expand-md navbar-light">
-          <Link href="/">
-            <a className="navbar-brand">
-              <img className="dark-mode-logo" src={logo.src} alt="Logo" />
-            </a>
-          </Link>
+    <Box>
+      <Flex justify="space-between" align="center" py={10} px={5}>
+        <Image width={100} src="/assets/images/logo@2x.png" />
 
-          <ThemeTogglerSM />
+        <HStack
+          w={600}
+          display={{ base: "none", lg: "flex" }}
+          fontSize={22}
+          gap={4}
+        >
+          {getLinks()}
+        </HStack>
 
-          <button
-            className={`navbar-toggler ${isMenuOpen ? "collapsed" : ""}`}
-            type="button"
-            aria-expanded={`${isMenuOpen ? true : false}`}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          {/* <Link href="/protocol" passHref>
-            <button className="btn-main publish-btn">Launch App</button>
-          </Link> */}
-          <div
-            className={`collapse navbar-collapse  ${isMenuOpen ? "show" : ""}`}
-            id="navbarTogglerDemo01"
-          >
-            <ul className="navbar-nav ">
-              <li className="nav-item">
-                <a className="nav-link" href="#" data-scroll-nav={0}>
-                  Ecosystem
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Community
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Governance
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Developers
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Blog
-                </a>
-              </li>
-            </ul>
-            <ul className="navbar-nav right-navbar-nav">
-              <li className="nav-item">
-                <Link href="/swap">
-                  <a className="nav-link publish-btn">
-                    <span>Launch App</span>
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <ThemeToggler />
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <a className="hideclick d-none" data-scroll-goto />
-      </div>
-    </header>
+        <HStack gap={2}>
+          <Button display={{ base: "none", lg: "block" }}>Launch App</Button>
+          <ThemeToggler />
+
+          <Box onClick={onToggle} display={{ lg: "none" }}>
+            <Hamburger direction="left" />
+          </Box>
+        </HStack>
+      </Flex>
+
+      <Box display={{ lg: "none" }}>
+        <Collapse in={isOpen}>
+          <VStack fontSize={22} gap={3}>
+            {getLinks()}
+            <Button>Launch App</Button>
+          </VStack>
+        </Collapse>
+      </Box>
+    </Box>
   );
+};
+
+interface Link {
+  label: string;
+  href: string;
+  icon?: IconType;
+}
+
+const links: Link[] = [
+  {
+    label: "Documentation",
+    href: "https://docs.axoswap.io",
+  },
+  {
+    label: "Community",
+    href: "#",
+  },
+  {
+    label: "Github",
+    href: "https://github.com/Axoswap-Polygon",
+    icon: IoLogoGithub,
+  },
+];
+
+const getLinks = () => {
+  return links.map((link) => {
+    return (
+      <NextLink href={link.href} key={link.label} passHref>
+        <Link>
+          {link.icon ? (
+            <Center gap={1}>
+              <link.icon />
+              {link.label}
+            </Center>
+          ) : (
+            link.label
+          )}
+        </Link>
+      </NextLink>
+    );
+  });
 };
 
 export default Header;
