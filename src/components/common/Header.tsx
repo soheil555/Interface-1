@@ -37,7 +37,7 @@ const Header = () => {
             <ul className="navbar-nav ">
               <li className="nav-item">
                 <a className="nav-link" href="#" data-scroll-nav={0}>
-                  Ecosystem
+                  Documents
                 </a>
               </li>
               <li className="nav-item">
@@ -47,17 +47,7 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Governance
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Developers
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Blog
+                  Github
                 </a>
               </li>
             </ul>
@@ -65,7 +55,7 @@ const Header = () => {
               <li className="nav-item">
                 <Link href="/swap">
                   <a className="nav-link publish-btn">
-                    <span>Launch App</span>
+                    <span>Preview</span>
                   </a>
                 </Link>
               </li>

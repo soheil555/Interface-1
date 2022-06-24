@@ -1,5 +1,5 @@
 import protocolImg1 from "../../../public/assets/images/protocol-img1.png";
-import protocolImg2 from "../../../public/assets/images/protocol-img2.png";
+import protocolImg2 from "../../../public/assets/images/nftImg.gif";
 
 const Protocol = () => {
   return (
@@ -10,14 +10,12 @@ const Protocol = () => {
             <div className="col-md-5 col-sm-5">
               <div className="protocol-data">
                 <h3>AXOSWAP</h3>
-                <h4>A growing network of DeFi Apps</h4>
+                <h4>Disclaimer</h4>
                 <p>
-                  Developers, traders, and liquidity providers participate
-                  together in a financial marketplace that is open and
-                  accessible to all.
+                 WORK IN PROGRESS: What you are seeing isnt a final product
                 </p>
-                <a href="#" className="btn-main">
-                  <span>Explore All</span>
+                <a href="https://docs.axoswap.io" className="btn-main">
+                  <span>View our docs</span>
                 </a>
               </div>
             </div>
@@ -32,20 +30,25 @@ const Protocol = () => {
           <div className="row">
             <div className="col-md-7 col-sm-7">
               <div className="protocol-img">
+              <a href="https://rarible.com/axoswapio" className="protocol-img">
                 <img src={protocolImg2.src} alt="" />
+                </a>
               </div>
             </div>
             <div className="col-md-5 col-sm-5">
               <div className="protocol-data">
-                <h3>Developers</h3>
-                <h4>Superpowers for DeFi developers</h4>
+                <h3>Crowdfunding Campaign</h3>
+                <h4>AxoGenesis Collection</h4>
                 <p>
-                  Build Defi apps and tools on the largest crypto project on
-                  Ethereum. Get started with quick start guides, protocol
-                  documentation, a Javascript SDK, and fully open source code.
+                Purchase our crowdfunding NFT collection
+                  to support our platform development
+                  and receive future rewards!
                 </p>
-                <a href="#" className="btn-main">
-                  <span>Documentation</span>
+                <a href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits/" className="btn-main">
+                  <span>Announcement</span>
+                </a>
+                <a href="https://nft.axoswap.io" className="btn-main">
+                  <span>Mint Now</span>
                 </a>
               </div>
             </div>
