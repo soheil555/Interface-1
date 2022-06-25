@@ -21,20 +21,34 @@ const Header = () => {
 
   return (
     <Box>
-      <Flex justify="space-between" align="center" py={10} px={5}>
-        <Image width={100} src="/assets/images/logo@2x.png" />
+      <Flex justify="space-between" align="center" py={10}>
+        <NextLink href="/" passHref>
+          <Link>
+            <Image
+              width={{ base: 50, sm: 70, md: 100 }}
+              src="/assets/images/logo@2x.png"
+            />
+          </Link>
+        </NextLink>
 
         <HStack
           w={600}
           display={{ base: "none", lg: "flex" }}
           fontSize={22}
           gap={4}
+          mx={10}
         >
           {getLinks()}
         </HStack>
 
         <HStack gap={2}>
-          <Button display={{ base: "none", lg: "block" }}>Launch App</Button>
+          <Button
+            borderRadius="lg"
+            variant="brand"
+            display={{ base: "none", lg: "block" }}
+          >
+            Launch App
+          </Button>
           <ThemeToggler />
 
           <Box onClick={onToggle} display={{ lg: "none" }}>
@@ -47,7 +61,9 @@ const Header = () => {
         <Collapse in={isOpen}>
           <VStack fontSize={22} gap={3}>
             {getLinks()}
-            <Button>Launch App</Button>
+            <Button borderRadius="lg" variant="brand">
+              Launch App
+            </Button>
           </VStack>
         </Collapse>
       </Box>
@@ -81,7 +97,7 @@ const getLinks = () => {
   return links.map((link) => {
     return (
       <NextLink href={link.href} key={link.label} passHref>
-        <Link>
+        <Link _hover={{ color: "brand.300" }}>
           {link.icon ? (
             <Center gap={1}>
               <link.icon />

@@ -6,7 +6,9 @@ import {
   Stack,
   Button,
   Flex,
+  Link,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const Protocol = () => {
   return (
@@ -18,23 +20,25 @@ const Protocol = () => {
         py={20}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Heading mb={4} size="xl">
+          <Heading textAlign="center" mb={4} size="xl">
             AXOSWAP
           </Heading>
-          <Heading fontWeight="light" size="lg">
+          <Heading textAlign="center" fontWeight="light" size="lg">
             Disclaimer
           </Heading>
           <Text
-            w="80%"
             textAlign="center"
             mt={6}
             mb={8}
-            color="gray.600"
-            fontSize="lg"
+            fontSize={{ base: "lg", md: "xl" }}
+            variant="gray"
+            w={{ base: "100%", md: "80%" }}
           >
             WORK IN PROGRESS: What you are seeing isn't a final product.
           </Text>
-          <Button>View our docs</Button>
+          <Link href="https://docs.axoswap.io" isExternal>
+            <Button variant="brand-outline">View our docs</Button>
+          </Link>
         </Box>
 
         <Image
@@ -52,22 +56,46 @@ const Protocol = () => {
         pb={20}
       >
         <Box alignSelf="center">
-          <Image w={{ base: 500, md: 700 }} src="/assets/images/nftImg.gif" />
+          <NextLink href="https://rarible.com/axoswapio" passHref>
+            <Link isExternal>
+              <Image
+                w={{ base: 500, md: 700 }}
+                src="/assets/images/nftImg.gif"
+              />
+            </Link>
+          </NextLink>
         </Box>
 
         <Flex direction="column" align="center" pt={10}>
           <Heading textAlign="center" mb={5} size="xl">
             Crowdfunding Campaign
           </Heading>
-          <Heading fontWeight="light" size="lg">
+          <Heading textAlign="center" fontWeight="light" size="lg">
             AxoGenesis Collection
           </Heading>
-          <Text textAlign="center" my={8} color="gray.600" fontSize="xl">
+          <Text
+            textAlign="center"
+            my={8}
+            variant="gray"
+            fontSize={{ base: "lg", md: "xl" }}
+            w={["100%", "80%", "60%"]}
+          >
             Purchase our crowdfunding NFT collection to support our platform
             development and receive future rewards!
           </Text>
-          <Button mb={2}>Announcement</Button>
-          <Button>Mint Now</Button>
+
+          <Link
+            href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits/"
+            isExternal
+          >
+            <Button variant="brand-outline" mb={5}>
+              Announcement
+            </Button>
+          </Link>
+
+          <Link href="https://nft.axoswap.io" isExternal>
+            <Button variant="brand-outline">Mint Now</Button>
+          </Link>
         </Flex>
       </Stack>
     </Box>

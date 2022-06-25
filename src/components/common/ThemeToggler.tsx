@@ -14,7 +14,12 @@ const ThemeToggler = () => {
         left={1}
         display={useColorModeValue("none", "inline")}
       />
-      <Switch size="lg" onChange={toggleColorMode} />
+      <Switch
+        colorScheme="brand"
+        size="lg"
+        isChecked={useColorModeValue(false, true)}
+        onChange={toggleColorMode}
+      />
       <MoonIcon
         pointerEvents="none"
         position="absolute"

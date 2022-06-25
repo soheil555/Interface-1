@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function useCountDown(targetDate: Date) {
-  const [timeLeft, setTimeLeft] = useState(targetDate.getTime() - Date.now());
+  const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {

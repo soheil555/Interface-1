@@ -12,10 +12,11 @@ const HeroBanner = () => {
     >
       <Heading
         textAlign="center"
-        fontSize={{ base: "6xl", md: "8xl", lg: "9xl" }}
+        fontSize={{ base: "4xl", sm: "6xl", md: "8xl", lg: "9xl" }}
         lineHeight="1"
+        fontWeight="black"
       >
-        AXOSWAP <Text>PROTOCOL</Text>
+        AXOSWAP <Text color="brand.300">PROTOCOL</Text>
       </Heading>
       <Text textAlign="center" fontSize="3xl">
         ICO sale starts on 15/07/2022

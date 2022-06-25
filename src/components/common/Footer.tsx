@@ -5,7 +5,13 @@ const Footer = () => {
     <VStack align="center" justify="center" p={5} gap={5}>
       <HStack gap={10}>
         <Box fontSize="2xl">
-          <Link href="https://twitter.com/axoswap" isExternal>
+          <Link
+            _hover={{
+              color: "brand.500",
+            }}
+            href="https://twitter.com/axoswap"
+            isExternal
+          >
             <BsTwitter />
           </Link>
         </Box>
@@ -20,13 +26,19 @@ const Footer = () => {
         </Box>
 
         <Box fontSize="2xl">
-          <Link href="https://discord.gg/PJr44AxWAt" isExternal>
+          <Link
+            _hover={{
+              color: "brand.400",
+            }}
+            href="https://discord.gg/PJr44AxWAt"
+            isExternal
+          >
             <BsDiscord />
           </Link>
         </Box>
       </HStack>
 
-      <HStack gap={10}>
+      <HStack gap={2} textAlign="center" fontSize={{ base: "sm", sm: "md" }}>
         <Link href="https://docs.axoswap.io" isExternal>
           Document
         </Link>

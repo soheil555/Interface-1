@@ -1,4 +1,4 @@
-import { Flex, Text, Box, HStack } from "@chakra-ui/react";
+import { Flex, Text, Box, Stack } from "@chakra-ui/react";
 import useCountDown from "../../hooks/useCountDown";
 
 const Counter = () => {
@@ -7,8 +7,16 @@ const Counter = () => {
   );
 
   return (
-    <Flex align="center" justify="center" bgColor="gray.300" borderRadius="lg">
-      <HStack
+    <Flex
+      align="center"
+      justify="center"
+      bg="brand.gradient"
+      borderRadius="lg"
+      color="white"
+    >
+      <Stack
+        direction={{ base: "column", sm: "row" }}
+        gap={1}
         justify="space-between"
         py={10}
         w={{ base: 300, sm: 400, md: 700 }}
@@ -32,7 +40,7 @@ const Counter = () => {
           <Text fontSize="4xl">{seconds}</Text>
           <Text>Seconds</Text>
         </Box>
-      </HStack>
+      </Stack>
     </Flex>
   );
 };
