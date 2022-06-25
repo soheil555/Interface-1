@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Pool from "./Pool/Pool";
-import Staking from "./staking/Staking";
+import Staking from "./Staking/Staking";
 import Swap from "./Swap/Swap";
 import Tabs from "./Tabs";
 
