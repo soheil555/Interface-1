@@ -65,6 +65,11 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
+"@chakra-icons/cryptocurrency-icons@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@chakra-icons/cryptocurrency-icons/-/cryptocurrency-icons-1.0.0.tgz#e24372586b91f49b268682b7ea74c6b0502e29d1"
+  integrity sha512-Xc8Fjd3B4jJfnnokWuRQ7DzWyIpxSRQigIJMLwDhd3cQsIIwYA+IpcGyDo/0tx001rgGd1/5NkefcnBexa6yeA==
+
 "@chakra-ui/accordion@2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@chakra-ui/accordion/-/accordion-2.0.3.tgz#4f9db1459698fd91d68f913fe7f6d1687cefabbd"

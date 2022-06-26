@@ -7,8 +7,8 @@ const HeroBanner = () => {
       gap={10}
       pt={{ base: 10, md: 15, lg: 20 }}
       pb={16}
-      alignItems="center"
-      justifyContent="center"
+      align="center"
+      justify="center"
     >
       <Heading
         textAlign="center"

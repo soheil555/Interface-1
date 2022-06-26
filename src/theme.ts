@@ -13,10 +13,18 @@ const components: Record<string, StyleConfig> = {
           color: colorMode === "light" ? "white" : "black",
         },
       }),
+
+      "brand-2": () => ({
+        bg: "brand.gradient",
+        color: "white",
+        minW: 200,
+      }),
+
       "brand-outline": ({ colorMode }) => ({
         minW: 200,
         bg: colorMode === "light" ? "white" : "black",
         position: "relative",
+        margin: 2,
 
         _before: {
           borderRadius: "lg",
@@ -32,6 +40,24 @@ const components: Record<string, StyleConfig> = {
         _hover: {
           bg: colorMode === "light" ? "black" : "brand.gradient",
           color: "white",
+        },
+      }),
+
+      "brand-2-outline": ({ colorMode }) => ({
+        minW: 200,
+        bg: colorMode === "light" ? "white" : "black",
+        position: "relative",
+        margin: 2,
+        _before: {
+          borderRadius: "lg",
+          content: "''",
+          bg: "brand.gradient",
+          top: "-0.5",
+          left: "-0.5",
+          right: "-0.5",
+          bottom: "-0.5",
+          position: "absolute",
+          zIndex: "-1",
         },
       }),
     },

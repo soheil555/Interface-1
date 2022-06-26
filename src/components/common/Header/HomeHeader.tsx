@@ -9,12 +9,12 @@ import {
   useDisclosure,
   Collapse,
   VStack,
+  Icon,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { IoLogoGithub } from "react-icons/io5";
 import ThemeToggler from "../ThemeToggler";
 import { Fade as Hamburger } from "hamburger-react";
-import type { IconType } from "react-icons";
+import { homeRoutes } from "../../../routes";
 
 const HomeHeader = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -42,13 +42,15 @@ const HomeHeader = () => {
         </HStack>
 
         <HStack gap={2}>
-          <Button
-            borderRadius="lg"
-            variant="brand"
-            display={{ base: "none", lg: "block" }}
-          >
-            Launch App
-          </Button>
+          <NextLink href="/app/swap">
+            <Button
+              borderRadius="lg"
+              variant="brand"
+              display={{ base: "none", lg: "block" }}
+            >
+              Launch App
+            </Button>
+          </NextLink>
           <ThemeToggler />
 
           <Box onClick={onToggle} display={{ lg: "none" }}>
@@ -61,9 +63,11 @@ const HomeHeader = () => {
         <Collapse in={isOpen}>
           <VStack fontSize={22} gap={3}>
             {getLinks()}
-            <Button borderRadius="lg" variant="brand">
-              Launch App
-            </Button>
+            <NextLink href="/app/swap">
+              <Button borderRadius="lg" variant="brand">
+                Launch App
+              </Button>
+            </NextLink>
           </VStack>
         </Collapse>
       </Box>
@@ -71,44 +75,18 @@ const HomeHeader = () => {
   );
 };
 
-interface Link {
-  label: string;
-  href: string;
-  isExternal: boolean;
-  icon?: IconType;
-}
-
-const links: Link[] = [
-  {
-    label: "Documentation",
-    href: "https://docs.axoswap.io",
-    isExternal: true,
-  },
-  {
-    label: "Community",
-    href: "#",
-    isExternal: true,
-  },
-  {
-    label: "Github",
-    href: "https://github.com/Axoswap-Polygon",
-    icon: IoLogoGithub,
-    isExternal: true,
-  },
-];
-
 const getLinks = () => {
-  return links.map((link) => {
+  return homeRoutes.map((route) => {
     return (
-      <NextLink href={link.href} key={link.label} passHref>
-        <Link _hover={{ color: "brand.300" }} isExternal={link.isExternal}>
-          {link.icon ? (
+      <NextLink href={route.href} key={route.label} passHref>
+        <Link _hover={{ color: "brand.300" }} isExternal={route.isExternal}>
+          {route.icon ? (
             <Center gap={1}>
-              <link.icon />
-              {link.label}
+              <Icon as={route.icon} />
+              {route.label}
             </Center>
           ) : (
-            link.label
+            route.label
           )}
         </Link>
       </NextLink>

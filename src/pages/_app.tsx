@@ -1,5 +1,7 @@
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import type { NextPage } from "next";
+import type { ReactElement, ReactNode } from "react";
+import { ChakraProvider, Container } from "@chakra-ui/react";
 import Head from "next/head";
 import theme from "../theme";
 
@@ -13,7 +15,17 @@ import "@fontsource/lato/400.css";
 import "@fontsource/lato/700.css";
 import "@fontsource/lato/900.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <>
       <Head>
@@ -21,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Axoswap</title>
       </Head>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </ChakraProvider>
     </>
   );

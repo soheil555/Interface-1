@@ -1,25 +1,34 @@
-import { useState } from "react";
-import Pool from "./Pool/Pool";
-import Staking from "./Staking/Staking";
-import Swap from "./Swap/Swap";
-import Tabs from "./Tabs";
+import { Text, VStack, Icon } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import NextLink from "next/link";
+import type { IconType } from "react-icons";
 
-const Tab = () => {
-  const [isActive, setIsActive] = useState("SWAP");
-  const tabHandler = (el: string) => {
-    console.log(el);
-    setIsActive(el);
-  };
+interface TabProps {
+  href: string;
+  label: string;
+  icon?: IconType;
+}
+
+const Tab = ({ href, label, icon }: TabProps) => {
+  const router = useRouter();
+  const isActive = router.pathname === href;
+
   return (
-    <Tabs isActive={isActive} tabHandler={tabHandler}>
-      {isActive === "SWAP" ? (
-        <Swap />
-      ) : isActive === "POOL" ? (
-        <Pool />
-      ) : (
-        <Staking />
-      )}
-    </Tabs>
+    <NextLink href={href} passHref>
+      <Text
+        cursor="pointer"
+        role="group"
+        color={isActive ? "brand.300" : undefined}
+        variant="gray"
+        fontSize="xl"
+      >
+        <VStack>
+          {icon && <Icon as={icon} />}
+          <Text _groupHover={{ color: "brand.300" }}>{label}</Text>
+        </VStack>
+      </Text>
+    </NextLink>
   );
 };
+
 export default Tab;

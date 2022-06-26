@@ -1,34 +1,27 @@
-interface TabsProps {
-  children: React.ReactNode;
-  isActive: string;
-  tabHandler: (el: string) => void;
-}
+import { Box, HStack } from "@chakra-ui/react";
+import Tab from "./Tab";
+import { appRoutes } from "../../routes";
 
-const Tabs = ({ children, isActive, tabHandler }: TabsProps) => {
-  const tabHeadings = ["SWAP", "POOL", "STAKE"];
+const Tabs = () => {
   return (
-    <section className="pro-inner-wrp">
-      <div className="container">
-        <div className="protocol-tabs-bx">
-          <ul className="nav nav-tabs">
-            {tabHeadings.map((el, i) => {
-              return (
-                <li className="nav-item" key={i}>
-                  <a
-                    className={`nav-link ${isActive === el ? "active" : ""}`}
-                    onClick={() => tabHandler(el)}
-                    href="#"
-                  >
-                    {el}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="inner-prodata">{children}</div>
-      </div>
-    </section>
+    <Box
+      display={{ base: "block", lg: "none" }}
+      position="fixed"
+      left={0}
+      bottom={0}
+      w="100%"
+      p={5}
+      borderTop="solid"
+      borderTopWidth={1}
+      borderColor="gray.400"
+    >
+      <HStack justify="center" gap={10}>
+        {appRoutes.map((route) => (
+          <Tab href={route.href} label={route.label} icon={route.icon} />
+        ))}
+      </HStack>
+    </Box>
   );
 };
+
 export default Tabs;
