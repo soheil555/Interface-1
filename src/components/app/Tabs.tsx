@@ -14,6 +14,8 @@ const Tabs = () => {
       borderTop="solid"
       borderTopWidth={1}
       borderColor="gray.400"
+      zIndex={1}
+      bg="white"
     >
       <HStack justify="center" gap={10}>
         {appRoutes.map((route) => (

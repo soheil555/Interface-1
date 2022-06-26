@@ -6,7 +6,7 @@ import AppHeader from "../../components/common/Header/AppHeader";
 import Tabs from "../../components/app/Tabs";
 
 const Swap: NextPageWithLayout = () => {
-  return <Box>hello</Box>;
+  return <Box></Box>;
 };
 
 Swap.getLayout = (page: ReactElement) => {

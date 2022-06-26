@@ -17,6 +17,7 @@ const AppHeader = () => {
   return (
     <Flex
       position="fixed"
+      zIndex={1}
       w="100%"
       justify="space-between"
       align="center"
