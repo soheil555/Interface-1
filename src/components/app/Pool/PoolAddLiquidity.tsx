@@ -1,7 +1,7 @@
 import { Button, Modal, Stack, Form } from "react-bootstrap";
 import { Formik, Field, FormikErrors, FormikHelpers } from "formik";
 import { useState } from "react";
-import SelectToken from "../SelectToken";
+import SelectToken from "../SelectToken/SelectToken";
 import { ethers } from "ethers";
 
 import token1 from "../../../../public/assets/images/token1.png";

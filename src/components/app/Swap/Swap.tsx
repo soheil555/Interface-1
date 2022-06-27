@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
-import SelectToken from "../SelectToken";
+import SelectToken from "../SelectToken/SelectToken";
 import SwapForm from "./SwapForm";
 import useXolotlContract from "../../../hooks/useXolotlContract";
 

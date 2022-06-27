@@ -16,16 +16,17 @@ const AppHeader = () => {
 
   return (
     <Flex
-      position="fixed"
+      position="sticky"
+      top={0}
       zIndex={1}
       w="100%"
       justify="space-between"
       align="center"
       p={5}
-      bg={useColorModeValue("gray.50", "blackAlpha.400")}
+      bg={useColorModeValue("gray.50", "gray.700")}
       boxShadow="sm"
     >
-      <HStack gap={4}>
+      <HStack gap={10}>
         <NextLink href="/app/swap" passHref>
           <Link>
             <Image width={50} src="/assets/images/logo@2x.png" />
