@@ -32,7 +32,6 @@ const SelectToken = ({
     <Box>
       {selectedToken ? (
         <Box
-          cursor="pointer"
           borderRadius="lg"
           border="solid"
           borderWidth={1}

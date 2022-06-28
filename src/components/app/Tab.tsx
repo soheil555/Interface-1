@@ -11,7 +11,7 @@ interface TabProps {
 
 const Tab = ({ href, label, icon }: TabProps) => {
   const router = useRouter();
-  const isActive = router.pathname === href;
+  const isActive = router.pathname.startsWith(href);
 
   return (
     <NextLink href={href} passHref>

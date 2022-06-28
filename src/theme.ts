@@ -9,7 +9,7 @@ const components: Record<string, StyleConfig> = {
         color: "white",
         minW: 200,
         _hover: {
-          bg: colorMode === "light" ? "black" : "white",
+          bg: colorMode === "light" ? "gray.900" : "white",
           color: colorMode === "light" ? "white" : "black",
         },
       }),
@@ -22,9 +22,9 @@ const components: Record<string, StyleConfig> = {
 
       "brand-outline": ({ colorMode }) => ({
         minW: 200,
-        bg: colorMode === "light" ? "white" : "black",
+        bg: colorMode === "light" ? "white" : "gray.900",
         position: "relative",
-        margin: 2,
+        // margin: 2,
 
         _before: {
           borderRadius: "lg",
@@ -38,16 +38,17 @@ const components: Record<string, StyleConfig> = {
           zIndex: "-1",
         },
         _hover: {
-          bg: colorMode === "light" ? "black" : "brand.gradient",
+          bg: colorMode === "light" ? "gray.900" : "brand.gradient",
           color: "white",
         },
       }),
 
       "brand-2-outline": ({ colorMode }) => ({
         minW: 200,
-        bg: colorMode === "light" ? "white" : "black",
+        bg: colorMode === "light" ? "white" : "gray.900",
         position: "relative",
-        margin: 2,
+        // margin: 2,
+        textTransform: "uppercase",
         _before: {
           borderRadius: "lg",
           content: "''",

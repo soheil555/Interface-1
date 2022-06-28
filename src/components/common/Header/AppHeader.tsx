@@ -5,6 +5,7 @@ import {
   HStack,
   Button,
   useColorModeValue,
+  Stack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -41,7 +42,7 @@ const AppHeader = () => {
           justify="center"
         >
           {appRoutes.map((route) => {
-            const isActive = router.pathname === route.href;
+            const isActive = router.pathname.startsWith(route.href);
 
             return (
               <NextLink href={route.href} passHref>
