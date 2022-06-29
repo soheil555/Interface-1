@@ -88,7 +88,9 @@ const Protocol = () => {
             href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits/"
             isExternal
           >
-            <Button variant="brand-outline">Announcement</Button>
+            <Button variant="brand-outline" mb={3}>
+              Announcement
+            </Button>
           </Link>
 
           <Link href="https://nft.axoswap.io" isExternal>

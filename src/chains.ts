@@ -1,4 +1,6 @@
+import { IconProps } from "@chakra-ui/react";
 import type { AddEthereumChainParameter } from "@web3-react/types";
+import { Matic } from "@chakra-icons/cryptocurrency-icons";
 
 const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
   name: "Matic",
@@ -6,11 +8,12 @@ const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
   decimals: 18,
 };
 
-interface ChainInformation {
+export interface ChainInformation {
   name: string;
   urls: string[];
   nativeCurrency: AddEthereumChainParameter["nativeCurrency"];
   blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"];
+  logo: (props: IconProps) => JSX.Element;
 }
 
 export function getAddChainParameters(
@@ -39,6 +42,7 @@ export const CHAINS: {
     name: "Polygon Mumbai",
     nativeCurrency: MATIC,
     blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+    logo: Matic,
   },
   137: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
@@ -49,5 +53,6 @@ export const CHAINS: {
     name: "Polygon Mainnet",
     nativeCurrency: MATIC,
     blockExplorerUrls: ["https://polygonscan.com"],
+    logo: Matic,
   },
 };

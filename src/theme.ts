@@ -17,14 +17,13 @@ const components: Record<string, StyleConfig> = {
       "brand-2": () => ({
         bg: "brand.gradient",
         color: "white",
-        minW: 200,
+        minW: 100,
       }),
 
       "brand-outline": ({ colorMode }) => ({
         minW: 200,
         bg: colorMode === "light" ? "white" : "gray.900",
         position: "relative",
-        // margin: 2,
 
         _before: {
           borderRadius: "lg",
@@ -47,7 +46,6 @@ const components: Record<string, StyleConfig> = {
         minW: 200,
         bg: colorMode === "light" ? "white" : "gray.900",
         position: "relative",
-        // margin: 2,
         textTransform: "uppercase",
         _before: {
           borderRadius: "lg",
