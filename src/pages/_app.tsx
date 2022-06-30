@@ -1,7 +1,9 @@
 import type { AppProps } from "next/app";
 import type { NextPage } from "next";
 import type { ReactElement, ReactNode } from "react";
-import { ChakraProvider, Container } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Provider as JotaiProvider } from "jotai";
+import { web3 } from "../store";
 import Head from "next/head";
 import theme from "../theme";
 
@@ -25,6 +27,7 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const { initialState } = pageProps;
 
   return (
     <>
@@ -32,9 +35,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Axoswap</title>
       </Head>
-      <ChakraProvider theme={theme}>
-        {getLayout(<Component {...pageProps} />)}
-      </ChakraProvider>
+      <JotaiProvider initialValues={initialState && [[web3, initialState]]}>
+        <ChakraProvider theme={theme}>
+          {getLayout(<Component {...pageProps} />)}
+        </ChakraProvider>
+      </JotaiProvider>
     </>
   );
 }

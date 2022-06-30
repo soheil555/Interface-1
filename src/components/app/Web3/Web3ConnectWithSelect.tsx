@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from "react";
 import { getAddChainParameters } from "../../../chains";
 import { shortenAddress } from "../../../utils";
 import ChainSelect from "./ChainSelect";
+import { web3 } from "../../../store";
+import { useAtom } from "jotai";
 
 interface Web3ConnectWithSelectProps {
   connector: MetaMask;
@@ -25,6 +27,7 @@ const Web3ConnectWithSelect = ({
   error,
   setError,
 }: Web3ConnectWithSelectProps) => {
+  const [_, setWeb3] = useAtom(web3);
   const toast = useToast();
   const [desiredChainId, setDesiredChainId] = useState(80001);
 
@@ -73,7 +76,9 @@ const Web3ConnectWithSelect = ({
           ? undefined
           : getAddChainParameters(desiredChainId)
       )
-      .then(() => setError(undefined))
+      .then(() => {
+        setError(undefined);
+      })
       .catch(setError);
   }, [connector, desiredChainId, setError]);
 

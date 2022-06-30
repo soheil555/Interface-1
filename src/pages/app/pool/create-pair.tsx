@@ -1,6 +1,6 @@
 import type { NextPageWithLayout } from "../../_app";
 import { type ReactElement } from "react";
-import { Container, Stack, VStack, Button, Text } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import AppHeader from "../../../components/common/Header/AppHeader";
 import Tabs from "../../../components/app/Tabs";
 import SelectPair from "../../../components/app/SelectPair/SelectPair";
