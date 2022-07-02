@@ -1,9 +1,7 @@
 import type { NextPageWithLayout } from "../../_app";
-import { type ReactElement } from "react";
-import { Container, Stack, VStack, Button, Text } from "@chakra-ui/react";
-import AppHeader from "../../../components/common/Header/AppHeader";
-import Tabs from "../../../components/app/Tabs";
+import { Stack, VStack, Button, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import Layout from "../../../components/app/Layout";
 
 const Pool: NextPageWithLayout = () => {
   return (
@@ -38,22 +36,5 @@ const Pool: NextPageWithLayout = () => {
   );
 };
 
-Pool.getLayout = (page: ReactElement) => {
-  return (
-    <>
-      <AppHeader />
-      <Tabs />
-      <Container
-        maxW="container.md"
-        display="flex"
-        justifyContent="center"
-        pt={20}
-        pb={40}
-      >
-        {page}
-      </Container>
-    </>
-  );
-};
-
+Pool.getLayout = Layout;
 export default Pool;

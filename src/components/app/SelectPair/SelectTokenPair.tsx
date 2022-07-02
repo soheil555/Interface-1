@@ -4,42 +4,66 @@ import {
   VStack,
   IconButton,
   Button,
-  Heading,
   HStack,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import type { Token } from "../../../tokens";
 import SelectToken from "./SelectToken";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 
-interface SelectPairProps {
+interface SelectTokenPairProps {
+  token1: Token | undefined;
+  token2: Token | undefined;
+  setToken1: (token: Token | undefined) => void;
+  setToken2: (token: Token | undefined) => void;
+  middleIcon: JSX.Element;
+  middleIconOnClick?: () => void;
+  handler: () => void;
+  action: string;
+  token1Amount?: string;
+  setToken1Amount?: (amount: string) => void;
+  token2Amount?: string;
+  setToken2Amount?: (amount: string) => void;
   header?: string;
   label1?: string;
   label2?: string;
-  icon: JSX.Element;
-  handle: () => void;
-  action: string;
+  error?: string;
+  setError: (error: string | undefined) => void;
+  isLoading: boolean;
 }
 
-const SelectPair = ({
+const SelectTokenPair = ({
+  token1,
+  token2,
+  setToken1,
+  setToken2,
+  middleIcon,
+  middleIconOnClick,
+  handler,
+  action,
+  token1Amount,
+  token2Amount,
+  setToken1Amount,
+  setToken2Amount,
   header,
   label1,
   label2,
-  icon,
-  handle,
-  action,
-}: SelectPairProps) => {
+  error,
+  setError,
+  isLoading,
+}: SelectTokenPairProps) => {
   const router = useRouter();
-  const [token1, setToken1] = useState<Token>();
-  const [token1Amount, setToken1Amount] = useState("0");
-
-  const [token2, setToken2] = useState<Token>();
-  const [token2Amount, setToken2Amount] = useState("0");
 
   useEffect(() => {
-    if (token1 === token2) {
+    if (token1 && token1 === token2) {
       setToken2(undefined);
+      return;
+    }
+
+    if (!token1 || !token2) {
+      setError("Invalid Token pair");
+      return;
     }
   }, [token1, token2]);
 
@@ -71,13 +95,9 @@ const SelectPair = ({
       </Box>
 
       <IconButton
-        onClick={() => {
-          const tmp = token1;
-          setToken1(token2);
-          setToken2(tmp);
-        }}
-        aria-label="swap tokens"
-        icon={icon}
+        onClick={middleIconOnClick}
+        aria-label="middle icon"
+        icon={middleIcon}
       />
 
       <Box>
@@ -91,11 +111,17 @@ const SelectPair = ({
           setAmount={setToken2Amount}
         />
       </Box>
-      <Button onClick={handle} variant="brand-2-outline" w="full">
-        {action}
+      <Button
+        isLoading={isLoading}
+        isDisabled={!!error}
+        onClick={handler}
+        variant="brand-2-outline"
+        w="full"
+      >
+        {error ?? action}
       </Button>
     </VStack>
   );
 };
 
-export default SelectPair;
+export default SelectTokenPair;

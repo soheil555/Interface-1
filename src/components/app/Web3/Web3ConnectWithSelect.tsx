@@ -2,7 +2,7 @@ import { HStack, Button, useToast } from "@chakra-ui/react";
 import type { Web3ReactHooks } from "@web3-react/core";
 import type { MetaMask } from "@web3-react/metamask";
 import { useCallback, useEffect, useState } from "react";
-import { getAddChainParameters } from "../../../chains";
+import { CHAINS, getAddChainParameters } from "../../../chains";
 import { shortenAddress } from "../../../utils";
 import ChainSelect from "./ChainSelect";
 
@@ -27,10 +27,15 @@ const Web3ConnectWithSelect = ({
 }: Web3ConnectWithSelectProps) => {
   const toast = useToast();
   const [desiredChainId, setDesiredChainId] = useState(80001);
+  const chainIds = Object.keys(CHAINS).map((chainId) => Number(chainId));
 
   useEffect(() => {
     if (chainId) {
-      setDesiredChainId(chainId);
+      if (chainIds.includes(chainId)) {
+        setDesiredChainId(chainId);
+      } else {
+        void connector.deactivate();
+      }
     }
   }, [chainId]);
 

@@ -16,8 +16,8 @@ import TokensMenu from "./TokensMenu";
 interface SelectTokenProps {
   selectedToken: Token | undefined;
   setSelectedToken: (token: Token) => void;
-  amount: string;
-  setAmount: (amount: string) => void;
+  amount?: string;
+  setAmount?: (amount: string) => void;
 }
 
 const SelectToken = ({
@@ -29,7 +29,7 @@ const SelectToken = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box>
+    <Box minW={{ base: "250", sm: "sm", md: "md" }}>
       {selectedToken ? (
         <Box
           borderRadius="lg"
@@ -55,25 +55,31 @@ const SelectToken = ({
               </Box>
             </HStack>
 
-            <Text fontSize="sm" color="gray.600">
-              Balance 0.00
-            </Text>
+            {amount && (
+              <Text fontSize="sm" color="gray.600">
+                Balance 0.00
+              </Text>
+            )}
           </HStack>
 
-          <Divider />
-          <HStack py={8} px={4} justify="space-between">
-            <NumberInput p={0}>
-              <NumberInputField
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                border="none"
-                placeholder="0.00"
-                fontSize="2xl"
-              />
-            </NumberInput>
+          {amount && setAmount ? (
+            <>
+              <Divider />
+              <HStack py={8} px={4} justify="space-between">
+                <NumberInput p={0}>
+                  <NumberInputField
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    border="none"
+                    placeholder="0.00"
+                    fontSize="2xl"
+                  />
+                </NumberInput>
 
-            <Button fontSize="sm">MAX</Button>
-          </HStack>
+                <Button fontSize="sm">MAX</Button>
+              </HStack>
+            </>
+          ) : null}
         </Box>
       ) : (
         <HStack
@@ -84,7 +90,6 @@ const SelectToken = ({
           bg="gray.50"
           py={6}
           px={4}
-          minW={{ base: "250", sm: "sm", md: "md" }}
         >
           <Icon fontSize="xl" as={GiToken} />
           <Text>Select a token</Text>

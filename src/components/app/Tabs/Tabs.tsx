@@ -1,6 +1,6 @@
 import { Box, HStack, useColorModeValue } from "@chakra-ui/react";
 import Tab from "./Tab";
-import { appRoutes } from "../../routes";
+import { appRoutes } from "../../../routes";
 
 const Tabs = () => {
   return (
@@ -19,7 +19,12 @@ const Tabs = () => {
     >
       <HStack justify="center" gap={10}>
         {appRoutes.map((route) => (
-          <Tab href={route.href} label={route.label} icon={route.icon} />
+          <Tab
+            key={route.label}
+            href={route.href}
+            label={route.label}
+            icon={route.icon}
+          />
         ))}
       </HStack>
     </Box>

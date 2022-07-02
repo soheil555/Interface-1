@@ -1,4 +1,4 @@
-import { Eth, Matic, Usdc } from "@chakra-icons/cryptocurrency-icons";
+import { Eth, Matic, Usdc, Usdt } from "@chakra-icons/cryptocurrency-icons";
 import type { IconProps } from "@chakra-ui/react";
 
 export interface Token {
@@ -22,5 +22,10 @@ export const tokens: Array<Token> = [
     name: "USDC",
     symbol: "USDC",
     logo: Usdc,
+  },
+  {
+    name: "USDT",
+    symbol: "USDT",
+    logo: Usdt,
   },
 ];
