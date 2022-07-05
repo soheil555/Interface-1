@@ -24,7 +24,7 @@ interface TokensMenuProps {
   setSelectedToken: (token: Token) => void;
 }
 
-const TokensMenu = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
+const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
   const [tokens, setTokens] = useState<Token[]>(allTokens);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,4 +107,4 @@ const TokensMenu = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
   );
 };
 
-export default TokensMenu;
+export default TokensList;

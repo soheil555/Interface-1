@@ -1,11 +1,13 @@
-interface Addresses {
+export interface Address {
   wETH: string;
   factory: string;
   router: string;
   tokens: Record<string, string>;
 }
 
-export const addresses: Record<number, Addresses> = {
+export type Addresses = Record<number, Address>;
+
+export const addresses: Addresses = {
   // Hardhat
   31337: {
     wETH: "0x5FbDB2315678afecb367f032d93F642f64180aa3",

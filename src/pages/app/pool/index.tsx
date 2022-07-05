@@ -7,7 +7,7 @@ const Pool: NextPageWithLayout = () => {
   return (
     <VStack gap={22} w="full">
       <Stack align="center" direction={{ base: "column", md: "row" }} w="full">
-        <NextLink href="/app/pool/create-pair">
+        <NextLink href="/app/pool/add-liquidity">
           <Button variant="brand-2-outline" w="full">
             create a pair
           </Button>

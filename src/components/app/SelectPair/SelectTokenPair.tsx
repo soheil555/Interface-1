@@ -1,16 +1,9 @@
-import {
-  Box,
-  Text,
-  VStack,
-  IconButton,
-  Button,
-  HStack,
-} from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Box, Text, VStack, IconButton, HStack } from "@chakra-ui/react";
 import type { Token } from "../../../tokens";
 import SelectToken from "./SelectToken";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface SelectTokenPairProps {
   token1: Token | undefined;
@@ -19,18 +12,16 @@ interface SelectTokenPairProps {
   setToken2: (token: Token | undefined) => void;
   middleIcon: JSX.Element;
   middleIconOnClick?: () => void;
-  handler: () => void;
-  action: string;
-  token1Amount?: string;
-  setToken1Amount?: (amount: string) => void;
-  token2Amount?: string;
-  setToken2Amount?: (amount: string) => void;
+  token1Amount: string | undefined;
+  setToken1Amount: (amount: string | undefined) => void;
+  token2Amount: string | undefined;
+  setToken2Amount: (amount: string | undefined) => void;
+  setError: (error: string | undefined) => void;
+  token1AmountOnChange?: (amount: string) => void;
+  token2AmountOnChange?: (amount: string) => void;
   header?: string;
   label1?: string;
   label2?: string;
-  error?: string;
-  setError: (error: string | undefined) => void;
-  isLoading: boolean;
 }
 
 const SelectTokenPair = ({
@@ -40,31 +31,25 @@ const SelectTokenPair = ({
   setToken2,
   middleIcon,
   middleIconOnClick,
-  handler,
-  action,
   token1Amount,
   token2Amount,
   setToken1Amount,
   setToken2Amount,
+  setError,
+  token1AmountOnChange,
+  token2AmountOnChange,
   header,
   label1,
   label2,
-  error,
-  setError,
-  isLoading,
 }: SelectTokenPairProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (token1 && token1 === token2) {
-      setToken2(undefined);
-      return;
-    }
-
     if (!token1 || !token2) {
-      setError("Invalid Token pair");
+      setError("invalid token pair");
       return;
     }
+    setError(undefined);
   }, [token1, token2]);
 
   return (
@@ -88,9 +73,14 @@ const SelectTokenPair = ({
         </Text>
         <SelectToken
           selectedToken={token1}
-          setSelectedToken={setToken1}
+          setSelectedToken={(selectedToken) => {
+            if (selectedToken === token2) setToken2(undefined);
+            setToken1(selectedToken);
+          }}
           amount={token1Amount}
           setAmount={setToken1Amount}
+          setError={setError}
+          amountOnChange={token1AmountOnChange}
         />
       </Box>
 
@@ -106,20 +96,16 @@ const SelectTokenPair = ({
         </Text>
         <SelectToken
           selectedToken={token2}
-          setSelectedToken={setToken2}
+          setSelectedToken={(selectedToken) => {
+            if (selectedToken === token1) setToken2(undefined);
+            else setToken2(selectedToken);
+          }}
           amount={token2Amount}
           setAmount={setToken2Amount}
+          setError={setError}
+          amountOnChange={token2AmountOnChange}
         />
       </Box>
-      <Button
-        isLoading={isLoading}
-        isDisabled={!!error}
-        onClick={handler}
-        variant="brand-2-outline"
-        w="full"
-      >
-        {error ?? action}
-      </Button>
     </VStack>
   );
 };

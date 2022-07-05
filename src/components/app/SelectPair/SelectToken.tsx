@@ -11,13 +11,18 @@ import {
   NumberInputField,
 } from "@chakra-ui/react";
 import { GiToken } from "react-icons/gi";
-import TokensMenu from "./TokensMenu";
+import TokensList from "./TokensList";
+import useTokenBalance from "../../../hooks/useTokenBalance";
+import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
+import { useEffect } from "react";
 
 interface SelectTokenProps {
   selectedToken: Token | undefined;
   setSelectedToken: (token: Token) => void;
-  amount?: string;
-  setAmount?: (amount: string) => void;
+  amount: string | undefined;
+  setAmount: (amount: string) => void;
+  setError: (error: string | undefined) => void;
+  amountOnChange?: (amount: string) => void;
 }
 
 const SelectToken = ({
@@ -25,8 +30,25 @@ const SelectToken = ({
   setSelectedToken,
   amount,
   setAmount,
+  setError,
+  amountOnChange,
 }: SelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: tokenBalance } = useTokenBalance(selectedToken?.symbol);
+
+  useEffect(() => {
+    if (
+      amount &&
+      selectedToken &&
+      tokenBalance &&
+      parseBalanceToBigNumber(amount, selectedToken.decimals).gt(tokenBalance)
+    ) {
+      setError(`Insufficient ${selectedToken.symbol} balance`);
+      return;
+    }
+
+    setError(undefined);
+  }, [amount, selectedToken, tokenBalance]);
 
   return (
     <Box minW={{ base: "250", sm: "sm", md: "md" }}>
@@ -55,31 +77,36 @@ const SelectToken = ({
               </Box>
             </HStack>
 
-            {amount && (
-              <Text fontSize="sm" color="gray.600">
-                Balance 0.00
-              </Text>
-            )}
+            <Text fontSize="sm" color="gray.600">
+              <>
+                Balance{" "}
+                {!!tokenBalance
+                  ? parseBalance(tokenBalance, selectedToken.decimals)
+                  : "0"}
+              </>
+            </Text>
           </HStack>
 
-          {amount && setAmount ? (
-            <>
-              <Divider />
-              <HStack py={8} px={4} justify="space-between">
-                <NumberInput p={0}>
-                  <NumberInputField
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    border="none"
-                    placeholder="0.00"
-                    fontSize="2xl"
-                  />
-                </NumberInput>
+          <Divider />
+          <HStack py={8} px={4} justify="space-between">
+            <NumberInput p={0} value={amount} onChange={amountOnChange}>
+              <NumberInputField
+                border="none"
+                placeholder="0.00"
+                fontSize="2xl"
+              />
+            </NumberInput>
 
-                <Button fontSize="sm">MAX</Button>
-              </HStack>
-            </>
-          ) : null}
+            <Button
+              onClick={() => {
+                if (tokenBalance)
+                  setAmount(parseBalance(tokenBalance, selectedToken.decimals));
+              }}
+              fontSize="sm"
+            >
+              MAX
+            </Button>
+          </HStack>
         </Box>
       ) : (
         <HStack
@@ -96,7 +123,7 @@ const SelectToken = ({
         </HStack>
       )}
 
-      <TokensMenu
+      <TokensList
         setSelectedToken={setSelectedToken}
         isOpen={isOpen}
         onClose={onClose}

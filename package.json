@@ -29,7 +29,8 @@
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "swr": "^1.3.0"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.1.0",
