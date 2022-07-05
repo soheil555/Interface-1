@@ -1,4 +1,3 @@
-import { Token } from "../../../tokens";
 import {
   Box,
   HStack,
@@ -13,46 +12,39 @@ import {
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
 import useTokenBalance from "../../../hooks/useTokenBalance";
-import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
+import { parseBalance } from "../../../utils";
+import { useFormikContext } from "formik";
+import { FormValues } from "../../../types";
 import { useEffect } from "react";
+import useTokenContract from "../../../hooks/useTokenContract";
 
 interface SelectTokenProps {
-  selectedToken: Token | undefined;
-  setSelectedToken: (token: Token) => void;
-  amount: string | undefined;
-  setAmount: (amount: string) => void;
-  setError: (error: string | undefined) => void;
-  amountOnChange?: (amount: string) => void;
+  isToken1?: boolean;
 }
 
-const SelectToken = ({
-  selectedToken,
-  setSelectedToken,
-  amount,
-  setAmount,
-  setError,
-  amountOnChange,
-}: SelectTokenProps) => {
+const SelectToken = ({ isToken1 }: SelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: tokenBalance } = useTokenBalance(selectedToken?.symbol);
+  const { values, setFieldValue } = useFormikContext<FormValues>();
+
+  const token = isToken1 ? values.token1 : values.token2;
+  const otherToken = isToken1 ? values.token2 : values.token1;
+  const amount = isToken1 ? values.token1Amount : values.token2Amount;
+  const otherAmount = isToken1 ? values.token2Amount : values.token1Amount;
+  const tokenFieldName = isToken1 ? "token1" : "token2";
+  const otherTokenFieldName = isToken1 ? "token2" : "token1";
+  const amountFieldName = isToken1 ? "token1Amount" : "token2Amount";
+  const otherAmountFieldName = isToken1 ? "token2Amount" : "token1Amount";
+
+  const tokenContract = useTokenContract(token);
+  const { data: tokenBalance } = useTokenBalance(token);
 
   useEffect(() => {
-    if (
-      amount &&
-      selectedToken &&
-      tokenBalance &&
-      parseBalanceToBigNumber(amount, selectedToken.decimals).gt(tokenBalance)
-    ) {
-      setError(`Insufficient ${selectedToken.symbol} balance`);
-      return;
-    }
-
-    setError(undefined);
-  }, [amount, selectedToken, tokenBalance]);
+    setFieldValue(tokenFieldName + "Contract", tokenContract);
+  }, [tokenContract]);
 
   return (
     <Box minW={{ base: "250", sm: "sm", md: "md" }}>
-      {selectedToken ? (
+      {token ? (
         <Box
           borderRadius="lg"
           border="solid"
@@ -70,10 +62,10 @@ const SelectToken = ({
             px={4}
           >
             <HStack>
-              <selectedToken.logo fontSize="2xl" />
+              <token.logo fontSize="2xl" />
               <Box>
-                <Text fontWeight="bold">{selectedToken.name}</Text>
-                <Text color="gray.600">${selectedToken.symbol}</Text>
+                <Text fontWeight="bold">{token.name}</Text>
+                <Text color="gray.600">${token.symbol}</Text>
               </Box>
             </HStack>
 
@@ -81,7 +73,7 @@ const SelectToken = ({
               <>
                 Balance{" "}
                 {!!tokenBalance
-                  ? parseBalance(tokenBalance, selectedToken.decimals)
+                  ? parseBalance(tokenBalance, token.decimals)
                   : "0"}
               </>
             </Text>
@@ -89,7 +81,13 @@ const SelectToken = ({
 
           <Divider />
           <HStack py={8} px={4} justify="space-between">
-            <NumberInput p={0} value={amount} onChange={amountOnChange}>
+            <NumberInput
+              p={0}
+              value={amount}
+              onChange={(value) => {
+                setFieldValue(amountFieldName, value);
+              }}
+            >
               <NumberInputField
                 border="none"
                 placeholder="0.00"
@@ -100,7 +98,10 @@ const SelectToken = ({
             <Button
               onClick={() => {
                 if (tokenBalance)
-                  setAmount(parseBalance(tokenBalance, selectedToken.decimals));
+                  setFieldValue(
+                    amountFieldName,
+                    parseBalance(tokenBalance, token.decimals)
+                  );
               }}
               fontSize="sm"
             >
@@ -124,7 +125,9 @@ const SelectToken = ({
       )}
 
       <TokensList
-        setSelectedToken={setSelectedToken}
+        setSelectedToken={(token) => {
+          if (otherToken !== token) setFieldValue(tokenFieldName, token);
+        }}
         isOpen={isOpen}
         onClose={onClose}
       />
