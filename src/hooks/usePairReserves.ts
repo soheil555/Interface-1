@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { Pair } from "../abis/types";
-import { Token } from "../tokens";
+import { Token } from "../types";
 import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
 import usePairContract from "./usePairContract";
 import useTokenPairAddresses from "./useTokenPairAddresses";

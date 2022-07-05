@@ -8,6 +8,7 @@ import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors } from "formik";
 import { FormValues } from "../../../types";
+import { parseBalanceToBigNumber } from "../../../utils";
 
 const initialValues: FormValues = {
   token1: undefined,
@@ -26,75 +27,85 @@ const AddLiquidity: NextPageWithLayout = () => {
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
 
-  // const handleAddLiquidity = async () => {
-  //   if (
-  //     !addresses ||
-  //     !factoryContract ||
-  //     !routerContract ||
-  //     !account ||
-  //     !provider ||
-  //     !token1Contract ||
-  //     !token2Contract
-  //   )
-  //     return;
+  const handleAddLiquidity = async ({
+    token1,
+    token2,
+    token1Amount,
+    token2Amount,
+    token1Contract,
+    token2Contract,
+  }: FormValues) => {
+    if (
+      !factoryContract ||
+      !routerContract ||
+      !account ||
+      !provider ||
+      !token1 ||
+      !token2 ||
+      !token1Amount ||
+      !token2Amount ||
+      !token1Contract ||
+      !token2Contract
+    )
+      return;
 
-  //   try {
-  //     const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals);
-  //     const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals);
+    try {
+      const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals);
+      const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals);
 
-  //     const token1Allowance = await token1Contract.allowance(
-  //       account,
-  //       routerContract.address
-  //     );
+      const token1Allowance = await token1Contract.allowance(
+        account,
+        routerContract.address
+      );
 
-  //     const token2Allowance = await token2Contract.allowance(
-  //       account,
-  //       routerContract.address
-  //     );
+      const token2Allowance = await token2Contract.allowance(
+        account,
+        routerContract.address
+      );
 
-  //     if (token1Allowance.lt(amount1)) {
-  //       let tx = await token1Contract.approve(routerContract.address, amount1);
-  //       await tx.wait();
-  //     }
+      if (token1Allowance.lt(amount1)) {
+        let tx = await token1Contract.approve(routerContract.address, amount1);
+        await tx.wait();
+      }
 
-  //     if (token2Allowance.lt(amount2)) {
-  //       let tx = await token2Contract.approve(routerContract.address, amount2);
-  //       await tx.wait();
-  //     }
+      if (token2Allowance.lt(amount2)) {
+        let tx = await token2Contract.approve(routerContract.address, amount2);
+        await tx.wait();
+      }
 
-  //     const timestamp = (await provider.getBlock("latest")).timestamp;
+      const timestamp = (await provider.getBlock("latest")).timestamp;
 
-  //     let tx = await routerContract.addLiquidity(
-  //       token1Contract.address,
-  //       token2Contract.address,
-  //       amount1,
-  //       amount2,
-  //       1,
-  //       1,
-  //       account,
-  //       timestamp + 10000000,
-  //       { gasLimit: 1000000 }
-  //     );
+      let tx = await routerContract.addLiquidity(
+        token1Contract.address,
+        token2Contract.address,
+        amount1,
+        amount2,
+        1,
+        1,
+        account,
+        timestamp + 10000000,
+        { gasLimit: 1000000 }
+      );
 
-  //     await tx.wait();
+      await tx.wait();
 
-  //     toast({
-  //       title: "Add liquidity",
-  //       description: "Liquidity added successfully",
-  //       status: "success",
-  //       duration: 9000,
-  //       isClosable: true,
-  //     });
-  //   } catch (error: any) {
-  //     toast({
-  //       title: "Add liquidity",
-  //       description: error.message,
-  //       status: "error",
-  //       duration: 9000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
+      toast({
+        title: "Add liquidity",
+        description: "Liquidity added successfully",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Add liquidity",
+        description: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Formik
@@ -110,11 +121,9 @@ const AddLiquidity: NextPageWithLayout = () => {
           errors.token1Amount = "Enter an amount";
         }
 
-        console.log(values);
-
         return errors;
       }}
-      onSubmit={() => {}}
+      onSubmit={handleAddLiquidity}
     >
       {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
         <Form onSubmit={handleSubmit}>

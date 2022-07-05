@@ -12,11 +12,12 @@ import {
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
 import useTokenBalance from "../../../hooks/useTokenBalance";
-import { parseBalance } from "../../../utils";
+import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
 import { useFormikContext } from "formik";
 import { FormValues } from "../../../types";
 import { useEffect } from "react";
 import useTokenContract from "../../../hooks/useTokenContract";
+import useQuote from "../../../hooks/useQuote";
 
 interface SelectTokenProps {
   isToken1?: boolean;
@@ -37,6 +38,7 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
 
   const tokenContract = useTokenContract(token);
   const { data: tokenBalance } = useTokenBalance(token);
+  const amountB = useQuote(token, otherToken, amount);
 
   useEffect(() => {
     setFieldValue(tokenFieldName + "Contract", tokenContract);
@@ -86,6 +88,13 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
               value={amount}
               onChange={(value) => {
                 setFieldValue(amountFieldName, value);
+
+                if (otherToken && amountB) {
+                  setFieldValue(
+                    otherAmountFieldName,
+                    parseBalance(amountB, otherToken.decimals)
+                  );
+                }
               }}
             >
               <NumberInputField
