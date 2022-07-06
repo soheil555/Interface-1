@@ -88,7 +88,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   }, [tokenBalance]);
 
   useEffect(() => {
-    if (reserves && tokenFieldName === "token1") {
+    if (reserves && isToken1) {
       if (amount) {
         const amounts = getQuote(amount);
         setValues({ ...values, ...amounts });

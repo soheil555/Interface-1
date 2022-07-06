@@ -13,19 +13,18 @@ import Layout from "../../components/app/Layout";
 import useRouterContract from "../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import { LiquidityFormValues } from "../../types";
+import { SwapFormValues } from "../../types";
 import { parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 
-const initialValues: LiquidityFormValues = {
-  token1: undefined,
-  token2: undefined,
-  token1Contract: null,
-  token2Contract: null,
-  token1Amount: undefined,
-  token2Amount: undefined,
-  token1Balance: undefined,
-  token2Balance: undefined,
+const initialValues: SwapFormValues = {
+  tokenIn: undefined,
+  tokenOut: undefined,
+  tokenInContract: null,
+  tokenOutContract: null,
+  amountIn: undefined,
+  amountOut: undefined,
+  tokenInBalance: undefined,
 };
 
 const Swap: NextPageWithLayout = () => {
@@ -37,72 +36,65 @@ const Swap: NextPageWithLayout = () => {
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
 
-  const handleAddLiquidity = async (
+  const handleSwap = async (
     {
-      token1,
-      token2,
-      token1Amount,
-      token2Amount,
-      token1Contract,
-      token2Contract,
-    }: LiquidityFormValues,
-    { resetForm }: FormikHelpers<LiquidityFormValues>
+      tokenIn,
+      tokenOut,
+      amountIn,
+      amountOut,
+      tokenInContract,
+      tokenOutContract,
+    }: SwapFormValues,
+    { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
     if (
       !walletConnected ||
-      !token1 ||
-      !token2 ||
-      !token1Amount ||
-      !token2Amount ||
-      !token1Contract ||
-      !token2Contract
+      !tokenIn ||
+      !tokenOut ||
+      !amountIn ||
+      !amountOut ||
+      !tokenInContract ||
+      !tokenOutContract
     )
       return;
 
     try {
-      const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals);
-      const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals);
+      const amountInBigNumber = parseBalanceToBigNumber(
+        amountIn,
+        tokenIn.decimals
+      );
 
-      const token1Allowance = await token1Contract.allowance(
+      const token1Allowance = await tokenInContract.allowance(
         account,
         routerContract.address
       );
 
-      const token2Allowance = await token2Contract.allowance(
-        account,
-        routerContract.address
-      );
-
-      if (token1Allowance.lt(amount1)) {
-        let tx = await token1Contract.approve(routerContract.address, amount1);
-        await tx.wait();
-      }
-
-      if (token2Allowance.lt(amount2)) {
-        let tx = await token2Contract.approve(routerContract.address, amount2);
+      if (token1Allowance.lt(amountInBigNumber)) {
+        let tx = await tokenInContract.approve(
+          routerContract.address,
+          amountInBigNumber
+        );
         await tx.wait();
       }
 
       const timestamp = (await provider.getBlock("latest")).timestamp;
 
-      //TODO: set amountAMin , amountBMin, deadline, gasLimit
-      let tx = await routerContract.addLiquidity(
-        token1Contract.address,
-        token2Contract.address,
-        amount1,
-        amount2,
+      //TODO: set amountOutMin and deadline and gasLimit
+      const path = [tokenInContract.address, tokenOutContract.address];
+
+      const tx = await routerContract.swapExactTokensForTokens(
+        amountInBigNumber,
         1,
-        1,
+        path,
         account,
         timestamp + 10000000,
         { gasLimit: 1000000 }
       );
-
       await tx.wait();
 
       toast({
-        title: "Add liquidity",
-        description: "Liquidity added successfully",
+        title: "Swap",
+        description: "Swapped successfully",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -111,7 +103,7 @@ const Swap: NextPageWithLayout = () => {
       resetForm();
     } catch (error: any) {
       toast({
-        title: "Add liquidity",
+        title: "Swap",
         description: error.message,
         status: "error",
         duration: 9000,
@@ -121,36 +113,28 @@ const Swap: NextPageWithLayout = () => {
   };
 
   const validator = ({
-    token1,
-    token2,
-    token1Amount,
-    token2Amount,
-    token1Balance,
-    token2Balance,
-  }: LiquidityFormValues) => {
-    const errors: FormikErrors<LiquidityFormValues> = {};
-    if (!token1 || !token2) {
-      errors.token1 = "Invalid token pair";
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    tokenInBalance,
+  }: SwapFormValues) => {
+    const errors: FormikErrors<SwapFormValues> = {};
+    if (!tokenIn || !tokenOut) {
+      errors.tokenIn = "Select a token";
       return errors;
     }
 
-    if (!token1Amount || !token2Amount) {
-      errors.token1Amount = "Enter an amount";
+    if (!amountIn || !amountOut) {
+      errors.amountIn = "Enter an amount";
       return errors;
     }
 
     if (
-      token1Balance &&
-      parseBalanceToBigNumber(token1Amount, token1.decimals).gt(token1Balance)
+      tokenInBalance &&
+      parseBalanceToBigNumber(amountIn, tokenIn.decimals).gt(tokenInBalance)
     ) {
-      errors.token1Amount = `Insufficient ${token1.symbol} balance`;
-    }
-
-    if (
-      token2Balance &&
-      parseBalanceToBigNumber(token2Amount, token2.decimals).gt(token2Balance)
-    ) {
-      errors.token2Amount = `Insufficient ${token2.symbol} balance`;
+      errors.amountIn = `Insufficient ${tokenIn.symbol} balance`;
     }
 
     return errors;
@@ -162,7 +146,7 @@ const Swap: NextPageWithLayout = () => {
       validateOnChange
       initialValues={initialValues}
       validate={validator}
-      onSubmit={handleAddLiquidity}
+      onSubmit={handleSwap}
     >
       {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
         <Form onSubmit={handleSubmit}>
@@ -198,7 +182,7 @@ const Swap: NextPageWithLayout = () => {
               {walletConnected
                 ? isValid
                   ? "Swap"
-                  : errors.token1 || errors.token1Amount || errors.token2Amount
+                  : errors.tokenIn || errors.amountIn
                 : "Connect Wallet to Continue"}
             </Button>
           </VStack>

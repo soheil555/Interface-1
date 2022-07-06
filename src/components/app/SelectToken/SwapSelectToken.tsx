@@ -25,11 +25,10 @@ interface SwapSelectTokenProps {
 
 const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    values: { tokenIn, tokenOut, amountIn, amountOut },
-    setFieldValue,
-    setValues,
-  } = useFormikContext<SwapFormValues>();
+  const { values, setFieldValue, setValues } =
+    useFormikContext<SwapFormValues>();
+
+  const { tokenIn, tokenOut, amountIn, amountOut } = values;
 
   const [token, otherToken] = isTokenIn
     ? [tokenIn, tokenOut]
@@ -49,38 +48,68 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(tokenIn, tokenOut);
 
-  // const getQuote = (value: string, reverse = false) => {
-  //   const amounts: Record<string, string> = {
-  //     token1Amount: "",
-  //     token2Amount: "",
-  //   };
+  const getAmountOut = (value: string) => {
+    const amounts: Record<string, string> = {
+      amountIn: "",
+      amountOut: "",
+    };
 
-  //   amounts[reverse ? otherAmountFieldName : amountFieldName] = value;
+    amounts["amountIn"] = value;
+    if (value.length === 0) {
+      amounts["amountOut"] = "";
+    }
 
-  //   if (value.length === 0) {
-  //     amounts[reverse ? amountFieldName : otherAmountFieldName] = "";
-  //   }
+    if (
+      reserves &&
+      tokenIn &&
+      tokenOut &&
+      reserves.reserve1.gt(0) &&
+      reserves.reserve2.gt(0) &&
+      value.length > 0
+    ) {
+      const amountIn = parseBalanceToBigNumber(value, tokenIn.decimals);
+      if (amountIn.gt(0)) {
+        const amountInWithFee = amountIn.mul(997);
+        const numerator = amountInWithFee.mul(reserves.reserve2);
+        const denominator = reserves.reserve1.mul(1000).add(amountInWithFee);
+        const amountOut = numerator.div(denominator);
+        amounts["amountOut"] = parseBalance(amountOut, tokenOut.decimals);
+      }
+    }
 
-  //   if (
-  //     reserves &&
-  //     token &&
-  //     otherToken &&
-  //     reserves.reserve1.gt(0) &&
-  //     reserves.reserve1.gt(0) &&
-  //     value.length > 0
-  //   ) {
-  //     const amountA = parseBalanceToBigNumber(value, token.decimals);
-  //     if (amountA.gt(0)) {
-  //       const amountB = amountA
-  //         .mul(reverse ? reserves.reserve1 : reserves.reserve2)
-  //         .div(reverse ? reserves.reserve2 : reserves.reserve1);
+    return amounts;
+  };
 
-  //       amounts[reverse ? amountFieldName : otherAmountFieldName] =
-  //         parseBalance(amountB, otherToken.decimals);
-  //     }
-  //   }
-  //   return amounts;
-  // };
+  const getAmountIn = (value: string) => {
+    const amounts: Record<string, string> = {
+      amountIn: "",
+      amountOut: "",
+    };
+
+    amounts["amountOut"] = value;
+    if (value.length === 0) {
+      amounts["amountIn"] = "";
+    }
+
+    if (
+      reserves &&
+      tokenIn &&
+      tokenOut &&
+      reserves.reserve1.gt(0) &&
+      reserves.reserve2.gt(0) &&
+      value.length > 0
+    ) {
+      const amountOut = parseBalanceToBigNumber(value, tokenIn.decimals);
+      if (amountOut.gt(0)) {
+        const numerator = reserves.reserve1.mul(amountOut).mul(1000);
+        const denominator = reserves.reserve2.sub(amountOut).mul(997);
+        const amountIn = numerator.div(denominator).add(1);
+        amounts["amountIn"] = parseBalance(amountIn, tokenIn.decimals);
+      }
+    }
+
+    return amounts;
+  };
 
   useEffect(() => {
     setFieldValue(tokenFieldName + "Contract", tokenContract);
@@ -91,17 +120,17 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       setFieldValue(tokenFieldName + "Balance", tokenBalance);
   }, [tokenBalance]);
 
-  // useEffect(() => {
-  //   if (reserves && tokenFieldName === "token1") {
-  //     if (amount) {
-  //       const amounts = getQuote(amount);
-  //       setValues({ ...values, ...amounts });
-  //     } else if (otherAmount) {
-  //       const amounts = getQuote(otherAmount, true);
-  //       setValues({ ...values, ...amounts });
-  //     }
-  //   }
-  // }, [reserves]);
+  useEffect(() => {
+    if (reserves && isTokenIn) {
+      if (amountIn) {
+        const amounts = getAmountOut(amountIn);
+        setValues({ ...values, ...amounts });
+      } else if (amountOut) {
+        const amounts = getAmountIn(amountOut);
+        setValues({ ...values, ...amounts });
+      }
+    }
+  }, [reserves]);
 
   return (
     <Box minW={{ base: "250", sm: "sm", md: "md" }}>
@@ -147,10 +176,15 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               min={0}
               p={0}
               value={amount}
-              // onChange={(value) => {
-              //   const amounts = getQuote(value);
-              //   setValues({ ...values, ...amounts });
-              // }}
+              onChange={(value) => {
+                if (isTokenIn) {
+                  const amounts = getAmountOut(value);
+                  setValues({ ...values, ...amounts });
+                } else {
+                  const amounts = getAmountIn(value);
+                  setValues({ ...values, ...amounts });
+                }
+              }}
             >
               <NumberInputField
                 border="none"
@@ -162,14 +196,14 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
             {isTokenIn ? (
               <Button
                 disabled={!tokenBalance}
-                // onClick={() => {
-                //   if (tokenBalance) {
-                //     const amounts = getQuote(
-                //       parseBalance(tokenBalance, token.decimals)
-                //     );
-                //     setValues({ ...values, ...amounts });
-                //   }
-                // }}
+                onClick={() => {
+                  if (tokenBalance) {
+                    const amounts = getAmountOut(
+                      parseBalance(tokenBalance, token.decimals)
+                    );
+                    setValues({ ...values, ...amounts });
+                  }
+                }}
                 fontSize="sm"
               >
                 MAX
