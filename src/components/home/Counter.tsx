@@ -1,3 +1,4 @@
+import { Flex, Text, Box, Stack } from "@chakra-ui/react";
 import useCountDown from "../../hooks/useCountDown";
 
 const Counter = () => {
@@ -6,48 +7,41 @@ const Counter = () => {
   );
 
   return (
-    <section className="counter-wrp">
-      <div className="container">
-        <div className="counter-row">
-          <div className="counter-rwbx">
-            <div className="row">
-              <div className="col-md-3 col-sm-3">
-                <div className="count-box">
-                  <h2>
-                    <span className="counter">{days}</span>
-                  </h2>
-                  <p>Days</p>
-                </div>
-              </div>
-              <div className="col-md-3 col-sm-3">
-                <div className="count-box">
-                  <h2>
-                    <span className="counter">{hours}</span>
-                  </h2>
-                  <p>Hours</p>
-                </div>
-              </div>
-              <div className="col-md-3 col-sm-3">
-                <div className="count-box">
-                  <h2>
-                    <span className="counter">{minutes}</span>
-                  </h2>
-                  <p>Minutes</p>
-                </div>
-              </div>
-              <div className="col-md-3 col-sm-3">
-                <div className="count-box">
-                  <h2>
-                    <span className="counter">{seconds}</span>
-                  </h2>
-                  <p>Seconds</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <Flex
+      align="center"
+      justify="center"
+      bg="brand.gradient"
+      borderRadius="lg"
+      color="white"
+    >
+      <Stack
+        direction={{ base: "column", sm: "row" }}
+        gap={1}
+        justify="space-between"
+        py={10}
+        w={{ base: 300, sm: 400, md: 700 }}
+      >
+        <Box textAlign="center">
+          <Text fontSize="4xl">{days}</Text>
+          <Text>Days</Text>
+        </Box>
+
+        <Box textAlign="center">
+          <Text fontSize="4xl">{hours}</Text>
+          <Text>Hours</Text>
+        </Box>
+
+        <Box textAlign="center">
+          <Text fontSize="4xl">{minutes}</Text>
+          <Text>Minutes</Text>
+        </Box>
+
+        <Box textAlign="center">
+          <Text fontSize="4xl">{seconds}</Text>
+          <Text>Seconds</Text>
+        </Box>
+      </Stack>
+    </Flex>
   );
 };
 export default Counter;

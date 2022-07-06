@@ -1,20 +1,20 @@
-import type { NextPage } from "next";
-
-import Footer from "../components/common/Footer";
-import Header from "../components/common/Header";
+import type { NextPageWithLayout } from "./_app";
+import HomeHeader from "../components/common/Header/HomeHeader";
 import HeroBanner from "../components/home/HeroBanner";
 import Counter from "../components/home/Counter";
 import Protocol from "../components/home/Protocol";
+import Footer from "../components/common/Footer";
+import { Container } from "@chakra-ui/react";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   return (
-    <>
-      <Header />
+    <Container maxW="container.xl">
+      <HomeHeader />
       <HeroBanner />
       <Counter />
       <Protocol />
       <Footer />
-    </>
+    </Container>
   );
 };
 
