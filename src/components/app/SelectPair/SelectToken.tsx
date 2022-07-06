@@ -18,6 +18,7 @@ import { FormValues } from "../../../types";
 import { useEffect } from "react";
 import useTokenContract from "../../../hooks/useTokenContract";
 import useQuote from "../../../hooks/useQuote";
+import usePairReserves from "../../../hooks/usePairReserves";
 
 interface SelectTokenProps {
   isToken1?: boolean;
@@ -25,7 +26,14 @@ interface SelectTokenProps {
 
 const SelectToken = ({ isToken1 }: SelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { values, setFieldValue } = useFormikContext<FormValues>();
+  const {
+    values,
+    setFieldValue,
+    setValues,
+    setFieldError,
+    setErrors,
+    setTouched,
+  } = useFormikContext<FormValues>();
 
   const token = isToken1 ? values.token1 : values.token2;
   const otherToken = isToken1 ? values.token2 : values.token1;
@@ -40,9 +48,15 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
   const { data: tokenBalance } = useTokenBalance(token);
   const amountB = useQuote(token, otherToken, amount);
 
+  const { data: reserves } = usePairReserves(token, otherToken);
+
   useEffect(() => {
     setFieldValue(tokenFieldName + "Contract", tokenContract);
   }, [tokenContract]);
+
+  useEffect(() => {
+    setFieldValue(tokenFieldName + "Balance", tokenBalance);
+  }, [tokenBalance]);
 
   return (
     <Box minW={{ base: "250", sm: "sm", md: "md" }}>
@@ -84,17 +98,45 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
           <Divider />
           <HStack py={8} px={4} justify="space-between">
             <NumberInput
+              min={0}
               p={0}
               value={amount}
-              onChange={(value) => {
-                setFieldValue(amountFieldName, value);
+              onChange={async (value) => {
+                const amounts: {
+                  token1Amount?: string;
+                  token2Amount?: string;
+                } = {};
 
-                if (otherToken && amountB) {
-                  setFieldValue(
-                    otherAmountFieldName,
-                    parseBalance(amountB, otherToken.decimals)
-                  );
+                amounts[amountFieldName] = value;
+
+                if (value.length === 0) {
+                  amounts[otherAmountFieldName] = "";
                 }
+
+                if (
+                  reserves &&
+                  otherToken &&
+                  reserves.reserve1.gt(0) &&
+                  reserves.reserve1.gt(0) &&
+                  value.length > 0
+                ) {
+                  const amountA = parseBalanceToBigNumber(
+                    value,
+                    token.decimals
+                  );
+                  if (amountA.gt(0)) {
+                    const amountB = amountA
+                      .mul(reserves.reserve2)
+                      .div(reserves.reserve1);
+
+                    amounts[otherAmountFieldName] = parseBalance(
+                      amountB,
+                      otherToken.decimals
+                    );
+                  }
+                }
+
+                setValues({ ...values, ...amounts });
               }}
             >
               <NumberInputField

@@ -1,4 +1,5 @@
 import type { IconProps } from "@chakra-ui/react";
+import { BigNumber } from "ethers";
 import { ERC20 } from "./abis/types";
 
 export interface Token {
@@ -15,4 +16,6 @@ export interface FormValues {
   token2Contract: ERC20 | null;
   token1Amount: string | undefined;
   token2Amount: string | undefined;
+  token1Balance: BigNumber | undefined;
+  token2Balance: BigNumber | undefined;
 }

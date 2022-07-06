@@ -15,10 +15,10 @@ export default function useTokenBalance(token: Token | undefined) {
   const { account } = useWeb3React();
   const contract = useTokenContract(token);
 
-  const shouldFetch = !!contract && !!account;
+  const shouldFetch = !!contract && !!account && token;
 
   const result = useSWR(
-    shouldFetch ? ["TokenBalance", account] : null,
+    shouldFetch ? ["TokenBalance" + token.symbol, account] : null,
     getTokenBalance(contract!)
   );
 

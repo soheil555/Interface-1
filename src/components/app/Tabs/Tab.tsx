@@ -16,6 +16,7 @@ const Tab = ({ href, label, icon }: TabProps) => {
   return (
     <NextLink href={href} passHref>
       <Text
+        as="div"
         cursor="pointer"
         role="group"
         color={isActive ? "brand.300" : undefined}

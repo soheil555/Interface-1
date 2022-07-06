@@ -7,7 +7,7 @@ const Layout = (page: ReactElement) => {
   return (
     <>
       <AppHeader />
-      {/* <Tabs /> */}
+      <Tabs />
       <Container
         maxW="container.md"
         display="flex"

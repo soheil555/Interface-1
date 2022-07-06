@@ -6,7 +6,7 @@ import Layout from "../../../components/app/Layout";
 import SelectTokenPair from "../../../components/app/SelectPair/SelectTokenPair";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
-import { Formik, Form, FormikErrors } from "formik";
+import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { FormValues } from "../../../types";
 import { parseBalanceToBigNumber } from "../../../utils";
 
@@ -17,6 +17,8 @@ const initialValues: FormValues = {
   token2Contract: null,
   token1Amount: undefined,
   token2Amount: undefined,
+  token1Balance: undefined,
+  token2Balance: undefined,
 };
 
 const AddLiquidity: NextPageWithLayout = () => {
@@ -27,19 +29,19 @@ const AddLiquidity: NextPageWithLayout = () => {
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
 
-  const handleAddLiquidity = async ({
-    token1,
-    token2,
-    token1Amount,
-    token2Amount,
-    token1Contract,
-    token2Contract,
-  }: FormValues) => {
+  const handleAddLiquidity = async (
+    {
+      token1,
+      token2,
+      token1Amount,
+      token2Amount,
+      token1Contract,
+      token2Contract,
+    }: FormValues,
+    { resetForm }: FormikHelpers<FormValues>
+  ) => {
     if (
-      !factoryContract ||
-      !routerContract ||
-      !account ||
-      !provider ||
+      !walletConnected ||
       !token1 ||
       !token2 ||
       !token1Amount ||
@@ -96,6 +98,8 @@ const AddLiquidity: NextPageWithLayout = () => {
         duration: 9000,
         isClosable: true,
       });
+
+      resetForm();
     } catch (error: any) {
       toast({
         title: "Add liquidity",
@@ -110,15 +114,45 @@ const AddLiquidity: NextPageWithLayout = () => {
   return (
     <Formik
       validateOnMount
+      validateOnChange
       initialValues={initialValues}
-      validate={(values) => {
+      validate={({
+        token1,
+        token2,
+        token1Amount,
+        token2Amount,
+        token1Balance,
+        token2Balance,
+        token1Contract,
+        token2Contract,
+      }) => {
         const errors: FormikErrors<FormValues> = {};
-        if (!values.token1 || !values.token2) {
+        if (!token1 || !token2) {
           errors.token1 = "Invalid token pair";
+          return errors;
         }
 
-        if (!values.token1Amount || !values.token2Amount) {
+        if (!token1Amount || !token2Amount) {
           errors.token1Amount = "Enter an amount";
+          return errors;
+        }
+
+        if (
+          token1Balance &&
+          parseBalanceToBigNumber(token1Amount, token1.decimals).gt(
+            token1Balance
+          )
+        ) {
+          errors.token1Amount = `Insufficient ${token1.symbol} balance`;
+        }
+
+        if (
+          token2Balance &&
+          parseBalanceToBigNumber(token2Amount, token2.decimals).gt(
+            token2Balance
+          )
+        ) {
+          errors.token1Amount = `Insufficient ${token2.symbol} balance`;
         }
 
         return errors;
