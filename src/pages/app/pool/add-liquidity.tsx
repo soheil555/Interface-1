@@ -1,16 +1,26 @@
 import type { NextPageWithLayout } from "../../_app";
-import { useToast, VStack, Button } from "@chakra-ui/react";
+import {
+  useToast,
+  VStack,
+  Button,
+  IconButton,
+  HStack,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import useFactoryContract from "../../../hooks/useFactoryContract";
 import Layout from "../../../components/app/Layout";
-import SelectTokenPair from "../../../components/app/SelectPair/SelectTokenPair";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import { FormValues } from "../../../types";
+import { LiquidityFormValues } from "../../../types";
 import { parseBalanceToBigNumber } from "../../../utils";
+import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
+import { BiArrowBack } from "react-icons/bi";
+import { useRouter } from "next/router";
 
-const initialValues: FormValues = {
+const initialValues: LiquidityFormValues = {
   token1: undefined,
   token2: undefined,
   token1Contract: null,
@@ -23,6 +33,8 @@ const initialValues: FormValues = {
 
 const AddLiquidity: NextPageWithLayout = () => {
   const toast = useToast();
+  const router = useRouter();
+
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
@@ -37,8 +49,8 @@ const AddLiquidity: NextPageWithLayout = () => {
       token2Amount,
       token1Contract,
       token2Contract,
-    }: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
+    }: LiquidityFormValues,
+    { resetForm }: FormikHelpers<LiquidityFormValues>
   ) => {
     if (
       !walletConnected ||
@@ -77,6 +89,7 @@ const AddLiquidity: NextPageWithLayout = () => {
 
       const timestamp = (await provider.getBlock("latest")).timestamp;
 
+      //TODO: set amountAMin , amountBMin, deadline, gasLimit
       let tx = await routerContract.addLiquidity(
         token1Contract.address,
         token2Contract.address,
@@ -111,61 +124,69 @@ const AddLiquidity: NextPageWithLayout = () => {
     }
   };
 
+  const validator = ({
+    token1,
+    token2,
+    token1Amount,
+    token2Amount,
+    token1Balance,
+    token2Balance,
+  }: LiquidityFormValues) => {
+    const errors: FormikErrors<LiquidityFormValues> = {};
+    if (!token1 || !token2) {
+      errors.token1 = "Invalid token pair";
+      return errors;
+    }
+
+    if (!token1Amount || !token2Amount) {
+      errors.token1Amount = "Enter an amount";
+      return errors;
+    }
+
+    if (
+      token1Balance &&
+      parseBalanceToBigNumber(token1Amount, token1.decimals).gt(token1Balance)
+    ) {
+      errors.token1Amount = `Insufficient ${token1.symbol} balance`;
+    }
+
+    if (
+      token2Balance &&
+      parseBalanceToBigNumber(token2Amount, token2.decimals).gt(token2Balance)
+    ) {
+      errors.token2Amount = `Insufficient ${token2.symbol} balance`;
+    }
+
+    return errors;
+  };
+
   return (
     <Formik
       validateOnMount
       validateOnChange
       initialValues={initialValues}
-      validate={({
-        token1,
-        token2,
-        token1Amount,
-        token2Amount,
-        token1Balance,
-        token2Balance,
-        token1Contract,
-        token2Contract,
-      }) => {
-        const errors: FormikErrors<FormValues> = {};
-        if (!token1 || !token2) {
-          errors.token1 = "Invalid token pair";
-          return errors;
-        }
-
-        if (!token1Amount || !token2Amount) {
-          errors.token1Amount = "Enter an amount";
-          return errors;
-        }
-
-        if (
-          token1Balance &&
-          parseBalanceToBigNumber(token1Amount, token1.decimals).gt(
-            token1Balance
-          )
-        ) {
-          errors.token1Amount = `Insufficient ${token1.symbol} balance`;
-        }
-
-        if (
-          token2Balance &&
-          parseBalanceToBigNumber(token2Amount, token2.decimals).gt(
-            token2Balance
-          )
-        ) {
-          errors.token1Amount = `Insufficient ${token2.symbol} balance`;
-        }
-
-        return errors;
-      }}
+      validate={validator}
       onSubmit={handleAddLiquidity}
     >
       {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
         <Form onSubmit={handleSubmit}>
-          <VStack gap={2}>
-            <SelectTokenPair
-              middleIcon={<AiOutlinePlus />}
-              header="Add Liquidity"
-            />
+          <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
+            <HStack fontSize="lg" alignSelf="flex-start">
+              <IconButton
+                onClick={() => {
+                  router.back();
+                }}
+                aria-label="back"
+                icon={<BiArrowBack />}
+              />
+              <Text>Add Liquidity</Text>
+            </HStack>
+
+            <LiquiditySelectToken isToken1 />
+
+            <Icon as={AiOutlinePlus} fontSize="xl" />
+
+            <LiquiditySelectToken />
 
             <Button
               type="submit"

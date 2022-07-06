@@ -9,7 +9,7 @@ export interface Token {
   logo: (props: IconProps) => JSX.Element;
 }
 
-export interface FormValues {
+export interface LiquidityFormValues {
   token1: Token | undefined;
   token2: Token | undefined;
   token1Contract: ERC20 | null;
@@ -18,4 +18,14 @@ export interface FormValues {
   token2Amount: string | undefined;
   token1Balance: BigNumber | undefined;
   token2Balance: BigNumber | undefined;
+}
+
+export interface SwapFormValues {
+  tokenIn: Token | undefined;
+  tokenOut: Token | undefined;
+  tokenInContract: ERC20 | null;
+  tokenOutContract: ERC20 | null;
+  amountIn: string | undefined;
+  amountOut: string | undefined;
+  tokenInBalance: BigNumber | undefined;
 }

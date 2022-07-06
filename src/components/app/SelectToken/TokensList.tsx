@@ -1,4 +1,5 @@
-import { Token, tokens as allTokens } from "../../../tokens";
+import { tokens as allTokens } from "../../../tokens";
+import { Token } from "../../../types";
 import {
   Box,
   HStack,
@@ -68,7 +69,8 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
             borderWidth={1}
             borderColor="gray.200"
             borderRadius="lg"
-            overflow="hidden"
+            overflowY="scroll"
+            maxH={500}
           >
             {tokens.length ? (
               tokens.map((token, i) => (

@@ -14,41 +14,70 @@ import TokensList from "./TokensList";
 import useTokenBalance from "../../../hooks/useTokenBalance";
 import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
 import { useFormikContext } from "formik";
-import { FormValues } from "../../../types";
+import { LiquidityFormValues } from "../../../types";
 import { useEffect } from "react";
 import useTokenContract from "../../../hooks/useTokenContract";
-import useQuote from "../../../hooks/useQuote";
 import usePairReserves from "../../../hooks/usePairReserves";
 
-interface SelectTokenProps {
+interface LiquiditySelectTokenProps {
   isToken1?: boolean;
 }
 
-const SelectToken = ({ isToken1 }: SelectTokenProps) => {
+const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    values,
-    setFieldValue,
-    setValues,
-    setFieldError,
-    setErrors,
-    setTouched,
-  } = useFormikContext<FormValues>();
+  const { values, setFieldValue, setValues } =
+    useFormikContext<LiquidityFormValues>();
 
-  const token = isToken1 ? values.token1 : values.token2;
-  const otherToken = isToken1 ? values.token2 : values.token1;
-  const amount = isToken1 ? values.token1Amount : values.token2Amount;
-  const otherAmount = isToken1 ? values.token2Amount : values.token1Amount;
+  const [token, otherToken] = isToken1
+    ? [values.token1, values.token2]
+    : [values.token2, values.token1];
+
+  const [amount, otherAmount] = isToken1
+    ? [values.token1Amount, values.token2Amount]
+    : [values.token2Amount, values.token1Amount];
+
   const tokenFieldName = isToken1 ? "token1" : "token2";
-  const otherTokenFieldName = isToken1 ? "token2" : "token1";
-  const amountFieldName = isToken1 ? "token1Amount" : "token2Amount";
-  const otherAmountFieldName = isToken1 ? "token2Amount" : "token1Amount";
+
+  const [amountFieldName, otherAmountFieldName] = isToken1
+    ? ["token1Amount", "token2Amount"]
+    : ["token2Amount", "token1Amount"];
 
   const tokenContract = useTokenContract(token);
   const { data: tokenBalance } = useTokenBalance(token);
-  const amountB = useQuote(token, otherToken, amount);
-
   const { data: reserves } = usePairReserves(token, otherToken);
+
+  const getQuote = (value: string, reverse = false) => {
+    const amounts: Record<string, string> = {
+      token1Amount: "",
+      token2Amount: "",
+    };
+
+    amounts[reverse ? otherAmountFieldName : amountFieldName] = value;
+
+    if (value.length === 0) {
+      amounts[reverse ? amountFieldName : otherAmountFieldName] = "";
+    }
+
+    if (
+      reserves &&
+      token &&
+      otherToken &&
+      reserves.reserve1.gt(0) &&
+      reserves.reserve2.gt(0) &&
+      value.length > 0
+    ) {
+      const amountA = parseBalanceToBigNumber(value, token.decimals);
+      if (amountA.gt(0)) {
+        const amountB = amountA
+          .mul(reverse ? reserves.reserve1 : reserves.reserve2)
+          .div(reverse ? reserves.reserve2 : reserves.reserve1);
+
+        amounts[reverse ? amountFieldName : otherAmountFieldName] =
+          parseBalance(amountB, otherToken.decimals);
+      }
+    }
+    return amounts;
+  };
 
   useEffect(() => {
     setFieldValue(tokenFieldName + "Contract", tokenContract);
@@ -57,6 +86,18 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
   useEffect(() => {
     setFieldValue(tokenFieldName + "Balance", tokenBalance);
   }, [tokenBalance]);
+
+  useEffect(() => {
+    if (reserves && tokenFieldName === "token1") {
+      if (amount) {
+        const amounts = getQuote(amount);
+        setValues({ ...values, ...amounts });
+      } else if (otherAmount) {
+        const amounts = getQuote(otherAmount, true);
+        setValues({ ...values, ...amounts });
+      }
+    }
+  }, [reserves]);
 
   return (
     <Box minW={{ base: "250", sm: "sm", md: "md" }}>
@@ -96,46 +137,14 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
           </HStack>
 
           <Divider />
+
           <HStack py={8} px={4} justify="space-between">
             <NumberInput
               min={0}
               p={0}
               value={amount}
-              onChange={async (value) => {
-                const amounts: {
-                  token1Amount?: string;
-                  token2Amount?: string;
-                } = {};
-
-                amounts[amountFieldName] = value;
-
-                if (value.length === 0) {
-                  amounts[otherAmountFieldName] = "";
-                }
-
-                if (
-                  reserves &&
-                  otherToken &&
-                  reserves.reserve1.gt(0) &&
-                  reserves.reserve1.gt(0) &&
-                  value.length > 0
-                ) {
-                  const amountA = parseBalanceToBigNumber(
-                    value,
-                    token.decimals
-                  );
-                  if (amountA.gt(0)) {
-                    const amountB = amountA
-                      .mul(reserves.reserve2)
-                      .div(reserves.reserve1);
-
-                    amounts[otherAmountFieldName] = parseBalance(
-                      amountB,
-                      otherToken.decimals
-                    );
-                  }
-                }
-
+              onChange={(value) => {
+                const amounts = getQuote(value);
                 setValues({ ...values, ...amounts });
               }}
             >
@@ -147,12 +156,14 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
             </NumberInput>
 
             <Button
+              disabled={!tokenBalance}
               onClick={() => {
-                if (tokenBalance)
-                  setFieldValue(
-                    amountFieldName,
+                if (tokenBalance) {
+                  const amounts = getQuote(
                     parseBalance(tokenBalance, token.decimals)
                   );
+                  setValues({ ...values, ...amounts });
+                }
               }}
               fontSize="sm"
             >
@@ -186,4 +197,4 @@ const SelectToken = ({ isToken1 }: SelectTokenProps) => {
   );
 };
 
-export default SelectToken;
+export default LiquiditySelectToken;
