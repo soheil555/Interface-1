@@ -12,7 +12,11 @@ import {
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
 import useTokenBalance from "../../../hooks/useTokenBalance";
-import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
+import {
+  parseBalance,
+  parseBalanceToBigNumber,
+  parseValue,
+} from "../../../utils";
 import { useFormikContext } from "formik";
 import { LiquidityFormValues } from "../../../types";
 import { useEffect } from "react";
@@ -36,7 +40,9 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
     ? [values.token1Amount, values.token2Amount]
     : [values.token2Amount, values.token1Amount];
 
-  const tokenFieldName = isToken1 ? "token1" : "token2";
+  const [tokenFieldName, otherTokenFieldName] = isToken1
+    ? ["token1", "token2"]
+    : ["token2", "token1"];
 
   const [amountFieldName, otherAmountFieldName] = isToken1
     ? ["token1Amount", "token2Amount"]
@@ -47,10 +53,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   const { data: reserves } = usePairReserves(token, otherToken);
 
   const getQuote = (value: string, reverse = false) => {
-    const amounts: Record<string, string> = {
-      token1Amount: "",
-      token2Amount: "",
-    };
+    const amounts: Record<string, string> = {};
 
     amounts[reverse ? otherAmountFieldName : amountFieldName] = value;
 
@@ -144,6 +147,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
               p={0}
               value={amount}
               onChange={(value) => {
+                value = parseValue(value, token.decimals);
                 const amounts = getQuote(value);
                 setValues({ ...values, ...amounts });
               }}

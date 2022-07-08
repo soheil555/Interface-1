@@ -12,7 +12,11 @@ import {
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
 import useTokenBalance from "../../../hooks/useTokenBalance";
-import { parseBalance, parseBalanceToBigNumber } from "../../../utils";
+import {
+  parseBalance,
+  parseBalanceToBigNumber,
+  parseValue,
+} from "../../../utils";
 import { useFormikContext } from "formik";
 import { SwapFormValues } from "../../../types";
 import { useEffect } from "react";
@@ -121,6 +125,16 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   }, [tokenBalance]);
 
   useEffect(() => {
+    if (reserves) {
+      if (isTokenIn) {
+        setFieldValue("tokenInReserve", reserves.reserve1);
+      } else {
+        setFieldValue("tokenOutReserve", reserves.reserve2);
+      }
+    }
+  }, [reserves]);
+
+  useEffect(() => {
     if (reserves && isTokenIn) {
       if (amountIn) {
         const amounts = getAmountOut(amountIn);
@@ -177,6 +191,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               p={0}
               value={amount}
               onChange={(value) => {
+                value = parseValue(value, token.decimals);
                 if (isTokenIn) {
                   const amounts = getAmountOut(value);
                   setValues({ ...values, ...amounts });

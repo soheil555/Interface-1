@@ -28,4 +28,6 @@ export interface SwapFormValues {
   amountIn: string | undefined;
   amountOut: string | undefined;
   tokenInBalance: BigNumber | undefined;
+  tokenInReserve: BigNumber | undefined;
+  tokenOutReserve: BigNumber | undefined;
 }

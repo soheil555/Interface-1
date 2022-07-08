@@ -22,3 +22,11 @@ export function parseBalanceToBigNumber(
 ): BigNumber {
   return ethers.utils.parseUnits(balance, decimals);
 }
+
+export function parseValue(value: string, decimals = 18) {
+  value = value.replace(/[-e]/g, "");
+  if (value.length === 0) return "";
+  let parsedValue = String(Number(parseFloat(value).toFixed(decimals)));
+  if (value[value.length - 1] === ".") parsedValue += ".";
+  return parsedValue;
+}

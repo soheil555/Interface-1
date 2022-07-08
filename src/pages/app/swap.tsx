@@ -25,6 +25,8 @@ const initialValues: SwapFormValues = {
   amountIn: undefined,
   amountOut: undefined,
   tokenInBalance: undefined,
+  tokenInReserve: undefined,
+  tokenOutReserve: undefined,
 };
 
 const Swap: NextPageWithLayout = () => {
@@ -118,6 +120,8 @@ const Swap: NextPageWithLayout = () => {
     amountIn,
     amountOut,
     tokenInBalance,
+    tokenInReserve,
+    tokenOutReserve,
   }: SwapFormValues) => {
     const errors: FormikErrors<SwapFormValues> = {};
     if (!tokenIn || !tokenOut) {
@@ -130,10 +134,26 @@ const Swap: NextPageWithLayout = () => {
       return errors;
     }
 
+    const amountInBigNumber = parseBalanceToBigNumber(
+      amountIn,
+      tokenIn.decimals
+    );
+    const amountOutBigNumber = parseBalanceToBigNumber(
+      amountOut,
+      tokenOut.decimals
+    );
+
     if (
-      tokenInBalance &&
-      parseBalanceToBigNumber(amountIn, tokenIn.decimals).gt(tokenInBalance)
+      !tokenInReserve ||
+      amountInBigNumber.gt(tokenInReserve) ||
+      !tokenOutReserve ||
+      amountOutBigNumber.gt(tokenOutReserve)
     ) {
+      errors.amountIn = "Insufficient liquidity for this trade.";
+      return errors;
+    }
+
+    if (!tokenInBalance || amountInBigNumber.gt(tokenInBalance)) {
       errors.amountIn = `Insufficient ${tokenIn.symbol} balance`;
     }
 
@@ -148,7 +168,15 @@ const Swap: NextPageWithLayout = () => {
       validate={validator}
       onSubmit={handleSwap}
     >
-      {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
+      {({
+        handleSubmit,
+        isSubmitting,
+        isValid,
+        isValidating,
+        errors,
+        values,
+        setValues,
+      }) => (
         <Form onSubmit={handleSubmit}>
           <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
             <Box>
@@ -159,7 +187,14 @@ const Swap: NextPageWithLayout = () => {
             </Box>
 
             <IconButton
-              onClick={() => {}}
+              onClick={() => {
+                const tokens = {
+                  tokenIn: values.tokenOut,
+                  tokenOut: values.tokenIn,
+                };
+
+                setValues({ ...values, ...tokens });
+              }}
               aria-label="swap"
               icon={<IoSwapVertical />}
               fontSize="xl"
