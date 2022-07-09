@@ -1,6 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, Contract } from "ethers";
+import { Contract } from "ethers";
 import useSWR from "swr";
 import useAllPairs from "./useAllPairs";
 import PairABI from "../abis/Pair.json";
@@ -8,6 +8,7 @@ import ERC20ABI from "../abis/ERC20.json";
 import { Pair } from "../abis/types/Pair";
 import { ERC20 } from "../abis/types";
 import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
+import { Liquidity } from "../types";
 
 function getAllPairsWithLiquidity(provider: Web3Provider) {
   return async (
@@ -15,14 +16,7 @@ function getAllPairsWithLiquidity(provider: Web3Provider) {
     allPairs: { address: string; token0: string; token1: string }[],
     account: string
   ) => {
-    const pairsWithLiquidity: {
-      address: string;
-      token0: string;
-      token1: string;
-      liquidityBalance: BigNumber;
-      amount0: BigNumber;
-      amount1: BigNumber;
-    }[] = [];
+    const pairsWithLiquidity: Liquidity[] = [];
 
     for (const pair of allPairs) {
       const pairContract = new Contract(

@@ -31,3 +31,16 @@ export interface SwapFormValues {
   tokenInReserve: BigNumber | undefined;
   tokenOutReserve: BigNumber | undefined;
 }
+
+export interface RemoveLiquidityFormValues {
+  percent: number;
+}
+
+export interface Liquidity {
+  address: string;
+  token0: string;
+  token1: string;
+  liquidityBalance: BigNumber;
+  amount0: BigNumber;
+  amount1: BigNumber;
+}

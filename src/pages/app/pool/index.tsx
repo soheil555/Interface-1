@@ -4,10 +4,11 @@ import NextLink from "next/link";
 import Layout from "../../../components/app/Layout";
 import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
 import { useWeb3React } from "@web3-react/core";
+import LiquidityBox from "../../../components/app/Liquidity/LiquidityBox";
 
 const Pool: NextPageWithLayout = () => {
   const { account } = useWeb3React();
-  const { data: liquidity } = useAllPairsWithLiquidity(account);
+  const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
     <VStack gap={22} w="full">
@@ -28,7 +29,7 @@ const Pool: NextPageWithLayout = () => {
         Your Liquidity
       </Heading>
 
-      {!liquidity || liquidity.length === 0 ? (
+      {!liquidities || liquidities.length === 0 ? (
         <Text
           textAlign="center"
           variant="gray"
@@ -40,9 +41,13 @@ const Pool: NextPageWithLayout = () => {
           borderColor="gray.200"
           overflow="hidden"
         >
-          {!liquidity ? "Loading..." : "No liquidity found"}
+          {!liquidities ? "Loading..." : "No liquidity found"}
         </Text>
-      ) : null}
+      ) : (
+        liquidities.map((liquidity) => (
+          <LiquidityBox key={liquidity.address} liquidity={liquidity} />
+        ))
+      )}
     </VStack>
   );
 };
