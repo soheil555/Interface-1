@@ -31,10 +31,10 @@ const initialValues: SwapFormValues = {
 
 const Swap: NextPageWithLayout = () => {
   const toast = useToast();
-
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
+
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
 
@@ -129,6 +129,16 @@ const Swap: NextPageWithLayout = () => {
       return errors;
     }
 
+    if (
+      !tokenInReserve ||
+      tokenInReserve.isZero() ||
+      !tokenOutReserve ||
+      tokenOutReserve.isZero()
+    ) {
+      errors.tokenIn = "Token reserve is zero";
+      return errors;
+    }
+
     if (!amountIn || !amountOut) {
       errors.amountIn = "Enter an amount";
       return errors;
@@ -144,9 +154,7 @@ const Swap: NextPageWithLayout = () => {
     );
 
     if (
-      !tokenInReserve ||
       amountInBigNumber.gt(tokenInReserve) ||
-      !tokenOutReserve ||
       amountOutBigNumber.gt(tokenOutReserve)
     ) {
       errors.amountIn = "Insufficient liquidity for this trade.";

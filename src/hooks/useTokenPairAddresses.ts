@@ -1,4 +1,4 @@
-import { Token } from "../tokens";
+import { Token } from "../types";
 import useAddresses from "./useAddresses";
 
 export default function useTokenPairAddresses(token1?: Token, token2?: Token) {
