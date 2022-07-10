@@ -117,10 +117,6 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   };
 
   useEffect(() => {
-    setFieldValue(tokenFieldName + "Contract", tokenContract);
-  }, [tokenContract]);
-
-  useEffect(() => {
     if (tokenFieldName === "tokenIn")
       setFieldValue(tokenFieldName + "Balance", tokenBalance);
   }, [tokenBalance]);

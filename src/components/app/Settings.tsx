@@ -13,12 +13,16 @@ import {
   NumberInput,
   NumberInputField,
   useDisclosure,
+  Box,
+  HStack,
+  PopoverHeader,
 } from "@chakra-ui/react";
 import { FiSettings } from "react-icons/fi";
 import { Formik, FormikErrors } from "formik";
 import { SettingsFormValues } from "../../types";
 import { settingsAtom } from "../../store";
 import { useAtom } from "jotai";
+import ThemeToggler from "../common/ThemeToggler";
 
 const Settings = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -74,6 +78,7 @@ const Settings = () => {
           </PopoverTrigger>
           <PopoverContent p={4}>
             <PopoverArrow />
+
             <Text fontWeight="bold" mb={2}>
               Transaction Settings
             </Text>
@@ -118,6 +123,15 @@ const Settings = () => {
               </InputGroup>
               <FormErrorMessage>{errors.deadline}</FormErrorMessage>
             </FormControl>
+
+            <Text fontWeight="bold" mb={2}>
+              Interface Settings
+            </Text>
+
+            <HStack justify="space-between">
+              <Text>Dark mode</Text>
+              <ThemeToggler />
+            </HStack>
           </PopoverContent>
         </Popover>
       )}

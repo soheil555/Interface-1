@@ -23,8 +23,6 @@ export interface LiquidityFormValues {
 export interface SwapFormValues {
   tokenIn: Token | undefined;
   tokenOut: Token | undefined;
-  tokenInContract: ERC20 | null;
-  tokenOutContract: ERC20 | null;
   amountIn: string | undefined;
   amountOut: string | undefined;
   tokenInBalance: BigNumber | undefined;

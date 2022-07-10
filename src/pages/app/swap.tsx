@@ -18,13 +18,15 @@ import { parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useAddresses from "../../hooks/useAddresses";
+import { Contract } from "ethers";
+import ERC20ABI from "../../abis/ERC20.json";
+import { ERC20 } from "../../abis/types";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
   tokenOut: undefined,
-  tokenInContract: null,
-  tokenOutContract: null,
   amountIn: undefined,
   amountOut: undefined,
   tokenInBalance: undefined,
@@ -35,34 +37,24 @@ const initialValues: SwapFormValues = {
 const Swap: NextPageWithLayout = () => {
   const [settings] = useAtom(settingsAtom);
   const toast = useToast();
+  const addresses = useAddresses();
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
   const [swapButtonDisabled, setSwapButtonDisabled] = useState(false);
 
   const walletConnected =
-    !!routerContract && !!factoryContract && !!account && !!provider;
+    !!routerContract &&
+    !!factoryContract &&
+    !!account &&
+    !!provider &&
+    !!addresses;
 
   const handleSwap = async (
-    {
-      tokenIn,
-      tokenOut,
-      amountIn,
-      amountOut,
-      tokenInContract,
-      tokenOutContract,
-    }: SwapFormValues,
+    { tokenIn, tokenOut, amountIn, amountOut }: SwapFormValues,
     { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
-    if (
-      !walletConnected ||
-      !tokenIn ||
-      !tokenOut ||
-      !amountIn ||
-      !amountOut ||
-      !tokenInContract ||
-      !tokenOutContract
-    )
+    if (!walletConnected || !tokenIn || !tokenOut || !amountIn || !amountOut)
       return;
 
     try {
@@ -70,6 +62,15 @@ const Swap: NextPageWithLayout = () => {
         amountIn,
         tokenIn.decimals
       );
+
+      const tokenInaddress = addresses.tokens[tokenIn.symbol];
+      const tokenOutaddress = addresses.tokens[tokenOut.symbol];
+
+      const tokenInContract = new Contract(
+        tokenInaddress,
+        ERC20ABI,
+        routerContract.signer
+      ) as ERC20;
 
       const token1Allowance = await tokenInContract.allowance(
         account,
@@ -88,7 +89,7 @@ const Swap: NextPageWithLayout = () => {
       const deadline = timestamp + Number(settings.deadline) * 60;
 
       //TODO: set amountOutMin and deadline and gasLimit
-      const path = [tokenInContract.address, tokenOutContract.address];
+      const path = [tokenInContract.address, tokenOutaddress];
 
       const tx = await routerContract.swapExactTokensForTokens(
         amountInBigNumber,
@@ -205,11 +206,12 @@ const Swap: NextPageWithLayout = () => {
                 swapButtonDisabled || (!values.tokenIn && !values.tokenOut)
               }
               onClick={() => {
-                const tokens = {
+                const newValues = {
                   tokenIn: values.tokenOut,
                   tokenOut: values.tokenIn,
+                  amountIn: values.amountOut,
                 };
-                setValues({ ...values, ...tokens });
+                setValues({ ...values, ...newValues });
               }}
               aria-label="swap"
               icon={<IoSwapVertical />}

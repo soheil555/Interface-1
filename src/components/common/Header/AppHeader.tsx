@@ -3,7 +3,6 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { appRoutes } from "../../../routes";
 import MetaMaskConnect from "../../app/Web3/MetaMaskConnect";
-import ThemeToggler from "../ThemeToggler";
 import Settings from "../../app/Settings";
 
 const AppHeader = () => {
@@ -53,9 +52,8 @@ const AppHeader = () => {
       }
 
       <HStack gap={2}>
-        <Settings/>
+        <Settings />
         <MetaMaskConnect />
-        <ThemeToggler />
       </HStack>
     </Flex>
   );
