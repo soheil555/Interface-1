@@ -36,6 +36,11 @@ export interface RemoveLiquidityFormValues {
   percent: number;
 }
 
+export interface SettingsFormValues {
+  slippage: string;
+  deadline: string;
+}
+
 export interface Liquidity {
   address: string;
   token0: string;

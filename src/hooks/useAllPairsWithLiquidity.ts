@@ -39,6 +39,10 @@ function getAllPairsWithLiquidity(provider: Web3Provider) {
       const liquidityBalance = await pairContract.balanceOf(account);
       const totalLiquiditySupply = await pairContract.totalSupply();
 
+      if (totalLiquiditySupply.isZero()) {
+        continue;
+      }
+
       const amount0 = liquidityBalance
         .mul(token0Balance)
         .div(totalLiquiditySupply);

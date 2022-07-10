@@ -1,16 +1,10 @@
-import {
-  Flex,
-  Link,
-  Image,
-  HStack,
-  useColorModeValue,
-  Stack,
-} from "@chakra-ui/react";
+import { Flex, Link, Image, HStack, useColorModeValue } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { appRoutes } from "../../../routes";
 import MetaMaskConnect from "../../app/Web3/MetaMaskConnect";
 import ThemeToggler from "../ThemeToggler";
+import Settings from "../../app/Settings";
 
 const AppHeader = () => {
   const router = useRouter();
@@ -59,6 +53,7 @@ const AppHeader = () => {
       }
 
       <HStack gap={2}>
+        <Settings/>
         <MetaMaskConnect />
         <ThemeToggler />
       </HStack>
