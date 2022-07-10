@@ -8,6 +8,7 @@ import {
   Button,
   NumberInput,
   NumberInputField,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
@@ -29,7 +30,7 @@ interface SwapSelectTokenProps {
 
 const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { values, setFieldValue, setValues } =
+  const { values, setFieldValue, setValues, validateForm } =
     useFormikContext<SwapFormValues>();
 
   const { tokenIn, tokenOut, amountIn, amountOut } = values;
@@ -125,24 +126,21 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   }, [tokenBalance]);
 
   useEffect(() => {
-    if (reserves) {
-      if (isTokenIn) {
-        setFieldValue("tokenInReserve", reserves.reserve1);
-      } else {
-        setFieldValue("tokenOutReserve", reserves.reserve2);
-      }
-    }
-  }, [reserves]);
-
-  useEffect(() => {
     if (reserves && isTokenIn) {
+      let amounts: Record<string, string> = {};
+
       if (amountIn) {
-        const amounts = getAmountOut(amountIn);
-        setValues({ ...values, ...amounts });
+        amounts = getAmountOut(amountIn);
       } else if (amountOut) {
-        const amounts = getAmountIn(amountOut);
-        setValues({ ...values, ...amounts });
+        amounts = getAmountIn(amountOut);
       }
+
+      setValues({
+        ...values,
+        ...amounts,
+        tokenInReserve: reserves.reserve1,
+        tokenOutReserve: reserves.reserve2,
+      });
     }
   }, [reserves]);
 
@@ -232,7 +230,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
           cursor="pointer"
           borderRadius="lg"
           boxShadow="md"
-          bg="gray.50"
+          bg={useColorModeValue("gray.50", "gray.700")}
           py={6}
           px={4}
         >

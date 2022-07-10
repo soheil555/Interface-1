@@ -19,6 +19,8 @@ import { parseBalanceToBigNumber } from "../../../utils";
 import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
+import { settingsAtom } from "../../../store";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -32,6 +34,7 @@ const initialValues: LiquidityFormValues = {
 };
 
 const AddLiquidity: NextPageWithLayout = () => {
+  const [settings] = useAtom(settingsAtom);
   const toast = useToast();
   const router = useRouter();
 
@@ -88,6 +91,7 @@ const AddLiquidity: NextPageWithLayout = () => {
       }
 
       const timestamp = (await provider.getBlock("latest")).timestamp;
+      const deadline = timestamp + Number(settings.deadline) * 60;
 
       //TODO: set amountAMin , amountBMin, deadline, gasLimit
       let tx = await routerContract.addLiquidity(
@@ -98,7 +102,7 @@ const AddLiquidity: NextPageWithLayout = () => {
         1,
         1,
         account,
-        timestamp + 10000000,
+        deadline,
         { gasLimit: 1000000 }
       );
 

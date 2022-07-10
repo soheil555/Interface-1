@@ -16,6 +16,9 @@ import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { SwapFormValues } from "../../types";
 import { parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
+import { useAtom } from "jotai";
+import { settingsAtom } from "../../store";
+import { useEffect, useState } from "react";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -30,10 +33,12 @@ const initialValues: SwapFormValues = {
 };
 
 const Swap: NextPageWithLayout = () => {
+  const [settings] = useAtom(settingsAtom);
   const toast = useToast();
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
+  const [swapButtonDisabled, setSwapButtonDisabled] = useState(false);
 
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
@@ -80,6 +85,7 @@ const Swap: NextPageWithLayout = () => {
       }
 
       const timestamp = (await provider.getBlock("latest")).timestamp;
+      const deadline = timestamp + Number(settings.deadline) * 60;
 
       //TODO: set amountOutMin and deadline and gasLimit
       const path = [tokenInContract.address, tokenOutContract.address];
@@ -89,7 +95,7 @@ const Swap: NextPageWithLayout = () => {
         1,
         path,
         account,
-        timestamp + 10000000,
+        deadline,
         { gasLimit: 1000000 }
       );
       await tx.wait();
@@ -195,12 +201,14 @@ const Swap: NextPageWithLayout = () => {
             </Box>
 
             <IconButton
+              isDisabled={
+                swapButtonDisabled || (!values.tokenIn && !values.tokenOut)
+              }
               onClick={() => {
                 const tokens = {
                   tokenIn: values.tokenOut,
                   tokenOut: values.tokenIn,
                 };
-
                 setValues({ ...values, ...tokens });
               }}
               aria-label="swap"

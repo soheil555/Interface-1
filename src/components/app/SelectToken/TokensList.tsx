@@ -82,7 +82,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
                     }}
                     cursor="pointer"
                     p={2}
-                    _hover={{ bgColor: "gray.100" }}
+                    _hover={{ bgColor: "gray.100", color: "gray.800" }}
                   >
                     <HStack gap={2}>
                       <Box>

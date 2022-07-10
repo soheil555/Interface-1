@@ -25,6 +25,8 @@ import useTokenInfo from "../../../hooks/useTokenInfo";
 import { Liquidity, RemoveLiquidityFormValues } from "../../../types";
 import { parseBalance } from "../../../utils";
 import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
+import { useAtom } from "jotai";
+import { settingsAtom } from "../../../store";
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity;
@@ -35,6 +37,7 @@ const initialValues: RemoveLiquidityFormValues = {
 };
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
+  const [settings] = useAtom(settingsAtom);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const token0Info = useTokenInfo(liquidity.token0);
@@ -66,6 +69,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
       const amountToRemove = liquidity.liquidityBalance.mul(percent).div(100);
 
       const timestamp = (await router.provider.getBlock("latest")).timestamp;
+      const deadline = timestamp + Number(settings.deadline) * 60;
 
       tx = await router.removeLiquidity(
         liquidity.token0,
@@ -74,7 +78,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
         1,
         1,
         account,
-        timestamp + 10000000,
+        deadline,
         { gasLimit: 1000000 }
       );
       await tx.wait();

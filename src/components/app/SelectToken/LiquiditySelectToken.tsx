@@ -8,6 +8,7 @@ import {
   Button,
   NumberInput,
   NumberInputField,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { GiToken } from "react-icons/gi";
 import TokensList from "./TokensList";
@@ -57,7 +58,12 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
 
     amounts[reverse ? otherAmountFieldName : amountFieldName] = value;
 
-    if (value.length === 0) {
+    if (
+      reserves &&
+      reserves.reserve1.gt(0) &&
+      reserves.reserve2.gt(0) &&
+      value.length === 0
+    ) {
       amounts[reverse ? amountFieldName : otherAmountFieldName] = "";
     }
 
@@ -181,7 +187,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
           cursor="pointer"
           borderRadius="lg"
           boxShadow="md"
-          bg="gray.50"
+          bg={useColorModeValue("gray.50", "gray.700")}
           py={6}
           px={4}
         >
