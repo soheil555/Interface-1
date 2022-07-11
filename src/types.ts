@@ -39,6 +39,13 @@ export interface SettingsFormValues {
   deadline: string;
 }
 
+export interface AddLPFormValues {
+  allocPoint: string;
+  lpToken: string;
+  rewarder: string;
+  update: boolean;
+}
+
 export interface Liquidity {
   address: string;
   token0: string;

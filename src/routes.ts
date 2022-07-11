@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 import { IoLogoGithub } from "react-icons/io5";
 import { IoSwapVertical } from "react-icons/io5";
 import { CgDropOpacity } from "react-icons/cg";
-import { TbShoppingCartPlus } from "react-icons/tb";
+import { GiFarmer } from "react-icons/gi";
 
 interface Route {
   label: string;
@@ -44,9 +44,9 @@ export const appRoutes: Route[] = [
     isExternal: false,
   },
   {
-    href: "/app/stake",
-    label: "Stake",
-    icon: TbShoppingCartPlus,
+    href: "/app/farm",
+    label: "Farm",
+    icon: GiFarmer,
     isExternal: false,
   },
 ];

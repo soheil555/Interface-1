@@ -1,4 +1,10 @@
-import { Eth, Matic, Usdc, Usdt } from "@chakra-icons/cryptocurrency-icons";
+import {
+  Eth,
+  Matic,
+  Usdc,
+  Usdt,
+  Btc,
+} from "@chakra-icons/cryptocurrency-icons";
 import { Token } from "./types";
 
 export const tokens: Array<Token> = [
@@ -25,5 +31,11 @@ export const tokens: Array<Token> = [
     symbol: "USDT",
     decimals: 6,
     logo: Usdt,
+  },
+  {
+    name: "Axoswap Token",
+    symbol: "AXO",
+    decimals: 18,
+    logo: Btc,
   },
 ];
