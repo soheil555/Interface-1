@@ -152,7 +152,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
           w="full"
         >
           <HStack
-            _hover={{ bgColor: "gray.50" }}
+            _hover={{ bgColor: "gray.100", color: "gray.800" }}
             onClick={onOpen}
             cursor="pointer"
             justify="space-between"
