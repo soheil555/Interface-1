@@ -198,6 +198,7 @@ const AddLiquidity: NextPageWithLayout = () => {
               isDisabled={!isValid || !walletConnected}
               variant="brand-2-outline"
               w="full"
+              fontSize={{ base: "sm", sm: "md" }}
             >
               {walletConnected
                 ? isValid

@@ -12,9 +12,10 @@ const AppHeader = () => {
     <Flex
       gap={2}
       position="sticky"
+      marginLeft="auto"
       top={0}
       zIndex={1}
-      w="100%"
+      w={{ base: "full", lg: "calc(100vw - 8rem)" }}
       justify="space-between"
       align="center"
       p={5}
@@ -23,12 +24,6 @@ const AppHeader = () => {
     >
       {
         <HStack gap={10}>
-          <NextLink href="/app/swap" passHref>
-            <Link>
-              <Image width={50} src="/assets/images/logo@2x.png" />
-            </Link>
-          </NextLink>
-
           <HStack
             display={{ base: "none", lg: "flex" }}
             fontSize={22}
