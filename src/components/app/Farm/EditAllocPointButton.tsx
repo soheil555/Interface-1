@@ -1,3 +1,4 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -12,50 +13,53 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Input,
   NumberInput,
   NumberInputField,
   Checkbox,
   VStack,
   useToast,
+  IconButton,
 } from "@chakra-ui/react";
-import { ethers } from "ethers";
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
-import { AddLPFormValues } from "../../../types";
+import { EditAllocPointFormValues } from "../../../types";
 import { parseBalanceToBigNumber } from "../../../utils";
 
-const initialValues: AddLPFormValues = {
-  allocPoint: "",
-  lpToken: "",
-  update: false,
-};
+interface EditAllocPointButtonProps {
+  pid: number;
+  currentAllocPoint: string;
+}
 
-const AddLPButton = () => {
+const EditAllocPointButton = ({
+  pid,
+  currentAllocPoint,
+}: EditAllocPointButtonProps) => {
+  const initialValues: EditAllocPointFormValues = {
+    allocPoint: currentAllocPoint,
+    update: false,
+  };
+
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const masterChefContract = useMasterChefContract();
 
-  const handleAddLP = async (
-    { lpToken, allocPoint, update }: AddLPFormValues,
-    { resetForm }: FormikHelpers<AddLPFormValues>
+  const handleEditAllocPoint = async (
+    { allocPoint, update }: EditAllocPointFormValues,
+    { resetForm }: FormikHelpers<EditAllocPointFormValues>
   ) => {
     if (!masterChefContract) return;
 
     const allocPointBigNumber = parseBalanceToBigNumber(allocPoint);
 
     try {
-      let tx = await masterChefContract.add(
-        allocPointBigNumber,
-        lpToken,
-        update,
-        { gasLimit: 1000000 }
-      );
+      let tx = await masterChefContract.set(pid, allocPointBigNumber, update, {
+        gasLimit: 1000000,
+      });
       await tx.wait();
 
       toast({
-        title: "Add LP",
-        description: "LP added successfully",
+        title: "Edit AllocPoint",
+        description: "Edited successfully",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -63,7 +67,7 @@ const AddLPButton = () => {
     } catch (error: any) {
       console.log(error);
       toast({
-        title: "Add LP",
+        title: "Edit AllocPoint",
         description: error.message,
         status: "error",
         duration: 9000,
@@ -74,16 +78,8 @@ const AddLPButton = () => {
     resetForm();
     onClose();
   };
-  const validator = (values: AddLPFormValues) => {
-    const errors: FormikErrors<AddLPFormValues> = {};
-
-    if (values.lpToken.length === 0) {
-      errors.lpToken = "Required";
-    }
-
-    if (values.lpToken.length > 0 && !ethers.utils.isAddress(values.lpToken)) {
-      errors.lpToken = "Invalid address";
-    }
+  const validator = (values: EditAllocPointFormValues) => {
+    const errors: FormikErrors<EditAllocPointFormValues> = {};
 
     if (values.allocPoint.length === 0) {
       errors.allocPoint = "Required";
@@ -99,15 +95,17 @@ const AddLPButton = () => {
 
   return (
     <>
-      <Button onClick={onOpen} variant="brand-2-outline">
-        Add new lp to the pool
-      </Button>
+      <IconButton
+        aria-label="edit alloc point"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <Formik
           initialValues={initialValues}
-          onSubmit={handleAddLP}
+          onSubmit={handleEditAllocPoint}
           validate={validator}
         >
           {({
@@ -123,33 +121,16 @@ const AddLPButton = () => {
             return (
               <Form onSubmit={handleSubmit}>
                 <ModalContent>
-                  <ModalHeader>Add a new LP to be staked</ModalHeader>
+                  <ModalHeader>Edit Alloc Point</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
                     <VStack gap={2} align="stretch">
                       <FormControl
                         isRequired
-                        isInvalid={!!touched.lpToken && !!errors.lpToken}
-                      >
-                        <FormLabel>LP Token</FormLabel>
-                        <Field
-                          as={Input}
-                          id="lpToken"
-                          name="lpToken"
-                          type="text"
-                        />
-                        <FormHelperText>
-                          Address of ERC20 token that will be staked
-                        </FormHelperText>
-                        <FormErrorMessage>{errors.lpToken}</FormErrorMessage>
-                      </FormControl>
-
-                      <FormControl
-                        isRequired
                         isInvalid={!!touched.allocPoint && !!errors.allocPoint}
                       >
                         <FormLabel>Alloc Point</FormLabel>
-                        <NumberInput>
+                        <NumberInput value={values.allocPoint}>
                           <Field
                             as={NumberInputField}
                             id="allocPoint"
@@ -184,11 +165,15 @@ const AddLPButton = () => {
                     </Button>
                     <Button
                       isLoading={isSubmitting || isValidating}
-                      isDisabled={!isValid}
+                      isDisabled={
+                        !isValid ||
+                        Number(values.allocPoint) ===
+                          Number(initialValues.allocPoint)
+                      }
                       colorScheme="brand"
                       type="submit"
                     >
-                      Add
+                      Edit
                     </Button>
                   </ModalFooter>
                 </ModalContent>
@@ -201,4 +186,4 @@ const AddLPButton = () => {
   );
 };
 
-export default AddLPButton;
+export default EditAllocPointButton;

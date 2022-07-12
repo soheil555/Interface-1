@@ -42,7 +42,11 @@ export interface SettingsFormValues {
 export interface AddLPFormValues {
   allocPoint: string;
   lpToken: string;
-  rewarder: string;
+  update: boolean;
+}
+
+export interface EditAllocPointFormValues {
+  allocPoint: string;
   update: boolean;
 }
 
@@ -53,4 +57,12 @@ export interface Liquidity {
   liquidityBalance: BigNumber;
   amount0: BigNumber;
   amount1: BigNumber;
+}
+
+export interface Farm {
+  pid: number;
+  lpToken: string;
+  allocPoint: BigNumber;
+  lastRewardBlock: BigNumber;
+  accAXOPerShare: BigNumber;
 }

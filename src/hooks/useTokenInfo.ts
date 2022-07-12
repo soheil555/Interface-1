@@ -1,9 +1,9 @@
 import useAddresses from "./useAddresses";
 import { tokens } from "../tokens";
 
-export default function useTokenInfo(tokenAddress: string) {
+export default function useTokenInfo(tokenAddress: string | undefined) {
   const addresses = useAddresses();
-  if (!addresses) return undefined;
+  if (!addresses || !tokenAddress) return undefined;
 
   const result = Object.entries(addresses.tokens).find(
     ([_, address]) => address === tokenAddress
