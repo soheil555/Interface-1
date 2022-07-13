@@ -49,10 +49,8 @@ const EditAllocPointButton = ({
   ) => {
     if (!masterChefContract) return;
 
-    const allocPointBigNumber = parseBalanceToBigNumber(allocPoint);
-
     try {
-      let tx = await masterChefContract.set(pid, allocPointBigNumber, update, {
+      let tx = await masterChefContract.set(pid, allocPoint, update, {
         gasLimit: 1000000,
       });
       await tx.wait();

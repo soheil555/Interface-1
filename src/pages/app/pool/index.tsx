@@ -1,5 +1,12 @@
 import type { NextPageWithLayout } from "../../_app";
-import { Stack, VStack, Button, Text, Heading } from "@chakra-ui/react";
+import {
+  Stack,
+  VStack,
+  Button,
+  Text,
+  Heading,
+  Divider,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import Layout from "../../../components/app/Layout";
 import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
@@ -28,6 +35,8 @@ const Pool: NextPageWithLayout = () => {
       <Heading alignSelf="flex-start" size="lg">
         Your Liquidity
       </Heading>
+
+      <Divider />
 
       {!liquidities || liquidities.length === 0 ? (
         <Text

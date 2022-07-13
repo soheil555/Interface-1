@@ -23,7 +23,6 @@ import { ethers } from "ethers";
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import { AddLPFormValues } from "../../../types";
-import { parseBalanceToBigNumber } from "../../../utils";
 
 const initialValues: AddLPFormValues = {
   allocPoint: "",
@@ -42,15 +41,10 @@ const AddLPButton = () => {
   ) => {
     if (!masterChefContract) return;
 
-    const allocPointBigNumber = parseBalanceToBigNumber(allocPoint);
-
     try {
-      let tx = await masterChefContract.add(
-        allocPointBigNumber,
-        lpToken,
-        update,
-        { gasLimit: 1000000 }
-      );
+      let tx = await masterChefContract.add(allocPoint, lpToken, update, {
+        gasLimit: 1000000,
+      });
       await tx.wait();
 
       toast({
