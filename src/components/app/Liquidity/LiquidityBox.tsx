@@ -73,7 +73,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Your total pool token:</Text>
-            <Text>{parseBalance(liquidity.liquidityBalance, 18, 18)}</Text>
+            <Text>{parseBalance(liquidity.liquidityBalance)}</Text>
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Pooled {token0Info.symbol}:</Text>

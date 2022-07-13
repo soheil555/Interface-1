@@ -65,7 +65,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
             ) : null}
           </HStack>
         </Stat>
-        <StakeButton lpToken={farm.lpToken} />
+        <StakeButton pid={farm.pid} lpToken={farm.lpToken} />
       </HStack>
     </Box>
   );

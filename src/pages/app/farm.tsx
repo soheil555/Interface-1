@@ -1,5 +1,5 @@
 import type { NextPageWithLayout } from "../_app";
-import { Heading, HStack, VStack, Box, Text } from "@chakra-ui/react";
+import { Heading, VStack, Box, Text, Stack } from "@chakra-ui/react";
 import Layout from "../../components/app/Layout";
 import useMasterChefOwner from "../../hooks/useMasterChefOwner";
 import { useWeb3React } from "@web3-react/core";
@@ -23,12 +23,17 @@ const Farm: NextPageWithLayout = () => {
       >
         Farming
       </Heading>
-      <HStack gap={2} align="stretch" flexDir="row-reverse" w="full">
+      <Stack
+        direction={{ base: "column", lg: "row" }}
+        gap={2}
+        align="stretch"
+        w="full"
+      >
         {masterChefOwner && masterChefOwner === account ? (
           <AddLPButton />
         ) : null}
         <UpdatePoolsButton />
-      </HStack>
+      </Stack>
 
       <Box w="full">
         {!farms || farms.length === 0 ? (

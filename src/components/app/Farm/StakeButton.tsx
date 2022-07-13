@@ -23,7 +23,11 @@ import NextLink from "next/link";
 import useTokenBalanceByAddress from "../../../hooks/useTokenBalanceByAddress";
 import { Formik, Form, FormikHelpers, FormikErrors, Field } from "formik";
 import { StakeFormValues } from "../../../types";
-import { parseBalanceToBigNumber, parseValue } from "../../../utils";
+import {
+  parseBalance,
+  parseBalanceToBigNumber,
+  parseValue,
+} from "../../../utils";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import useERC20Contract from "../../../hooks/useERC20Contract";
 import { useWeb3React } from "@web3-react/core";
@@ -56,32 +60,33 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
     { resetForm }: FormikHelpers<StakeFormValues>
   ) => {
     if (!walletConnected) return;
-
-    const amountBigNumber = parseBalanceToBigNumber(amount);
-
-    const lpTokenAllowance = await lpTokenContract.allowance(
-      account,
-      masterChefContract.address
-    );
-
-    if (lpTokenAllowance.lt(amountBigNumber)) {
-      let tx = await lpTokenContract.approve(
-        masterChefContract.address,
-        amountBigNumber
-      );
-      await tx.wait();
-    }
-
-    const tx = await masterChefContract.deposit(pid, amountBigNumber);
-    await tx.wait();
-
-    toast({
-      title: "Stake liquidity",
-      description: "Staked successfully",
-      status: "success",
-      duration: 9000,
-    });
     try {
+      const amountBigNumber = parseBalanceToBigNumber(amount);
+
+      const lpTokenAllowance = await lpTokenContract.allowance(
+        account,
+        masterChefContract.address
+      );
+
+      if (lpTokenAllowance.lt(amountBigNumber)) {
+        const tx = await lpTokenContract.approve(
+          masterChefContract.address,
+          amountBigNumber
+        );
+        await tx.wait();
+      }
+
+      const tx = await masterChefContract.deposit(pid, amountBigNumber, {
+        gasLimit: "1000000",
+      });
+      await tx.wait();
+
+      toast({
+        title: "Stake liquidity",
+        description: "Staked successfully",
+        status: "success",
+        duration: 9000,
+      });
     } catch (error: any) {
       console.log(error);
       toast({
@@ -143,19 +148,40 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                     <Form>
                       <VStack align="stretch" gap={2}>
                         <FormControl
-                          isRequired
                           isInvalid={!!touched.amount && !!errors.amount}
                         >
-                          <FormLabel>Amount</FormLabel>
-                          <NumberInput
-                            value={values.amount}
-                            onChange={(value) => {
-                              value = parseValue(value);
-                              setFieldValue("amount", value);
-                            }}
-                          >
-                            <NumberInputField />
-                          </NumberInput>
+                          <FormLabel>
+                            <HStack justify="space-between">
+                              <Text>LP Token Amount</Text>
+                              <Text variant="gray" fontSize="sm">
+                                Balance {parseBalance(lpTokenBalance)}
+                              </Text>
+                            </HStack>
+                          </FormLabel>
+                          <HStack>
+                            <NumberInput
+                              w="full"
+                              value={values.amount}
+                              onChange={(value) => {
+                                value = parseValue(value);
+                                setFieldValue("amount", value);
+                              }}
+                            >
+                              <NumberInputField />
+                            </NumberInput>
+
+                            <Button
+                              onClick={() => {
+                                setFieldValue(
+                                  "amount",
+                                  parseBalance(lpTokenBalance)
+                                );
+                              }}
+                            >
+                              MAX
+                            </Button>
+                          </HStack>
+
                           <FormHelperText>
                             Stake your {token0Info?.symbol} /{" "}
                             {token1Info?.symbol} pool tokens

@@ -99,7 +99,7 @@ const AddLPButton = () => {
 
   return (
     <>
-      <Button onClick={onOpen} variant="brand-2-outline">
+      <Button w="full" onClick={onOpen} variant="brand-2-outline">
         Add new lp to the pool
       </Button>
 

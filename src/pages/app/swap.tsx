@@ -18,7 +18,6 @@ import { parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../store";
-import { useState } from "react";
 import useAddresses from "../../hooks/useAddresses";
 import { Contract } from "ethers";
 import ERC20ABI from "../../abis/ERC20.json";
@@ -41,7 +40,6 @@ const Swap: NextPageWithLayout = () => {
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
-  const [swapButtonDisabled, setSwapButtonDisabled] = useState(false);
 
   const walletConnected =
     !!routerContract &&
@@ -202,9 +200,7 @@ const Swap: NextPageWithLayout = () => {
             </Box>
 
             <IconButton
-              isDisabled={
-                swapButtonDisabled || (!values.tokenIn && !values.tokenOut)
-              }
+              isDisabled={!values.tokenIn && !values.tokenOut}
               onClick={() => {
                 const newValues = {
                   tokenIn: values.tokenOut,

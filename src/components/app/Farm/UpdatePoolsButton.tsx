@@ -41,11 +41,13 @@ const UpdatePoolsButton = () => {
 
   return (
     <Tooltip
+      hasArrow
       textAlign="center"
       label="Update reward variables for all pools. Be careful of gas spending!"
       fontSize="md"
     >
       <Button
+        w="full"
         isDisabled={!masterChefContract}
         isLoading={isLoading}
         onClick={handleUpdatePools}
