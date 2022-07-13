@@ -26,7 +26,7 @@ const HomeHeader = () => {
           <Link>
             <Image
               width={{ base: 50, sm: 70, md: 100 }}
-              src="/assets/images/logo@2x.png"
+              src="/images/logo@2x.png"
             />
           </Link>
         </NextLink>

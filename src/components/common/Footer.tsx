@@ -21,7 +21,7 @@ const Footer = () => {
             href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits"
             isExternal
           >
-            <Image h={30} w={30} src="/assets/images/nftcalendar-logo.png" />
+            <Image h={30} w={30} src="/images/nftcalendar-logo.png" />
           </Link>
         </Box>
 

@@ -25,6 +25,8 @@ import { Formik, Form, FormikHelpers, FormikErrors, Field } from "formik";
 import { StakeFormValues } from "../../../types";
 import { parseBalanceToBigNumber, parseValue } from "../../../utils";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
+import useERC20Contract from "../../../hooks/useERC20Contract";
+import { useWeb3React } from "@web3-react/core";
 
 interface StakeButtonProps {
   pid: number;
@@ -38,22 +40,39 @@ const initialValues: StakeFormValues = {
 const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   const toast = useToast();
   const { data: lpTokenBalance } = useTokenBalanceByAddress(lpToken);
+  const lpTokenContract = useERC20Contract(lpToken);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const tokens = useLiquidityInfo(lpToken);
   const token0Info = useTokenInfo(tokens?.token0);
   const token1Info = useTokenInfo(tokens?.token1);
   const masterChefContract = useMasterChefContract();
+  const { account } = useWeb3React();
+
+  const walletConnected =
+    !!masterChefContract && !!lpTokenContract && !!account;
 
   const handleStake = async (
     { amount }: StakeFormValues,
     { resetForm }: FormikHelpers<StakeFormValues>
   ) => {
-    if (!masterChefContract) return;
+    if (!walletConnected) return;
 
-    const tx = await masterChefContract.deposit(
-      pid,
-      parseBalanceToBigNumber(amount)
+    const amountBigNumber = parseBalanceToBigNumber(amount);
+
+    const lpTokenAllowance = await lpTokenContract.allowance(
+      account,
+      masterChefContract.address
     );
+
+    if (lpTokenAllowance.lt(amountBigNumber)) {
+      let tx = await lpTokenContract.approve(
+        masterChefContract.address,
+        amountBigNumber
+      );
+      await tx.wait();
+    }
+
+    const tx = await masterChefContract.deposit(pid, amountBigNumber);
     await tx.wait();
 
     toast({
@@ -145,7 +164,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
 
                         <HStack gap={3} flexDir="row-reverse">
                           <Button
-                            isDisabled={!isValid || !masterChefContract}
+                            isDisabled={!isValid || !walletConnected}
                             isLoading={isSubmitting || isValidating}
                             type="submit"
                             colorScheme="brand"

@@ -10,12 +10,7 @@ const SideImage = () => {
       position="fixed"
       top={0}
     >
-      <Image
-        w="full"
-        h="full"
-        objectFit="cover"
-        src="/assets/images/vertical.jpg"
-      />
+      <Image w="full" h="full" objectFit="cover" src="/images/vertical.jpg" />
     </Box>
   );
 };

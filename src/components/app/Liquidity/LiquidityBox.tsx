@@ -61,6 +61,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
           <HStack justify="space-between">
             <Text fontWeight="bold">Pool token:</Text>
             <Tooltip
+              textAlign="center"
               closeOnClick={false}
               hasArrow
               label={hasCopied ? "copied" : liquidity.address}

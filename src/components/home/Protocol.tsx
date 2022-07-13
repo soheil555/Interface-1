@@ -44,7 +44,7 @@ const Protocol = () => {
         <Image
           alignSelf="center"
           w={{ base: 500, md: 400, lg: 600 }}
-          src="/assets/images/protocol-img1.png"
+          src="/images/protocol-img1.png"
         />
       </Stack>
 
@@ -58,10 +58,7 @@ const Protocol = () => {
         <Box alignSelf="center">
           <NextLink href="https://rarible.com/axoswapio" passHref>
             <Link isExternal>
-              <Image
-                w={{ base: 500, md: 700 }}
-                src="/assets/images/nftImg.gif"
-              />
+              <Image w={{ base: 500, md: 700 }} src="/images/nftImg.gif" />
             </Link>
           </NextLink>
         </Box>
