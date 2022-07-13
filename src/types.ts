@@ -50,6 +50,10 @@ export interface EditAllocPointFormValues {
   update: boolean;
 }
 
+export interface StakeFormValues {
+  amount: string;
+}
+
 export interface Liquidity {
   address: string;
   token0: string;

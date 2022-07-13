@@ -54,7 +54,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
 
       <HStack p={4}>
         <Stat>
-          <StatLabel>Alloc Point</StatLabel>
+          <StatLabel>AXO Allocation Point</StatLabel>
           <HStack>
             <StatNumber>{parseBalance(farm.allocPoint)}</StatNumber>
             {masterChefOwner && masterChefOwner === account ? (

@@ -6,6 +6,7 @@ import { useWeb3React } from "@web3-react/core";
 import AddLPButton from "../../components/app/Farm/AddLPButton";
 import FarmBox from "../../components/app/Farm/FarmBox";
 import useFarms from "../../hooks/useFarms";
+import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
 
 const Farm: NextPageWithLayout = () => {
   const { data: farms } = useFarms();
@@ -22,12 +23,12 @@ const Farm: NextPageWithLayout = () => {
       >
         Farming
       </Heading>
-
-      {masterChefOwner && masterChefOwner === account ? (
-        <HStack align="stretch" flexDir="row-reverse" w="full">
+      <HStack gap={2} align="stretch" flexDir="row-reverse" w="full">
+        {masterChefOwner && masterChefOwner === account ? (
           <AddLPButton />
-        </HStack>
-      ) : null}
+        ) : null}
+        <UpdatePoolsButton />
+      </HStack>
 
       <Box w="full">
         {!farms || farms.length === 0 ? (

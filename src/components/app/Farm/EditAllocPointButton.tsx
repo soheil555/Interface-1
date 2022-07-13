@@ -101,7 +101,7 @@ const EditAllocPointButton = ({
         onClick={onOpen}
       />
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <Formik
           initialValues={initialValues}
