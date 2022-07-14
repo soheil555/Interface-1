@@ -85,6 +85,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
         title: "Stake liquidity",
         description: "Staked successfully",
         status: "success",
+        isClosable: true,
         duration: 9000,
       });
     } catch (error: any) {
@@ -93,6 +94,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
         title: "Stake liquidity",
         description: error.message,
         status: "error",
+        isClosable: true,
         duration: 9000,
       });
     }

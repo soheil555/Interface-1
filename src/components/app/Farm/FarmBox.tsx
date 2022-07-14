@@ -9,8 +9,10 @@ import {
   StatLabel,
   StatNumber,
   VStack,
+  Stack,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import useFarmUserInfo from "../../../hooks/useFarmUserInfo";
 import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
 import useMasterChefOwner from "../../../hooks/useMasterChefOwner";
 import usePendingAXO from "../../../hooks/usePendingAXO";
@@ -28,6 +30,7 @@ interface FarmBoxProps {
 
 const FarmBox = ({ farm }: FarmBoxProps) => {
   const { data: pendingAXO } = usePendingAXO(farm.pid);
+  const { data: farmUserInfo } = useFarmUserInfo(farm.pid);
   const tokens = useLiquidityInfo(farm.lpToken);
   const token0Info = useTokenInfo(tokens?.token0);
   const token1Info = useTokenInfo(tokens?.token1);
@@ -64,6 +67,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           borderRadius="lg"
           borderWidth={1}
           borderColor="gray.400"
+          justify="space-between"
           p={2}
         >
           <Stat>
@@ -87,13 +91,24 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           borderWidth={1}
           borderColor="gray.400"
           p={2}
+          justify="space-between"
         >
-          <Stat>
-            <StatLabel>AXO Earned</StatLabel>
-            <StatNumber>
-              {pendingAXO ? parseBalance(pendingAXO) : "0.00"}
-            </StatNumber>
-          </Stat>
+          <Stack direction={{ base: "column", sm: "row" }} gap={5}>
+            <Stat>
+              <StatLabel>AXO Earned</StatLabel>
+              <StatNumber>
+                {pendingAXO ? parseBalance(pendingAXO) : "0.00"}
+              </StatNumber>
+            </Stat>
+
+            <Stat>
+              <StatLabel>Staked LP Token</StatLabel>
+              <StatNumber>
+                {farmUserInfo ? parseBalance(farmUserInfo.amount) : "0.00"}
+              </StatNumber>
+            </Stat>
+          </Stack>
+
           <HarvestButton pid={farm.pid} lpToken={farm.lpToken} />
         </HStack>
       </VStack>

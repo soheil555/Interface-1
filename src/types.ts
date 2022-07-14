@@ -67,6 +67,12 @@ export interface Liquidity {
   amount1: BigNumber;
 }
 
+export interface Pair {
+  address: string;
+  token0: string;
+  token1: string;
+}
+
 export interface Farm {
   pid: number;
   lpToken: string;

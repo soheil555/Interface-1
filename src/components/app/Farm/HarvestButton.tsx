@@ -75,6 +75,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
         title: "Unstake liquidity",
         description: "Unstaked successfully",
         status: "success",
+        isClosable: true,
         duration: 9000,
       });
     } catch (error: any) {
@@ -83,6 +84,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
         title: "Unstake liquidity",
         description: error.message,
         status: "error",
+        isClosable: true,
         duration: 9000,
       });
     }

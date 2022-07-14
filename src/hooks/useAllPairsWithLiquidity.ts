@@ -9,13 +9,10 @@ import { Pair } from "../abis/types/Pair";
 import { ERC20 } from "../abis/types";
 import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
 import { Liquidity } from "../types";
+import { Pair as PairType } from "../types";
 
 function getAllPairsWithLiquidity(provider: Web3Provider) {
-  return async (
-    _: string,
-    allPairs: { address: string; token0: string; token1: string }[],
-    account: string
-  ) => {
+  return async (_: string, allPairs: PairType[], account: string) => {
     const pairsWithLiquidity: Liquidity[] = [];
 
     for (const pair of allPairs) {

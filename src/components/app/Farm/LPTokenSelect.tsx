@@ -1,14 +1,13 @@
 import { Select } from "@chakra-ui/react";
 import { useFormikContext } from "formik";
+import { useEffect, useState } from "react";
 import useAllPairs from "../../../hooks/useAllPairs";
+import useFarms from "../../../hooks/useFarms";
 import useTokenInfo from "../../../hooks/useTokenInfo";
+import { Pair } from "../../../types";
 
 interface LPTokenOptionProps {
-  pair: {
-    address: string;
-    token0: string;
-    token1: string;
-  };
+  pair: Pair;
 }
 
 const LPTokenOption = ({ pair }: LPTokenOptionProps) => {
@@ -23,12 +22,31 @@ const LPTokenOption = ({ pair }: LPTokenOptionProps) => {
 };
 
 const LPTokenSelect = () => {
+  const [validPairs, setValidPairs] = useState<Pair[]>();
+  const { data: farms } = useFarms();
   const { data: pairs } = useAllPairs();
   const { setFieldValue, setFieldTouched } = useFormikContext();
 
+  useEffect(() => {
+    if (pairs && farms) {
+      const notAvaialbeTokens = farms.map((farm) => farm.lpToken);
+      const validPairs = pairs.filter(
+        (pair) => !notAvaialbeTokens.includes(pair.address)
+      );
+      setValidPairs(validPairs);
+    }
+  }, [pairs, farms]);
+
   return (
     <Select
-      placeholder="select LP token"
+      placeholder={
+        !validPairs
+          ? "loading..."
+          : validPairs.length
+          ? "Select a LP token"
+          : "No available LP token found"
+      }
+      disabled={!validPairs || validPairs.length === 0}
       onBlur={() => {
         setFieldTouched("lpToken", true);
       }}
@@ -36,8 +54,8 @@ const LPTokenSelect = () => {
         setFieldValue("lpToken", e.target.value);
       }}
     >
-      {pairs &&
-        pairs.map((pair) => {
+      {validPairs &&
+        validPairs.map((pair) => {
           return <LPTokenOption key={pair.address} pair={pair} />;
         })}
     </Select>
