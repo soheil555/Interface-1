@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Input,
   NumberInput,
   NumberInputField,
   Checkbox,
@@ -21,8 +20,10 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
+import useAllPairs from "../../../hooks/useAllPairs";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import { AddLPFormValues } from "../../../types";
+import LPTokenSelect from "./LPTokenSelect";
 
 const initialValues: AddLPFormValues = {
   allocPoint: "",
@@ -126,14 +127,11 @@ const AddLPButton = () => {
                         isInvalid={!!touched.lpToken && !!errors.lpToken}
                       >
                         <FormLabel>LP Token</FormLabel>
-                        <Field
-                          as={Input}
-                          id="lpToken"
-                          name="lpToken"
-                          type="text"
-                        />
+
+                        <LPTokenSelect />
+
                         <FormHelperText>
-                          Address of ERC20 token that will be staked
+                          LP token that will be staked
                         </FormHelperText>
                         <FormErrorMessage>{errors.lpToken}</FormErrorMessage>
                       </FormControl>

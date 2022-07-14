@@ -28,6 +28,7 @@ import { UnstakeFormValues } from "../../../types";
 import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
 import useTokenInfo from "../../../hooks/useTokenInfo";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
+import usePendingAXO from "../../../hooks/usePendingAXO";
 
 interface HarvestButtonProps {
   pid: number;
@@ -39,14 +40,22 @@ const initialValues: UnstakeFormValues = {
 };
 
 const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
+  const { data: pendingAXO } = usePendingAXO(pid);
   const toast = useToast();
   const tokens = useLiquidityInfo(lpToken);
   const token0Info = useTokenInfo(tokens?.token0);
   const token1Info = useTokenInfo(tokens?.token1);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { data: userInfo } = useFarmUserInfo(pid);
-  const isHarvestAvailable = userInfo && !userInfo.amount.isZero();
+  const isHarvestAvailable =
+    userInfo &&
+    pendingAXO &&
+    (!userInfo.amount.isZero() || !pendingAXO.isZero());
   const masterChefContract = useMasterChefContract();
+
+  const isAmountZero = (amount: string) => {
+    return amount.length === 0 || parseBalanceToBigNumber(amount).isZero();
+  };
 
   const handleUnstake = async (
     { amount }: UnstakeFormValues,
@@ -54,7 +63,8 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
   ) => {
     if (!masterChefContract) return;
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount);
+      const amountBigNumber =
+        amount.length === 0 ? 0 : parseBalanceToBigNumber(amount);
 
       const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
         gasLimit: "1000000",
@@ -83,12 +93,11 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
   const validator = ({ amount }: UnstakeFormValues) => {
     const errors: FormikErrors<UnstakeFormValues> = {};
 
-    if (amount.length === 0 || parseBalanceToBigNumber(amount).isZero()) {
-      errors.amount = "Enter an amount";
-      return errors;
-    }
-
-    if (userInfo && parseBalanceToBigNumber(amount).gt(userInfo.amount)) {
+    if (
+      userInfo &&
+      amount.length !== 0 &&
+      parseBalanceToBigNumber(amount).gt(userInfo.amount)
+    ) {
       errors.amount = `Insufficient LP balance`;
     }
 
@@ -170,7 +179,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                         </HStack>
 
                         <FormHelperText>
-                          unstake your {token0Info?.symbol} /{" "}
+                          Unstake your {token0Info?.symbol} /{" "}
                           {token1Info?.symbol} pool tokens
                         </FormHelperText>
                       </FormControl>
@@ -182,7 +191,11 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                           type="submit"
                           colorScheme="brand"
                         >
-                          {errors.amount ? errors.amount : "Unstake"}
+                          {errors.amount
+                            ? errors.amount
+                            : isAmountZero(values.amount)
+                            ? "Harvest reward"
+                            : "Unstake LP tokens and harvest reward"}
                         </Button>
                         <Button
                           onClick={onClose}
