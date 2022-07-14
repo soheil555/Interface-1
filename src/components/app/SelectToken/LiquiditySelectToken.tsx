@@ -194,7 +194,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
           cursor="pointer"
           borderRadius="lg"
           boxShadow="md"
-          bg={useColorModeValue("gray.50", "gray.700")}
+          bg={useColorModeValue("gray.50", "gray.600")}
           py={6}
           px={4}
         >

@@ -6,6 +6,7 @@ import {
   Text,
   IconButton,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
 import useFactoryContract from "../../hooks/useFactoryContract";
@@ -174,71 +175,78 @@ const Swap: NextPageWithLayout = () => {
   };
 
   return (
-    <Formik
-      validateOnMount
-      validateOnChange
-      initialValues={initialValues}
-      validate={validator}
-      onSubmit={handleSwap}
+    <Box
+      bg={useColorModeValue("white", "gray.700")}
+      boxShadow="lg"
+      borderRadius="lg"
+      p={4}
     >
-      {({
-        handleSubmit,
-        isSubmitting,
-        isValid,
-        isValidating,
-        errors,
-        values,
-        setValues,
-      }) => (
-        <Form onSubmit={handleSubmit}>
-          <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
-            <Box>
-              <Text textTransform="uppercase" color="gray.600" mb={2}>
-                From:
-              </Text>
-              <SwapSelectToken isTokenIn />
-            </Box>
+      <Formik
+        validateOnMount
+        validateOnChange
+        initialValues={initialValues}
+        validate={validator}
+        onSubmit={handleSwap}
+      >
+        {({
+          handleSubmit,
+          isSubmitting,
+          isValid,
+          isValidating,
+          errors,
+          values,
+          setValues,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
+              <Box>
+                <Text textTransform="uppercase" mb={2}>
+                  From:
+                </Text>
+                <SwapSelectToken isTokenIn />
+              </Box>
 
-            <IconButton
-              isDisabled={!values.tokenIn && !values.tokenOut}
-              onClick={() => {
-                const newValues = {
-                  tokenIn: values.tokenOut,
-                  tokenOut: values.tokenIn,
-                  amountIn: values.amountOut,
-                };
-                setValues({ ...values, ...newValues });
-              }}
-              aria-label="swap"
-              icon={<IoSwapVertical />}
-              fontSize="xl"
-            />
+              <IconButton
+                isDisabled={!values.tokenIn && !values.tokenOut}
+                onClick={() => {
+                  const newValues = {
+                    tokenIn: values.tokenOut,
+                    tokenOut: values.tokenIn,
+                    amountIn: values.amountOut,
+                  };
+                  setValues({ ...values, ...newValues });
+                }}
+                aria-label="swap"
+                icon={<IoSwapVertical />}
+                fontSize="xl"
+              />
 
-            <Box>
-              <Text textTransform="uppercase" color="gray.600" mb={2}>
-                To:
-              </Text>
-              <SwapSelectToken />
-            </Box>
+              <Box>
+                <Text textTransform="uppercase" mb={2}>
+                  To:
+                </Text>
+                <SwapSelectToken />
+              </Box>
 
-            <Button
-              type="submit"
-              isLoading={isSubmitting || isValidating}
-              isDisabled={!isValid || !walletConnected}
-              variant="brand-2-outline"
-              w="full"
-              fontSize={{ base: "sm", sm: "md" }}
-            >
-              {walletConnected
-                ? isValid
-                  ? "Swap"
-                  : errors.tokenIn || errors.amountIn
-                : "Connect Wallet to Continue"}
-            </Button>
-          </VStack>
-        </Form>
-      )}
-    </Formik>
+              <Button
+                type="submit"
+                isLoading={isSubmitting || isValidating}
+                isDisabled={!isValid || !walletConnected}
+                variant="brand-2-outline"
+                w="full"
+                fontSize={{ base: "sm", sm: "md" }}
+              >
+                {walletConnected
+                  ? isValid
+                    ? "Swap"
+                    : errors.tokenIn || errors.amountIn
+                  : "Connect Wallet to Continue"}
+              </Button>
+            </VStack>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 };
 

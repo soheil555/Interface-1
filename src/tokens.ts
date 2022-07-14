@@ -25,25 +25,25 @@ export const tokens: Array<Token> = [
   {
     name: "USDC",
     symbol: "USDC",
-    decimals: 18,
+    decimals: 6,
     logo: Usdc,
   },
   {
     name: "USDT",
     symbol: "USDT",
-    decimals: 18,
+    decimals: 6,
     logo: Usdt,
   },
   {
     name: "DAI",
     symbol: "DAI",
-    decimals: 18,
+    decimals: 6,
     logo: Dai,
   },
   {
     name: "wAlgo",
     symbol: "wALGO",
-    decimals: 18,
+    decimals: 6,
     logo: Algo,
   },
   {

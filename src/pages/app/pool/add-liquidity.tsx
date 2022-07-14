@@ -7,6 +7,8 @@ import {
   HStack,
   Icon,
   Text,
+  useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import useFactoryContract from "../../../hooks/useFactoryContract";
@@ -165,51 +167,60 @@ const AddLiquidity: NextPageWithLayout = () => {
   };
 
   return (
-    <Formik
-      validateOnMount
-      validateOnChange
-      initialValues={initialValues}
-      validate={validator}
-      onSubmit={handleAddLiquidity}
+    <Box
+      bg={useColorModeValue("white", "gray.700")}
+      boxShadow="lg"
+      borderRadius="lg"
+      p={4}
     >
-      {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
-        <Form onSubmit={handleSubmit}>
-          <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
-            <HStack fontSize="lg" alignSelf="flex-start">
-              <IconButton
-                onClick={() => {
-                  router.back();
-                }}
-                aria-label="back"
-                icon={<BiArrowBack />}
-              />
-              <Text>Add Liquidity</Text>
-            </HStack>
+      <Formik
+        validateOnMount
+        validateOnChange
+        initialValues={initialValues}
+        validate={validator}
+        onSubmit={handleAddLiquidity}
+      >
+        {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
+          <Form onSubmit={handleSubmit}>
+            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
+              <HStack fontSize="lg" alignSelf="flex-start">
+                <IconButton
+                  onClick={() => {
+                    router.back();
+                  }}
+                  aria-label="back"
+                  icon={<BiArrowBack />}
+                />
+                <Text>Add Liquidity</Text>
+              </HStack>
 
-            <LiquiditySelectToken isToken1 />
+              <LiquiditySelectToken isToken1 />
 
-            <Icon as={AiOutlinePlus} fontSize="xl" />
+              <Icon as={AiOutlinePlus} fontSize="xl" />
 
-            <LiquiditySelectToken />
+              <LiquiditySelectToken />
 
-            <Button
-              type="submit"
-              isLoading={isSubmitting || isValidating}
-              isDisabled={!isValid || !walletConnected}
-              variant="brand-2-outline"
-              w="full"
-              fontSize={{ base: "sm", sm: "md" }}
-            >
-              {walletConnected
-                ? isValid
-                  ? "Add Liquidity"
-                  : errors.token1 || errors.token1Amount || errors.token2Amount
-                : "Connect Wallet to Continue"}
-            </Button>
-          </VStack>
-        </Form>
-      )}
-    </Formik>
+              <Button
+                type="submit"
+                isLoading={isSubmitting || isValidating}
+                isDisabled={!isValid || !walletConnected}
+                variant="brand-2-outline"
+                w="full"
+                fontSize={{ base: "sm", sm: "md" }}
+              >
+                {walletConnected
+                  ? isValid
+                    ? "Add Liquidity"
+                    : errors.token1 ||
+                      errors.token1Amount ||
+                      errors.token2Amount
+                  : "Connect Wallet to Continue"}
+              </Button>
+            </VStack>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 };
 

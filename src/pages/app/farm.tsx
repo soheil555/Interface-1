@@ -10,6 +10,7 @@ import {
   FormLabel,
   Switch,
   useBoolean,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import Layout from "../../components/app/Layout";
 import useMasterChefOwner from "../../hooks/useMasterChefOwner";
@@ -27,7 +28,14 @@ const Farm: NextPageWithLayout = () => {
   const masterChefOwner = useMasterChefOwner();
 
   return (
-    <VStack gap={14} w="full">
+    <VStack
+      bg={useColorModeValue("white", "gray.700")}
+      boxShadow="lg"
+      borderRadius="lg"
+      p={4}
+      gap={14}
+      w="full"
+    >
       <Heading
         size="3xl"
         fontWeight="light"

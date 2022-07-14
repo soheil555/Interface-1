@@ -6,6 +6,7 @@ import {
   Text,
   Heading,
   Divider,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Layout from "../../../components/app/Layout";
@@ -18,7 +19,14 @@ const Pool: NextPageWithLayout = () => {
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
-    <VStack gap={22} w="full">
+    <VStack
+      bg={useColorModeValue("white", "gray.700")}
+      boxShadow="lg"
+      borderRadius="lg"
+      p={4}
+      gap={22}
+      w="full"
+    >
       <Stack align="center" direction={{ base: "column", md: "row" }} w="full">
         <NextLink href="/app/pool/add-liquidity">
           <Button variant="brand-2-outline" w="full">
