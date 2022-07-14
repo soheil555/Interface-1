@@ -1,5 +1,16 @@
 import type { NextPageWithLayout } from "../_app";
-import { Heading, VStack, Text, Stack, Divider } from "@chakra-ui/react";
+import {
+  Heading,
+  VStack,
+  Text,
+  Stack,
+  Divider,
+  HStack,
+  FormControl,
+  FormLabel,
+  Switch,
+  useBoolean,
+} from "@chakra-ui/react";
 import Layout from "../../components/app/Layout";
 import useMasterChefOwner from "../../hooks/useMasterChefOwner";
 import { useWeb3React } from "@web3-react/core";
@@ -9,8 +20,10 @@ import useFarms from "../../hooks/useFarms";
 import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
 
 const Farm: NextPageWithLayout = () => {
-  const { data: farms } = useFarms();
+  const [stakedOnly, setStakedOnly] = useBoolean();
   const { account } = useWeb3React();
+  const { data: farms } = useFarms(stakedOnly ? account : undefined);
+
   const masterChefOwner = useMasterChefOwner();
 
   return (
@@ -23,6 +36,7 @@ const Farm: NextPageWithLayout = () => {
       >
         Farming
       </Heading>
+
       <Stack
         direction={{ base: "column", lg: "row" }}
         gap={2}
@@ -36,9 +50,22 @@ const Farm: NextPageWithLayout = () => {
       </Stack>
 
       <VStack gap={5} w="full">
-        <Heading alignSelf="flex-start" size="lg" mb={2}>
-          Farms
-        </Heading>
+        <HStack align="stretch" w="full" gap={2}>
+          <Heading alignSelf="flex-start" size="lg" mb={2}>
+            Farms
+          </Heading>
+          <FormControl display="flex" alignItems="center" gap={2}>
+            <Switch
+              colorScheme="brand"
+              size="lg"
+              isChecked={stakedOnly}
+              onChange={setStakedOnly.toggle}
+            />
+            <FormLabel fontSize="lg" mb="0">
+              Staked only
+            </FormLabel>
+          </FormControl>
+        </HStack>
 
         <Divider />
 

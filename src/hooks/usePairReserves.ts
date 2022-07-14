@@ -32,7 +32,9 @@ export default function usePairReserves(token1?: Token, token2?: Token) {
   const shouldFetch = !!pairContract && !!token1Address && !!token2Address;
 
   const result = useSWR(
-    shouldFetch ? ["PairReserves", token1Address, token2Address] : null,
+    shouldFetch
+      ? ["PairReserves" + pairContract.address, token1Address, token2Address]
+      : null,
     getPairReserves(pairContract!),
     {}
   );

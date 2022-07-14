@@ -60,6 +60,13 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
 
     if (
       reserves &&
+      (reserves.reserve1.isZero() || reserves.reserve2.isZero())
+    ) {
+      return amounts;
+    }
+
+    if (
+      reserves &&
       reserves.reserve1.gt(0) &&
       reserves.reserve2.gt(0) &&
       value.length === 0
@@ -97,7 +104,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   }, [tokenBalance]);
 
   useEffect(() => {
-    if (reserves && isToken1) {
+    if (isToken1) {
       if (amount) {
         const amounts = getQuote(amount);
         setValues({ ...values, ...amounts });

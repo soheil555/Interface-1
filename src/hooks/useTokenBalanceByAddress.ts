@@ -1,9 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import useSWR from "swr";
 import { ERC20 } from "../abis/types";
-import { Token } from "../types";
 import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
-import useTokenContract from "./useTokenContract";
 import useERC20Contract from "./useERC20Contract";
 
 function getTokenBalance(contract: ERC20) {

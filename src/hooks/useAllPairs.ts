@@ -4,14 +4,11 @@ import { Factory } from "../abis/types";
 import useAllTokenPairs from "./useAllTokenPairs";
 import useFactoryContract from "./useFactoryContract";
 import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
+import { Pair } from "../types";
 
 function getAllPairs(factory: Factory) {
   return async (_: string, tokenPairs: [string, string][]) => {
-    const allPairs: {
-      address: string;
-      token0: string;
-      token1: string;
-    }[] = [];
+    const allPairs: Pair[] = [];
 
     for (const [tokenA, tokenB] of tokenPairs) {
       const pairAddress = await factory.getPair(tokenA, tokenB);

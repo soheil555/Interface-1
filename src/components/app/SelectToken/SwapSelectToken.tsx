@@ -21,7 +21,6 @@ import {
 import { useFormikContext } from "formik";
 import { SwapFormValues } from "../../../types";
 import { useEffect } from "react";
-import useTokenContract from "../../../hooks/useTokenContract";
 import usePairReserves from "../../../hooks/usePairReserves";
 
 interface SwapSelectTokenProps {
@@ -30,7 +29,7 @@ interface SwapSelectTokenProps {
 
 const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { values, setFieldValue, setValues, validateForm } =
+  const { values, setFieldValue, setValues } =
     useFormikContext<SwapFormValues>();
 
   const { tokenIn, tokenOut, amountIn, amountOut } = values;
@@ -39,30 +38,18 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
     ? [tokenIn, tokenOut]
     : [tokenOut, tokenIn];
 
-  const [amount, otherAmount] = isTokenIn
-    ? [amountIn, amountOut]
-    : [amountOut, amountIn];
+  const amount = isTokenIn ? amountIn : amountOut;
 
   const tokenFieldName = isTokenIn ? "tokenIn" : "tokenOut";
 
-  const [amountFieldName, otherAmountFieldName] = isTokenIn
-    ? ["amountIn", "amountOut"]
-    : ["amountOut", "amountIn"];
-
-  const tokenContract = useTokenContract(token);
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(tokenIn, tokenOut);
 
   const getAmountOut = (value: string) => {
     const amounts: Record<string, string> = {
-      amountIn: "",
+      amountIn: value,
       amountOut: "",
     };
-
-    amounts["amountIn"] = value;
-    if (value.length === 0) {
-      amounts["amountOut"] = "";
-    }
 
     if (
       reserves &&
@@ -88,13 +75,8 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const getAmountIn = (value: string) => {
     const amounts: Record<string, string> = {
       amountIn: "",
-      amountOut: "",
+      amountOut: value,
     };
-
-    amounts["amountOut"] = value;
-    if (value.length === 0) {
-      amounts["amountIn"] = "";
-    }
 
     if (
       reserves &&
@@ -122,7 +104,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   }, [tokenBalance]);
 
   useEffect(() => {
-    if (reserves && isTokenIn) {
+    if (isTokenIn) {
       let amounts: Record<string, string> = {};
 
       if (amountIn) {
@@ -134,8 +116,8 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       setValues({
         ...values,
         ...amounts,
-        tokenInReserve: reserves.reserve1,
-        tokenOutReserve: reserves.reserve2,
+        tokenInReserve: reserves?.reserve1,
+        tokenOutReserve: reserves?.reserve2,
       });
     }
   }, [reserves]);
@@ -186,13 +168,10 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               value={amount}
               onChange={(value) => {
                 value = parseValue(value, token.decimals);
-                if (isTokenIn) {
-                  const amounts = getAmountOut(value);
-                  setValues({ ...values, ...amounts });
-                } else {
-                  const amounts = getAmountIn(value);
-                  setValues({ ...values, ...amounts });
-                }
+                const amounts = isTokenIn
+                  ? getAmountOut(value)
+                  : getAmountIn(value);
+                setValues({ ...values, ...amounts });
               }}
             >
               <NumberInputField
@@ -237,7 +216,9 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
 
       <TokensList
         setSelectedToken={(token) => {
-          if (otherToken !== token) setFieldValue(tokenFieldName, token);
+          if (otherToken !== token) {
+            setFieldValue(tokenFieldName, token);
+          }
         }}
         isOpen={isOpen}
         onClose={onClose}

@@ -32,7 +32,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
 
   return (
     <Box
-      bg={useColorModeValue("brand.100", "brand.600")}
+      bg={useColorModeValue("brand.100", "brand.700")}
       w="full"
       p={4}
       borderRadius="lg"
@@ -85,7 +85,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
           </HStack>
         </VStack>
 
-        <Divider my={2} />
+        <Divider bgColor={useColorModeValue("gray.100", "gray.900")} my={2} />
 
         <HStack justify="end">
           <RemoveLiquidityButton liquidity={liquidity} />

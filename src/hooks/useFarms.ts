@@ -5,29 +5,40 @@ import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksAr
 import useMasterChefContract from "./useMasterChefContract";
 
 function getFarms(masterChefContract: MasterChef) {
-  return async () => {
+  return async (_: string, account: string) => {
     const poolLength = await masterChefContract.poolLength();
     const farms: Farm[] = [];
 
     for (let i = 0; i < poolLength.toNumber(); i++) {
       const farm = await masterChefContract.poolInfo(i);
-      farms.push({
-        pid: i,
-        ...farm,
-      });
+
+      if (account) {
+        const farmUserInfo = await masterChefContract.userInfo(i, account);
+        if (!farmUserInfo.amount.isZero()) {
+          farms.push({
+            pid: i,
+            ...farm,
+          });
+        }
+      } else {
+        farms.push({
+          pid: i,
+          ...farm,
+        });
+      }
     }
 
     return farms;
   };
 }
 
-export default function useFarms() {
+export default function useFarms(account?: string) {
   const masterChefContract = useMasterChefContract();
 
   const shouldFetch = !!masterChefContract;
 
   const result = useSWR(
-    shouldFetch ? ["Farms"] : null,
+    shouldFetch ? ["Farms" + account, account] : null,
     getFarms(masterChefContract!),
     {}
   );

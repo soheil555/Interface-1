@@ -22,6 +22,8 @@ export default function usePairContract(token1?: Token, token2?: Token) {
 
         if (pairAddress !== ethers.constants.AddressZero) {
           setAddress(pairAddress);
+        } else {
+          setAddress(undefined);
         }
       })();
     }

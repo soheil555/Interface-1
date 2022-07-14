@@ -4,6 +4,8 @@ import {
   Usdc,
   Usdt,
   Btc,
+  Dai,
+  Algo,
 } from "@chakra-icons/cryptocurrency-icons";
 import { Token } from "./types";
 
@@ -23,14 +25,26 @@ export const tokens: Array<Token> = [
   {
     name: "USDC",
     symbol: "USDC",
-    decimals: 6,
+    decimals: 18,
     logo: Usdc,
   },
   {
     name: "USDT",
     symbol: "USDT",
-    decimals: 6,
+    decimals: 18,
     logo: Usdt,
+  },
+  {
+    name: "DAI",
+    symbol: "DAI",
+    decimals: 18,
+    logo: Dai,
+  },
+  {
+    name: "wAlgo",
+    symbol: "wALGO",
+    decimals: 18,
+    logo: Algo,
   },
   {
     name: "Axoswap Token",
