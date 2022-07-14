@@ -1,5 +1,5 @@
 import { type ReactElement } from "react";
-import { Container } from "@chakra-ui/react";
+import { Container, Image } from "@chakra-ui/react";
 import AppHeader from "../common/Header/AppHeader";
 import Tabs from "./Tabs/Tabs";
 import SideImage from "./Image/SideImage";
@@ -8,6 +8,17 @@ import TopImage from "./Image/TopImage";
 const Layout = (page: ReactElement) => {
   return (
     <>
+      <Image
+        src="/images/background.png"
+        position="fixed"
+        objectFit="cover"
+        top="0"
+        left="0"
+        width="full"
+        height="full"
+        zIndex={-100}
+      />
+
       <TopImage />
       <AppHeader />
       <SideImage />

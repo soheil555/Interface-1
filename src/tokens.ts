@@ -3,11 +3,11 @@ import {
   Matic,
   Usdc,
   Usdt,
-  Btc,
   Dai,
   Algo,
 } from "@chakra-icons/cryptocurrency-icons";
 import { Token } from "./types";
+import { AXOToken } from "./icons";
 
 export const tokens: Array<Token> = [
   {
@@ -50,6 +50,6 @@ export const tokens: Array<Token> = [
     name: "Axoswap Token",
     symbol: "AXO",
     decimals: 18,
-    logo: Btc,
+    logo: AXOToken,
   },
 ];
