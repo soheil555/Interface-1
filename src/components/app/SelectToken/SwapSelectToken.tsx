@@ -61,7 +61,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
     ) {
       const amountIn = parseBalanceToBigNumber(value, tokenIn.decimals);
       if (amountIn.gt(0)) {
-        const amountInWithFee = amountIn.mul(997);
+        const amountInWithFee = amountIn.mul(998);
         const numerator = amountInWithFee.mul(reserves.reserve2);
         const denominator = reserves.reserve1.mul(1000).add(amountInWithFee);
         const amountOut = numerator.div(denominator);
@@ -89,7 +89,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       const amountOut = parseBalanceToBigNumber(value, tokenIn.decimals);
       if (amountOut.gt(0)) {
         const numerator = reserves.reserve1.mul(amountOut).mul(1000);
-        const denominator = reserves.reserve2.sub(amountOut).mul(997);
+        const denominator = reserves.reserve2.sub(amountOut).mul(998);
         const amountIn = numerator.div(denominator).add(1);
         amounts["amountIn"] = parseBalance(amountIn, tokenIn.decimals);
       }
