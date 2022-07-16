@@ -16,7 +16,7 @@ import useTokenBalance from "../../../hooks/useTokenBalance";
 import {
   parseBalance,
   parseBalanceToBigNumber,
-  parseValue,
+  isNumberValid,
 } from "../../../utils";
 import { useFormikContext } from "formik";
 import { SwapFormValues } from "../../../types";
@@ -167,11 +167,13 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               p={0}
               value={amount}
               onChange={(value) => {
-                value = parseValue(value, token.decimals);
-                const amounts = isTokenIn
-                  ? getAmountOut(value)
-                  : getAmountIn(value);
-                setValues({ ...values, ...amounts });
+                const isValueValid = isNumberValid(value, token.decimals);
+                if (isValueValid) {
+                  const amounts = isTokenIn
+                    ? getAmountOut(value)
+                    : getAmountIn(value);
+                  setValues({ ...values, ...amounts });
+                }
               }}
             >
               <NumberInputField

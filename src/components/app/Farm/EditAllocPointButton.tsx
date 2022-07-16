@@ -113,7 +113,6 @@ const EditAllocPointButton = ({
             touched,
             setFieldValue,
             isValid,
-            isValidating,
             isSubmitting,
           }) => {
             return (
@@ -162,7 +161,7 @@ const EditAllocPointButton = ({
                       Cancel
                     </Button>
                     <Button
-                      isLoading={isSubmitting || isValidating}
+                      isLoading={isSubmitting}
                       isDisabled={
                         !isValid ||
                         Number(values.allocPoint) ===

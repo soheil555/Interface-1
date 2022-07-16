@@ -135,7 +135,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
               handleSubmit,
               isSubmitting,
               isValid,
-              isValidating,
               errors,
               values,
               setFieldValue,
@@ -215,7 +214,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   <Button
                     type="submit"
                     isDisabled={!isValid || !walletConnected}
-                    isLoading={isSubmitting || isValidating}
+                    isLoading={isSubmitting}
                     colorScheme="brand"
                   >
                     Remove

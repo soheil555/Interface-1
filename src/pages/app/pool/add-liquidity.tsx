@@ -180,7 +180,7 @@ const AddLiquidity: NextPageWithLayout = () => {
         validate={validator}
         onSubmit={handleAddLiquidity}
       >
-        {({ handleSubmit, isSubmitting, isValid, isValidating, errors }) => (
+        {({ handleSubmit, isSubmitting, isValid, errors }) => (
           <Form onSubmit={handleSubmit}>
             <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
               <HStack fontSize="lg" alignSelf="flex-start">
@@ -202,7 +202,7 @@ const AddLiquidity: NextPageWithLayout = () => {
 
               <Button
                 type="submit"
-                isLoading={isSubmitting || isValidating}
+                isLoading={isSubmitting}
                 isDisabled={!isValid || !walletConnected}
                 variant="brand-2-outline"
                 w="full"

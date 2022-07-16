@@ -16,7 +16,7 @@ import useTokenBalance from "../../../hooks/useTokenBalance";
 import {
   parseBalance,
   parseBalanceToBigNumber,
-  parseValue,
+  isNumberValid,
 } from "../../../utils";
 import { useFormikContext } from "formik";
 import { LiquidityFormValues } from "../../../types";
@@ -160,9 +160,11 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
               p={0}
               value={amount}
               onChange={(value) => {
-                value = parseValue(value, token.decimals);
-                const amounts = getQuote(value);
-                setValues({ ...values, ...amounts });
+                const isValueValid = isNumberValid(value, token.decimals);
+                if (isValueValid) {
+                  const amounts = getQuote(value);
+                  setValues({ ...values, ...amounts });
+                }
               }}
             >
               <NumberInputField

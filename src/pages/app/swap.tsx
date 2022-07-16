@@ -192,7 +192,6 @@ const Swap: NextPageWithLayout = () => {
           handleSubmit,
           isSubmitting,
           isValid,
-          isValidating,
           errors,
           values,
           setValues,
@@ -230,7 +229,7 @@ const Swap: NextPageWithLayout = () => {
 
               <Button
                 type="submit"
-                isLoading={isSubmitting || isValidating}
+                isLoading={isSubmitting}
                 isDisabled={!isValid || !walletConnected}
                 variant="brand-2-outline"
                 w="full"

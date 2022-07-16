@@ -23,10 +23,10 @@ export function parseBalanceToBigNumber(
   return ethers.utils.parseUnits(balance, decimals);
 }
 
-export function parseValue(value: string, decimals = 18) {
-  value = value.replace(/[-e]/g, "");
-  if (value.length === 0) return "";
-  let parsedValue = String(Number(parseFloat(value).toFixed(decimals)));
-  if (value[value.length - 1] === ".") parsedValue += ".";
-  return parsedValue;
+export function isNumberValid(value: string, decimals = 18) {
+  if (value === "") return true;
+  const pattern = `^\\d+\\.?\\d{0,${decimals}}$`;
+  const reg = new RegExp(pattern, "g");
+
+  return !!reg.exec(value);
 }

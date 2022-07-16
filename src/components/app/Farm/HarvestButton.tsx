@@ -20,15 +20,16 @@ import {
 import useFarmUserInfo from "../../../hooks/useFarmUserInfo";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import {
+  isNumberValid,
   parseBalance,
   parseBalanceToBigNumber,
-  parseValue,
 } from "../../../utils";
 import { UnstakeFormValues } from "../../../types";
 import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
 import useTokenInfo from "../../../hooks/useTokenInfo";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import usePendingAXO from "../../../hooks/usePendingAXO";
+import { ethers } from "ethers";
 
 interface HarvestButtonProps {
   pid: number;
@@ -132,7 +133,6 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
               {({
                 isSubmitting,
                 isValid,
-                isValidating,
                 values,
                 errors,
                 touched,
@@ -150,7 +150,11 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             <Text variant="gray" fontSize="sm">
                               Balance{" "}
                               {userInfo
-                                ? parseBalance(userInfo.amount)
+                                ? userInfo.amount.lte(
+                                    ethers.utils.parseEther("0.000001")
+                                  )
+                                  ? parseBalance(userInfo.amount, 18, 18)
+                                  : parseBalance(userInfo.amount)
                                 : "0.00"}
                             </Text>
                           </HStack>
@@ -160,8 +164,8 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             w="full"
                             value={values.amount}
                             onChange={(value) => {
-                              value = parseValue(value);
-                              setFieldValue("amount", value);
+                              isNumberValid(value) &&
+                                setFieldValue("amount", value);
                             }}
                           >
                             <NumberInputField />
@@ -172,7 +176,11 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                               userInfo &&
                                 setFieldValue(
                                   "amount",
-                                  parseBalance(userInfo.amount)
+                                  userInfo.amount.lte(
+                                    ethers.utils.parseEther("0.000001")
+                                  )
+                                    ? parseBalance(userInfo.amount, 18, 18)
+                                    : parseBalance(userInfo.amount)
                                 );
                             }}
                           >
@@ -189,7 +197,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                       <HStack gap={3} flexDir="row-reverse">
                         <Button
                           isDisabled={!isValid || !masterChefContract}
-                          isLoading={isSubmitting || isValidating}
+                          isLoading={isSubmitting}
                           type="submit"
                           colorScheme="brand"
                         >

@@ -112,7 +112,6 @@ const AddLPButton = () => {
             touched,
             setFieldValue,
             isValid,
-            isValidating,
             isSubmitting,
           }) => {
             return (
@@ -175,7 +174,7 @@ const AddLPButton = () => {
                       Cancel
                     </Button>
                     <Button
-                      isLoading={isSubmitting || isValidating}
+                      isLoading={isSubmitting}
                       isDisabled={!isValid}
                       colorScheme="brand"
                       type="submit"

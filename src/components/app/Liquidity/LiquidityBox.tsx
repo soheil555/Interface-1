@@ -17,6 +17,7 @@ import { Liquidity } from "../../../types";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { parseBalance } from "../../../utils";
 import RemoveLiquidityButton from "./RemoveLiquidityButton";
+import { BigNumber, ethers } from "ethers";
 
 interface LiquidityBoxProps {
   liquidity: Liquidity;
@@ -73,7 +74,13 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Your total pool token:</Text>
-            <Text>{parseBalance(liquidity.liquidityBalance)}</Text>
+            <Text>
+              {liquidity.liquidityBalance.lte(
+                ethers.utils.parseEther("0.000001")
+              )
+                ? parseBalance(liquidity.liquidityBalance, 18, 18)
+                : parseBalance(liquidity.liquidityBalance)}
+            </Text>
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Pooled {token0Info.symbol}:</Text>

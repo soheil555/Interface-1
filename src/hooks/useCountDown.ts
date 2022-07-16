@@ -5,7 +5,8 @@ export default function useCountDown(targetDate: Date) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(targetDate.getTime() - Date.now());
+      const timeLeft = targetDate.getTime() - Date.now();
+      setTimeLeft(timeLeft > 0 ? timeLeft : 0);
     });
 
     return () => {

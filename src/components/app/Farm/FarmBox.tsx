@@ -12,6 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 import useFarmUserInfo from "../../../hooks/useFarmUserInfo";
 import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
 import useMasterChefOwner from "../../../hooks/useMasterChefOwner";
@@ -104,7 +105,12 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
             <Stat>
               <StatLabel>Staked LP Token</StatLabel>
               <StatNumber>
-                {farmUserInfo ? parseBalance(farmUserInfo.amount) : "0.00"}
+                {farmUserInfo
+                  ? !farmUserInfo.amount.isZero() &&
+                    farmUserInfo.amount.lte(ethers.utils.parseEther("0.000001"))
+                    ? parseBalance(farmUserInfo.amount, 18, 18)
+                    : parseBalance(farmUserInfo.amount)
+                  : "0.00"}
               </StatNumber>
             </Stat>
           </Stack>

@@ -26,11 +26,12 @@ import { StakeFormValues } from "../../../types";
 import {
   parseBalance,
   parseBalanceToBigNumber,
-  parseValue,
+  isNumberValid,
 } from "../../../utils";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import useERC20Contract from "../../../hooks/useERC20Contract";
 import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 
 interface StakeButtonProps {
   pid: number;
@@ -140,7 +141,6 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                 {({
                   isSubmitting,
                   isValid,
-                  isValidating,
                   values,
                   errors,
                   touched,
@@ -156,7 +156,12 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                             <HStack justify="space-between">
                               <Text>LP Token Amount</Text>
                               <Text variant="gray" fontSize="sm">
-                                Balance {parseBalance(lpTokenBalance)}
+                                Balance{" "}
+                                {lpTokenBalance.lte(
+                                  ethers.utils.parseEther("0.000001")
+                                )
+                                  ? parseBalance(lpTokenBalance, 18, 18)
+                                  : parseBalance(lpTokenBalance)}
                               </Text>
                             </HStack>
                           </FormLabel>
@@ -165,8 +170,8 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                               w="full"
                               value={values.amount}
                               onChange={(value) => {
-                                value = parseValue(value);
-                                setFieldValue("amount", value);
+                                isNumberValid(value) &&
+                                  setFieldValue("amount", value);
                               }}
                             >
                               <NumberInputField />
@@ -176,7 +181,11 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                               onClick={() => {
                                 setFieldValue(
                                   "amount",
-                                  parseBalance(lpTokenBalance)
+                                  lpTokenBalance.lte(
+                                    ethers.utils.parseEther("0.000001")
+                                  )
+                                    ? parseBalance(lpTokenBalance, 18, 18)
+                                    : parseBalance(lpTokenBalance)
                                 );
                               }}
                             >
@@ -193,7 +202,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                         <HStack gap={3} flexDir="row-reverse">
                           <Button
                             isDisabled={!isValid || !walletConnected}
-                            isLoading={isSubmitting || isValidating}
+                            isLoading={isSubmitting}
                             type="submit"
                             colorScheme="brand"
                           >
