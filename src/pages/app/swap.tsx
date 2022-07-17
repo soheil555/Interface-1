@@ -65,40 +65,76 @@ const Swap: NextPageWithLayout = () => {
       const tokenInaddress = addresses.tokens[tokenIn.symbol];
       const tokenOutaddress = addresses.tokens[tokenOut.symbol];
 
-      const tokenInContract = new Contract(
-        tokenInaddress,
-        ERC20ABI,
-        routerContract.signer
-      ) as ERC20;
+      if (tokenIn.symbol === "MATIC") {
+        const path = [tokenInaddress, tokenOutaddress];
 
-      const token1Allowance = await tokenInContract.allowance(
-        account,
-        routerContract.address
-      );
+        const timestamp = (await provider.getBlock("latest")).timestamp;
+        const deadline = timestamp + Number(settings.deadline) * 60;
 
-      if (token1Allowance.lt(amountInBigNumber)) {
-        let tx = await tokenInContract.approve(
-          routerContract.address,
-          amountInBigNumber
+        //TODO: set tokenOutMin and gasLimit
+        const tx = await routerContract.swapExactETHForTokens(
+          1,
+          path,
+          account,
+          deadline,
+          {
+            gasLimit: 1000000,
+            value: amountInBigNumber,
+          }
         );
         await tx.wait();
+      } else {
+        const tokenInContract = new Contract(
+          tokenInaddress,
+          ERC20ABI,
+          routerContract.signer
+        ) as ERC20;
+
+        const token1Allowance = await tokenInContract.allowance(
+          account,
+          routerContract.address
+        );
+
+        if (token1Allowance.lt(amountInBigNumber)) {
+          let tx = await tokenInContract.approve(
+            routerContract.address,
+            amountInBigNumber
+          );
+          await tx.wait();
+        }
+
+        const path = [tokenInaddress, tokenOutaddress];
+
+        const timestamp = (await provider.getBlock("latest")).timestamp;
+        const deadline = timestamp + Number(settings.deadline) * 60;
+
+        if (tokenOut.symbol === "MATIC") {
+          //TODO: set tokenOutMin and gasLimit
+          const tx = await routerContract.swapExactTokensForETH(
+            amountInBigNumber,
+            0,
+            path,
+            account,
+            deadline,
+            {
+              gasLimit: 1000000,
+            }
+          );
+
+          await tx.wait();
+        } else {
+          //TODO: set amountOutMin and gasLimit
+          const tx = await routerContract.swapExactTokensForTokens(
+            amountInBigNumber,
+            1,
+            path,
+            account,
+            deadline,
+            { gasLimit: 1000000 }
+          );
+          await tx.wait();
+        }
       }
-
-      const timestamp = (await provider.getBlock("latest")).timestamp;
-      const deadline = timestamp + Number(settings.deadline) * 60;
-
-      //TODO: set amountOutMin and deadline and gasLimit
-      const path = [tokenInContract.address, tokenOutaddress];
-
-      const tx = await routerContract.swapExactTokensForTokens(
-        amountInBigNumber,
-        1,
-        path,
-        account,
-        deadline,
-        { gasLimit: 1000000 }
-      );
-      await tx.wait();
 
       toast({
         title: "Swap",

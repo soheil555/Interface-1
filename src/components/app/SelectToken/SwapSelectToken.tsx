@@ -22,6 +22,7 @@ import { useFormikContext } from "formik";
 import { SwapFormValues } from "../../../types";
 import { useEffect } from "react";
 import usePairReserves from "../../../hooks/usePairReserves";
+import useMaticBalance from "../../../hooks/useMaticBalance";
 
 interface SwapSelectTokenProps {
   isTokenIn?: boolean;
@@ -42,6 +43,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
 
   const tokenFieldName = isTokenIn ? "tokenIn" : "tokenOut";
 
+  const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(tokenIn, tokenOut);
 
@@ -99,8 +101,13 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   };
 
   useEffect(() => {
-    if (tokenFieldName === "tokenIn")
-      setFieldValue(tokenFieldName + "Balance", tokenBalance);
+    if (tokenFieldName === "tokenIn") {
+      if (token?.isCoin) {
+        setFieldValue(tokenFieldName + "Balance", maticBalance);
+      } else {
+        setFieldValue(tokenFieldName + "Balance", tokenBalance);
+      }
+    }
   }, [tokenBalance]);
 
   useEffect(() => {
@@ -152,9 +159,12 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
             <Text fontSize="sm" color="gray.600">
               <>
                 Balance{" "}
-                {!!tokenBalance
+                {!token.isCoin && !!tokenBalance
                   ? parseBalance(tokenBalance, token.decimals)
-                  : "0"}
+                  : null}
+                {token.isCoin && !!maticBalance
+                  ? parseBalance(maticBalance, token.decimals)
+                  : null}
               </>
             </Text>
           </HStack>
@@ -187,9 +197,14 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               <Button
                 disabled={!tokenBalance}
                 onClick={() => {
-                  if (tokenBalance) {
+                  if (!token.isCoin && tokenBalance) {
                     const amounts = getAmountOut(
                       parseBalance(tokenBalance, token.decimals)
+                    );
+                    setValues({ ...values, ...amounts });
+                  } else if (token.isCoin && maticBalance) {
+                    const amounts = getAmountOut(
+                      parseBalance(maticBalance, token.decimals)
                     );
                     setValues({ ...values, ...amounts });
                   }
