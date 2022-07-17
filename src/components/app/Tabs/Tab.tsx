@@ -1,4 +1,4 @@
-import { Text, VStack, Icon } from "@chakra-ui/react";
+import { Text, VStack, Icon, IconProps } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import type { IconType } from "react-icons";

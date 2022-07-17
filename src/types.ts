@@ -60,6 +60,14 @@ export interface UnstakeFormValues {
   amount: string;
 }
 
+export interface StakeAXOFormValues {
+  amount: string;
+}
+
+export interface UnstakeAXOFormValues {
+  amount: string;
+}
+
 export interface Liquidity {
   address: string;
   token0: string;

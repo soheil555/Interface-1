@@ -10,7 +10,7 @@ function getTokenBalance(contract: ERC20) {
   };
 }
 
-export default function useTokenBalanceByAddress(address: string) {
+export default function useTokenBalanceByAddress(address?: string) {
   const { account } = useWeb3React();
   const contract = useERC20Contract(address);
 

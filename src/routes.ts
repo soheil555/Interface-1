@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 import { IoLogoGithub } from "react-icons/io5";
 import { IoSwapVertical } from "react-icons/io5";
 import { CgDropOpacity } from "react-icons/cg";
-import { GiFarmer } from "react-icons/gi";
+import { GiFarmer, GiFarmTractor } from "react-icons/gi";
 
 interface Route {
   label: string;
@@ -47,6 +47,12 @@ export const appRoutes: Route[] = [
     href: "/app/farm",
     label: "Farm",
     icon: GiFarmer,
+    isExternal: false,
+  },
+  {
+    href: "/app/bar",
+    label: "Bar",
+    icon: GiFarmTractor,
     isExternal: false,
   },
 ];
