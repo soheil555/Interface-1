@@ -34,7 +34,7 @@ const Protocol = () => {
             variant="gray"
             w={{ base: "100%", md: "80%" }}
           >
-            WORK IN PROGRESS: What you are seeing isn't a final product.
+            WORK IN PROGRESS: What you are seeing isn&#39;t a final product.
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>

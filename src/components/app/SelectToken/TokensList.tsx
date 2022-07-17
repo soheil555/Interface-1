@@ -51,10 +51,9 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
         <ModalCloseButton />
         <ModalBody>
           <InputGroup mb={5}>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<SearchIcon color="gray.300" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputLeftElement>
             <Input
               onChange={handleSearch}
               type="text"

@@ -32,6 +32,7 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
         <MenuGroup title="Select a network">
           {Object.entries(CHAINS).map(([chainId, chainInfo]) => (
             <MenuItem
+              key={chainInfo.name}
               icon={<chainInfo.logo />}
               onClick={() => switchChain(Number(chainId))}
             >

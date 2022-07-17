@@ -37,15 +37,12 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
   const token1Info = useTokenInfo(tokens?.token1);
   const { account } = useWeb3React();
   const masterChefOwner = useMasterChefOwner();
+  const boxBg = useColorModeValue("gray.100", "gray.600");
 
   if (!token0Info || !token1Info) return null;
 
   return (
-    <Box
-      bg={useColorModeValue("gray.100", "gray.600")}
-      w="full"
-      borderRadius="lg"
-    >
+    <Box bg={boxBg} w="full" borderRadius="lg">
       <HStack p={4} justifyContent="space-between">
         <HStack gap={2}>
           <Flex fontSize="2xl">

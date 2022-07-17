@@ -35,7 +35,7 @@ const AppHeader = () => {
               const isActive = router.pathname.startsWith(route.href);
 
               return (
-                <NextLink href={route.href} passHref>
+                <NextLink key={route.label} href={route.href} passHref>
                   <Link color={isActive ? "brand.300" : undefined}>
                     {route.label}
                   </Link>

@@ -46,6 +46,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(tokenIn, tokenOut);
+  const hstackBg = useColorModeValue("gray.50", "gray.600");
 
   const getAmountOut = (value: string) => {
     const amounts: Record<string, string> = {
@@ -222,7 +223,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
           cursor="pointer"
           borderRadius="lg"
           boxShadow="md"
-          bg={useColorModeValue("gray.50", "gray.600")}
+          bg={hstackBg}
           py={6}
           px={4}
         >

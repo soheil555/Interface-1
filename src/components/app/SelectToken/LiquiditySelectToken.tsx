@@ -54,6 +54,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(token, otherToken);
+  const hstackBg = useColorModeValue("gray.50", "gray.600");
 
   const getQuote = (value: string, reverse = false) => {
     const amounts: Record<string, string> = {};
@@ -210,7 +211,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
           cursor="pointer"
           borderRadius="lg"
           boxShadow="md"
-          bg={useColorModeValue("gray.50", "gray.600")}
+          bg={hstackBg}
           py={6}
           px={4}
         >
