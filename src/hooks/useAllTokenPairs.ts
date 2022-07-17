@@ -4,7 +4,12 @@ export default function useAllTokenPairs() {
   const addresses = useAddresses();
   if (!addresses) return undefined;
 
-  const tokens = Object.values(addresses.tokens);
+  let tokens = Object.values(addresses.tokens);
+
+  // Remove duplicates. Cause matic and wMatic have the same address.
+  tokens = tokens.filter((item, pos) => {
+    return tokens.indexOf(item) === pos;
+  });
 
   const tokenPairs: [string, string][] = [];
 

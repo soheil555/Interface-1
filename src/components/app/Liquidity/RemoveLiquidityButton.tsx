@@ -17,6 +17,7 @@ import {
   HStack,
   Text,
   useToast,
+  Checkbox,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import useERC20Contract from "../../../hooks/useERC20Contract";
@@ -45,7 +46,14 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const { account } = useWeb3React();
   const router = useRouterContract();
   const liquidityERC20Contract = useERC20Contract(liquidity.address);
-  const walletConnected = !!router && !!liquidityERC20Contract && !!account;
+  const walletConnected =
+    !!router &&
+    !!liquidityERC20Contract &&
+    !!account &&
+    !!token0Info &&
+    !!token1Info;
+  const isOneOfTokenswMatic =
+    token0Info?.symbol === "wMATIC" || token1Info?.symbol === "wMATIC";
 
   const labelStyles = {
     mt: "2",
@@ -54,7 +62,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   };
 
   const handleRemoveLiquidity = async (
-    { percent }: RemoveLiquidityFormValues,
+    { percent, receiveMatic }: RemoveLiquidityFormValues,
     actions: FormikHelpers<RemoveLiquidityFormValues>
   ) => {
     if (!walletConnected) return;
@@ -71,17 +79,32 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
       const timestamp = (await router.provider.getBlock("latest")).timestamp;
       const deadline = timestamp + Number(settings.deadline) * 60;
 
-      tx = await router.removeLiquidity(
-        liquidity.token0,
-        liquidity.token1,
-        amountToRemove,
-        1,
-        1,
-        account,
-        deadline,
-        { gasLimit: 1000000 }
-      );
-      await tx.wait();
+      if (isOneOfTokenswMatic && receiveMatic) {
+        const tokenAddress =
+          token0Info.symbol === "wMATIC" ? liquidity.token1 : liquidity.token0;
+        tx = await router.removeLiquidityETH(
+          tokenAddress,
+          amountToRemove,
+          1,
+          1,
+          account,
+          deadline
+        );
+
+        await tx.wait();
+      } else {
+        tx = await router.removeLiquidity(
+          liquidity.token0,
+          liquidity.token1,
+          amountToRemove,
+          1,
+          1,
+          account,
+          deadline,
+          { gasLimit: 1000000 }
+        );
+        await tx.wait();
+      }
 
       toast({
         title: "Removed liquidity",
@@ -177,7 +200,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     <SliderThumb />
                   </Slider>
 
-                  <VStack fontSize="xl" align="stretch">
+                  <VStack gap={1} fontSize="xl" align="stretch">
                     <HStack justify="space-between">
                       <Text>
                         {parseBalance(
@@ -205,6 +228,19 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                         <Text>{token1Info.symbol}</Text>
                       </HStack>
                     </HStack>
+
+                    {isOneOfTokenswMatic ? (
+                      <Checkbox
+                        size="lg"
+                        isChecked={values.receiveMatic}
+                        onChange={() => {
+                          setFieldValue("receiveMatic", !values.receiveMatic);
+                        }}
+                        colorScheme="brand"
+                      >
+                        Receive MATIC
+                      </Checkbox>
+                    ) : null}
                   </VStack>
                 </ModalBody>
                 <ModalFooter>

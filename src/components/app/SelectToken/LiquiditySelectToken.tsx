@@ -23,6 +23,7 @@ import { LiquidityFormValues } from "../../../types";
 import { useEffect } from "react";
 import useTokenContract from "../../../hooks/useTokenContract";
 import usePairReserves from "../../../hooks/usePairReserves";
+import useMaticBalance from "../../../hooks/useMaticBalance";
 
 interface LiquiditySelectTokenProps {
   isToken1?: boolean;
@@ -50,6 +51,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
     : ["token2Amount", "token1Amount"];
 
   const tokenContract = useTokenContract(token);
+  const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(token, otherToken);
 
@@ -100,7 +102,11 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   }, [tokenContract]);
 
   useEffect(() => {
-    setFieldValue(tokenFieldName + "Balance", tokenBalance);
+    if (token?.isCoin) {
+      setFieldValue(tokenFieldName + "Balance", maticBalance);
+    } else {
+      setFieldValue(tokenFieldName + "Balance", tokenBalance);
+    }
   }, [tokenBalance]);
 
   useEffect(() => {
@@ -145,9 +151,12 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
             <Text fontSize="sm" color="gray.600">
               <>
                 Balance{" "}
-                {!!tokenBalance
+                {!token.isCoin && !!tokenBalance
                   ? parseBalance(tokenBalance, token.decimals)
-                  : "0"}
+                  : null}
+                {token.isCoin && !!maticBalance
+                  ? parseBalance(maticBalance, token.decimals)
+                  : null}
               </>
             </Text>
           </HStack>
@@ -177,9 +186,14 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
             <Button
               disabled={!tokenBalance}
               onClick={() => {
-                if (tokenBalance) {
+                if (!token.isCoin && tokenBalance) {
                   const amounts = getQuote(
                     parseBalance(tokenBalance, token.decimals)
+                  );
+                  setValues({ ...values, ...amounts });
+                } else if (token.isCoin && maticBalance) {
+                  const amounts = getQuote(
+                    parseBalance(maticBalance, token.decimals)
                   );
                   setValues({ ...values, ...amounts });
                 }

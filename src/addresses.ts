@@ -19,6 +19,7 @@ export const addresses: Addresses = {
       DAI: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
       AXO: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       wMATIC: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      MATIC: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     },
   },
   // Polygon Mainnet
@@ -31,6 +32,7 @@ export const addresses: Addresses = {
       USDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
       AXO: "0xcC4f4795060A1C128EA375EEB9159DD4279F6B56",
       wMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+      MATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
     },
   },
   // Polygon Mumbai
@@ -43,6 +45,7 @@ export const addresses: Addresses = {
       USDT: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
       AXO: "0xcC4f4795060A1C128EA375EEB9159DD4279F6B56",
       wMATIC: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+      MATIC: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
     },
   },
 };

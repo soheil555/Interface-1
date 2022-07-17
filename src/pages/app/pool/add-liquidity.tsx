@@ -72,43 +72,87 @@ const AddLiquidity: NextPageWithLayout = () => {
       const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals);
       const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals);
 
-      const token1Allowance = await token1Contract.allowance(
-        account,
-        routerContract.address
-      );
+      if (token1.isCoin || token2.isCoin) {
+        const tokenContract = token1.isCoin ? token2Contract : token1Contract;
+        const tokenAmount = token1.isCoin ? amount2 : amount1;
+        const maticAmount = token1.isCoin ? amount1 : amount2;
 
-      const token2Allowance = await token2Contract.allowance(
-        account,
-        routerContract.address
-      );
+        const tokenAllowance = await tokenContract.allowance(
+          account,
+          routerContract.address
+        );
 
-      if (token1Allowance.lt(amount1)) {
-        let tx = await token1Contract.approve(routerContract.address, amount1);
+        if (tokenAllowance.lt(tokenAmount)) {
+          let tx = await tokenContract.approve(
+            routerContract.address,
+            tokenAmount
+          );
+          await tx.wait();
+        }
+
+        const timestamp = (await provider.getBlock("latest")).timestamp;
+        const deadline = timestamp + Number(settings.deadline) * 60;
+
+        //TODO: set tokenAmountMin, maticMin and gasLimit
+        let tx = await routerContract.addLiquidityETH(
+          tokenContract.address,
+          tokenAmount,
+          1,
+          1,
+          account,
+          deadline,
+          {
+            gasLimit: 1000000,
+            value: maticAmount,
+          }
+        );
+
+        await tx.wait();
+      } else {
+        const token1Allowance = await token1Contract.allowance(
+          account,
+          routerContract.address
+        );
+
+        const token2Allowance = await token2Contract.allowance(
+          account,
+          routerContract.address
+        );
+
+        if (token1Allowance.lt(amount1)) {
+          let tx = await token1Contract.approve(
+            routerContract.address,
+            amount1
+          );
+          await tx.wait();
+        }
+
+        if (token2Allowance.lt(amount2)) {
+          let tx = await token2Contract.approve(
+            routerContract.address,
+            amount2
+          );
+          await tx.wait();
+        }
+
+        const timestamp = (await provider.getBlock("latest")).timestamp;
+        const deadline = timestamp + Number(settings.deadline) * 60;
+
+        //TODO: set amountAMin , amountBMin, deadline, gasLimit
+        let tx = await routerContract.addLiquidity(
+          token1Contract.address,
+          token2Contract.address,
+          amount1,
+          amount2,
+          1,
+          1,
+          account,
+          deadline,
+          { gasLimit: 1000000 }
+        );
+
         await tx.wait();
       }
-
-      if (token2Allowance.lt(amount2)) {
-        let tx = await token2Contract.approve(routerContract.address, amount2);
-        await tx.wait();
-      }
-
-      const timestamp = (await provider.getBlock("latest")).timestamp;
-      const deadline = timestamp + Number(settings.deadline) * 60;
-
-      //TODO: set amountAMin , amountBMin, deadline, gasLimit
-      let tx = await routerContract.addLiquidity(
-        token1Contract.address,
-        token2Contract.address,
-        amount1,
-        amount2,
-        1,
-        1,
-        account,
-        deadline,
-        { gasLimit: 1000000 }
-      );
-
-      await tx.wait();
 
       toast({
         title: "Add liquidity",

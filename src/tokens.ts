@@ -4,6 +4,13 @@ import { AXOToken } from "./icons";
 
 export const tokens: Array<Token> = [
   {
+    name: "Matic",
+    symbol: "MATIC",
+    decimals: 18,
+    logo: Matic,
+    isCoin: true,
+  },
+  {
     name: "wMatic",
     symbol: "wMATIC",
     decimals: 18,
@@ -28,7 +35,7 @@ export const tokens: Array<Token> = [
     logo: Dai,
   },
   {
-    name: "Axoswap Token",
+    name: "AXOSwap Token",
     symbol: "AXO",
     decimals: 18,
     logo: AXOToken,

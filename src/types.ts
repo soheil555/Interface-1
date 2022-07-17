@@ -7,6 +7,7 @@ export interface Token {
   symbol: string;
   decimals: number;
   logo: (props: IconProps) => JSX.Element;
+  isCoin?: boolean;
 }
 
 export interface LiquidityFormValues {
@@ -32,6 +33,7 @@ export interface SwapFormValues {
 
 export interface RemoveLiquidityFormValues {
   percent: number;
+  receiveMatic?: boolean;
 }
 
 export interface SettingsFormValues {
