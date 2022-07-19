@@ -1,25 +1,34 @@
+import { useColorMode, useColorModeValue, Switch, Box } from "@chakra-ui/react";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+
 const ThemeToggler = () => {
-  const toggleHandler = () => {
-    let classList = (document.querySelector("html") as HTMLElement).classList;
-    if (classList.contains("light-mode")) {
-      classList.remove("light-mode");
-      classList.add("dark-mode");
-    } else {
-      classList.add("light-mode");
-      classList.remove("dark-mode");
-    }
-  };
+  const { toggleColorMode } = useColorMode();
+
   return (
-    <div className="on-off-toggle">
-      <input
-        className="on-off-toggle__input"
-        type="checkbox"
-        id="bopis"
-        defaultChecked
-        onChange={toggleHandler}
+    <Box position="relative">
+      <SunIcon
+        pointerEvents="none"
+        position="absolute"
+        zIndex={1}
+        top={1.5}
+        left={1}
+        display={useColorModeValue("none", "inline")}
       />
-      <label htmlFor="bopis" className="on-off-toggle__slider" />
-    </div>
+      <Switch
+        colorScheme="brand"
+        size="lg"
+        isChecked={useColorModeValue(false, true)}
+        onChange={toggleColorMode}
+      />
+      <MoonIcon
+        pointerEvents="none"
+        position="absolute"
+        zIndex={1}
+        top={1.5}
+        right={1}
+        display={useColorModeValue("inline", "none")}
+      />
+    </Box>
   );
 };
 export default ThemeToggler;
