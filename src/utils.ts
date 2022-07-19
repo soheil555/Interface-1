@@ -30,3 +30,7 @@ export function isNumberValid(value: string, decimals = 18) {
 
   return !!reg.exec(value);
 }
+
+export function amountWithSlippage(amount: BigNumber, slippage: string) {
+  return amount.mul(100 - Number(slippage)).div(100);
+}

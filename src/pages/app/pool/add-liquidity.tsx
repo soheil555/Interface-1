@@ -17,12 +17,13 @@ import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { LiquidityFormValues } from "../../../types";
-import { parseBalanceToBigNumber } from "../../../utils";
+import { amountWithSlippage, parseBalanceToBigNumber } from "../../../utils";
 import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
+import { BigNumber } from "ethers";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -93,12 +94,12 @@ const AddLiquidity: NextPageWithLayout = () => {
         const timestamp = (await provider.getBlock("latest")).timestamp;
         const deadline = timestamp + Number(settings.deadline) * 60;
 
-        //TODO: set tokenAmountMin, maticMin and gasLimit
+        //TODO: set gasLimit
         let tx = await routerContract.addLiquidityETH(
           tokenContract.address,
           tokenAmount,
-          1,
-          1,
+          amountWithSlippage(tokenAmount, settings.slippage),
+          amountWithSlippage(maticAmount, settings.slippage),
           account,
           deadline,
           {
@@ -138,14 +139,14 @@ const AddLiquidity: NextPageWithLayout = () => {
         const timestamp = (await provider.getBlock("latest")).timestamp;
         const deadline = timestamp + Number(settings.deadline) * 60;
 
-        //TODO: set amountAMin , amountBMin, deadline, gasLimit
+        //TODO: set gasLimit
         let tx = await routerContract.addLiquidity(
           token1Contract.address,
           token2Contract.address,
           amount1,
           amount2,
-          1,
-          1,
+          amountWithSlippage(amount1, settings.slippage),
+          amountWithSlippage(amount2, settings.slippage),
           account,
           deadline,
           { gasLimit: 1000000 }

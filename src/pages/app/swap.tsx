@@ -15,12 +15,12 @@ import useRouterContract from "../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { SwapFormValues } from "../../types";
-import { parseBalanceToBigNumber } from "../../utils";
+import { amountWithSlippage, parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../store";
 import useAddresses from "../../hooks/useAddresses";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import ERC20ABI from "../../abis/ERC20.json";
 import { ERC20 } from "../../abis/types";
 
@@ -62,6 +62,11 @@ const Swap: NextPageWithLayout = () => {
         tokenIn.decimals
       );
 
+      const amountOutBigNumber = parseBalanceToBigNumber(
+        amountOut,
+        tokenOut.decimals
+      );
+
       const tokenInaddress = addresses.tokens[tokenIn.symbol];
       const tokenOutaddress = addresses.tokens[tokenOut.symbol];
 
@@ -71,9 +76,9 @@ const Swap: NextPageWithLayout = () => {
         const timestamp = (await provider.getBlock("latest")).timestamp;
         const deadline = timestamp + Number(settings.deadline) * 60;
 
-        //TODO: set tokenOutMin and gasLimit
+        //TODO: set gasLimit
         const tx = await routerContract.swapExactETHForTokens(
-          1,
+          amountWithSlippage(amountOutBigNumber, settings.slippage),
           path,
           account,
           deadline,
@@ -109,10 +114,10 @@ const Swap: NextPageWithLayout = () => {
         const deadline = timestamp + Number(settings.deadline) * 60;
 
         if (tokenOut.symbol === "MATIC") {
-          //TODO: set tokenOutMin and gasLimit
+          //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForETH(
             amountInBigNumber,
-            0,
+            amountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
@@ -123,10 +128,10 @@ const Swap: NextPageWithLayout = () => {
 
           await tx.wait();
         } else {
-          //TODO: set amountOutMin and gasLimit
+          //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForTokens(
             amountInBigNumber,
-            1,
+            amountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
