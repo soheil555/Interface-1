@@ -32,5 +32,26 @@ export function isNumberValid(value: string, decimals = 18) {
 }
 
 export function amountWithSlippage(amount: BigNumber, slippage: string) {
-  return amount.mul(100 - Number(slippage)).div(100);
+  const numerator = 100 - Number(slippage);
+  const decimalCounts = countDecimals(numerator);
+
+  return amount
+    .mul(numerator * 10 ** decimalCounts)
+    .div(100 * 10 ** decimalCounts);
+}
+
+export default function balanceWithSlippage(
+  balance: string,
+  slippage: string,
+  decimals = 18
+) {
+  return parseBalance(
+    amountWithSlippage(parseBalanceToBigNumber(balance, decimals), slippage),
+    decimals
+  );
+}
+
+export function countDecimals(value: number) {
+  if (Math.floor(value) === value) return 0;
+  return value.toString().split(".")[1].length;
 }
