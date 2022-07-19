@@ -2,7 +2,6 @@ import { type ReactElement } from "react";
 import { Container, Image } from "@chakra-ui/react";
 import AppHeader from "../common/Header/AppHeader";
 import Tabs from "./Tabs/Tabs";
-import SideImage from "./Image/SideImage";
 import TopImage from "./Image/TopImage";
 
 const Layout = (page: ReactElement) => {
@@ -21,7 +20,6 @@ const Layout = (page: ReactElement) => {
 
       <TopImage />
       <AppHeader />
-      <SideImage />
       <Tabs />
       <Container
         maxW="container.md"
