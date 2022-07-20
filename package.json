@@ -9,7 +9,7 @@
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './src/abis/types' './src/abis/*.json'",
     "gen:theme-typings": "chakra-cli tokens ./src/theme.ts",
-    "postinstall": "npm compile-contract-types && npm gen:theme-typings"
+    "postinstall": "npm run compile-contract-types && npm run gen:theme-typings"
   },
   "dependencies": {
     "@chakra-icons/cryptocurrency-icons": "^1.0.0",
