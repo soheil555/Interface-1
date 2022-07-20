@@ -30,3 +30,48 @@ export function isNumberValid(value: string, decimals = 18) {
 
   return !!reg.exec(value);
 }
+
+export function amountWithSlippage(amount: BigNumber, slippage: string) {
+  const numerator = 100 - Number(slippage);
+  const decimalCounts = countDecimals(numerator);
+
+  return amount
+    .mul(numerator * 10 ** decimalCounts)
+    .div(100 * 10 ** decimalCounts);
+}
+
+export function balanceWithSlippage(
+  balance: string,
+  slippage: string,
+  decimals = 18
+) {
+  return parseBalance(
+    amountWithSlippage(parseBalanceToBigNumber(balance, decimals), slippage),
+    decimals
+  );
+}
+
+export function countDecimals(value: number) {
+  if (Math.floor(value) === value) return 0;
+  return value.toString().split(".")[1].length;
+}
+
+export function calculatePrice(
+  amountIn: string,
+  amountOut: string,
+  tokenInDecimals: number,
+  tokenOutDecimals: number
+) {
+  const amountInBigNumber = parseBalanceToBigNumber(amountIn, tokenInDecimals);
+  const amountOutBigNumber = parseBalanceToBigNumber(
+    amountOut,
+    tokenOutDecimals
+  );
+
+  return parseBalance(
+    amountOutBigNumber
+      .mul(parseBalanceToBigNumber("1", tokenInDecimals))
+      .div(amountInBigNumber),
+    tokenOutDecimals
+  );
+}

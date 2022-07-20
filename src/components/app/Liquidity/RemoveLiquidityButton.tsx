@@ -24,10 +24,11 @@ import useERC20Contract from "../../../hooks/useERC20Contract";
 import useRouterContract from "../../../hooks/useRouterContract";
 import useTokenInfo from "../../../hooks/useTokenInfo";
 import { Liquidity, RemoveLiquidityFormValues } from "../../../types";
-import { parseBalance } from "../../../utils";
+import { amountWithSlippage, parseBalance } from "../../../utils";
 import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
+import { BigNumber } from "ethers";
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity;
@@ -44,10 +45,10 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const token0Info = useTokenInfo(liquidity.token0);
   const token1Info = useTokenInfo(liquidity.token1);
   const { account } = useWeb3React();
-  const router = useRouterContract();
+  const routerContract = useRouterContract();
   const liquidityERC20Contract = useERC20Contract(liquidity.address);
   const walletConnected =
-    !!router &&
+    !!routerContract &&
     !!liquidityERC20Contract &&
     !!account &&
     !!token0Info &&
@@ -68,37 +69,46 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
     if (!walletConnected) return;
 
     try {
-      let tx = await liquidityERC20Contract.approve(
-        router.address,
-        liquidity.liquidityBalance
-      );
-      await tx.wait();
-
       const amountToRemove = liquidity.liquidityBalance.mul(percent).div(100);
+      const token0Amount = liquidity.amount0.mul(percent).div(100);
+      const token1Amount = liquidity.amount1.mul(percent).div(100);
 
-      const timestamp = (await router.provider.getBlock("latest")).timestamp;
+      const tokenAllowance = await liquidityERC20Contract.allowance(
+        account,
+        routerContract.address
+      );
+      if (tokenAllowance.lt(amountToRemove)) {
+        let tx = await liquidityERC20Contract.approve(
+          routerContract.address,
+          amountToRemove
+        );
+        await tx.wait();
+      }
+
+      const timestamp = (await routerContract.provider.getBlock("latest"))
+        .timestamp;
       const deadline = timestamp + Number(settings.deadline) * 60;
 
       if (isOneOfTokenswMatic && receiveMatic) {
         const tokenAddress =
           token0Info.symbol === "wMATIC" ? liquidity.token1 : liquidity.token0;
-        tx = await router.removeLiquidityETH(
+
+        let tx = await routerContract.removeLiquidityETH(
           tokenAddress,
           amountToRemove,
-          1,
-          1,
+          amountWithSlippage(token0Amount, settings.slippage),
+          amountWithSlippage(token1Amount, settings.slippage),
           account,
           deadline
         );
-
         await tx.wait();
       } else {
-        tx = await router.removeLiquidity(
+        let tx = await routerContract.removeLiquidity(
           liquidity.token0,
           liquidity.token1,
           amountToRemove,
-          1,
-          1,
+          amountWithSlippage(token0Amount, settings.slippage),
+          amountWithSlippage(token1Amount, settings.slippage),
           account,
           deadline,
           { gasLimit: 1000000 }
@@ -158,7 +168,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
               handleSubmit,
               isSubmitting,
               isValid,
-              errors,
               values,
               setFieldValue,
             }) => (
