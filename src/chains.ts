@@ -54,12 +54,5 @@ export const CHAINS: {
     nativeCurrency: MATIC,
     blockExplorerUrls: ["https://polygonscan.com"],
     logo: Matic,
-  },
-  31337: {
-    urls: ["http://127.0.0.1:8545"],
-    name: "Hardhat",
-    nativeCurrency: MATIC,
-    blockExplorerUrls: undefined,
-    logo: Eth,
-  },
+  }
 };

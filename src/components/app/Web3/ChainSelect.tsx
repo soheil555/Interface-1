@@ -22,7 +22,6 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
     <Menu autoSelect={false}>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
         <>
-          <chainInfo.logo mr={2} />
           <Box display={{ base: "none", md: "inline-block" }}>
             {chainInfo.name}
           </Box>

@@ -15,7 +15,7 @@ const AppHeader = () => {
       marginLeft="auto"
       top={0}
       zIndex={1}
-      w={{ base: "full", lg: "calc(100vw - 8rem)" }}
+      w={{ base: "full", lg: "full" }}
       justify="space-between"
       align="center"
       p={5}

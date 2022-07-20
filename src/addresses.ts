@@ -20,6 +20,7 @@ export const addresses: Addresses = {
       Xolotl: "0xB7EEB0398511255124fB2fBc5cc95eF06C14844F",
       wMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
       MATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+      wEth: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
     },
   },
 };
