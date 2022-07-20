@@ -1,4 +1,4 @@
-import { Dai, Matic, Usdc, Usdt } from "@chakra-icons/cryptocurrency-icons";
+import { Dai, Eth, Matic, Usdc, Usdt } from "@chakra-icons/cryptocurrency-icons";
 import { Token } from "./types";
 import { AXOToken } from "./icons";
 
@@ -40,4 +40,10 @@ export const tokens: Array<Token> = [
     decimals: 18,
     logo: AXOToken,
   },
+  {
+    name: "wrapped Ethereum",
+    symbol: "wEth",
+    decimals: 18,
+    logo: Eth,
+  }
 ];
