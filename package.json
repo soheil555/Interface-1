@@ -9,7 +9,7 @@
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './src/abis/types' './src/abis/*.json'",
     "gen:theme-typings": "chakra-cli tokens ./src/theme.ts",
-    "postinstall": "npm run compile-contract-types && npm run gen:theme-typings"
+    "postinstall": "yarn compile-contract-types && yarn gen:theme-typings"
   },
   "dependencies": {
     "@chakra-icons/cryptocurrency-icons": "^1.0.0",
@@ -24,8 +24,6 @@
     "ethers": "^5.6.9",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.13",
-    "glob-parent": "6.0.1",
-    "got": "^12.1.0",
     "hamburger-react": "^2.5.0",
     "jotai": "^1.7.3",
     "next": "12.1.6",

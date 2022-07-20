@@ -7,6 +7,7 @@ import {
   IconButton,
   Box,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
 import useFactoryContract from "../../hooks/useFactoryContract";
@@ -15,14 +16,15 @@ import useRouterContract from "../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { SwapFormValues } from "../../types";
-import { parseBalanceToBigNumber } from "../../utils";
+import { amountWithSlippage, parseBalanceToBigNumber } from "../../utils";
 import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
-import { settingsAtom } from "../../store";
 import useAddresses from "../../hooks/useAddresses";
 import { Contract } from "ethers";
 import ERC20ABI from "../../abis/ERC20.json";
 import { ERC20 } from "../../abis/types";
+import { settingsAtom } from "../../store";
+import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -35,6 +37,7 @@ const initialValues: SwapFormValues = {
 };
 
 const Swap: NextPageWithLayout = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [settings] = useAtom(settingsAtom);
   const toast = useToast();
   const addresses = useAddresses();
@@ -62,6 +65,11 @@ const Swap: NextPageWithLayout = () => {
         tokenIn.decimals
       );
 
+      const amountOutBigNumber = parseBalanceToBigNumber(
+        amountOut,
+        tokenOut.decimals
+      );
+
       const tokenInaddress = addresses.tokens[tokenIn.symbol];
       const tokenOutaddress = addresses.tokens[tokenOut.symbol];
 
@@ -71,9 +79,9 @@ const Swap: NextPageWithLayout = () => {
         const timestamp = (await provider.getBlock("latest")).timestamp;
         const deadline = timestamp + Number(settings.deadline) * 60;
 
-        //TODO: set tokenOutMin and gasLimit
+        //TODO: set gasLimit
         const tx = await routerContract.swapExactETHForTokens(
-          1,
+          amountWithSlippage(amountOutBigNumber, settings.slippage),
           path,
           account,
           deadline,
@@ -109,10 +117,10 @@ const Swap: NextPageWithLayout = () => {
         const deadline = timestamp + Number(settings.deadline) * 60;
 
         if (tokenOut.symbol === "MATIC") {
-          //TODO: set tokenOutMin and gasLimit
+          //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForETH(
             amountInBigNumber,
-            0,
+            amountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
@@ -123,10 +131,10 @@ const Swap: NextPageWithLayout = () => {
 
           await tx.wait();
         } else {
-          //TODO: set amountOutMin and gasLimit
+          //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForTokens(
             amountInBigNumber,
-            1,
+            amountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
@@ -264,12 +272,12 @@ const Swap: NextPageWithLayout = () => {
               </Box>
 
               <Button
-                type="submit"
                 isLoading={isSubmitting}
                 isDisabled={!isValid || !walletConnected}
                 variant="brand-2-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
+                onClick={onOpen}
               >
                 {walletConnected
                   ? isValid
@@ -277,6 +285,25 @@ const Swap: NextPageWithLayout = () => {
                     : errors.tokenIn || errors.amountIn
                   : "Connect Wallet to Continue"}
               </Button>
+
+              {values.tokenIn &&
+              values.tokenOut &&
+              values.amountIn &&
+              values.amountOut ? (
+                <SwapConfirmationModal
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  amountIn={values.amountIn}
+                  amountOut={values.amountOut}
+                  tokenIn={values.tokenIn}
+                  tokenOut={values.tokenOut}
+                  slippage={settings.slippage}
+                  isFormSubmitting={isSubmitting}
+                  isFormValid={isValid}
+                  isWalletConnected={walletConnected}
+                  handleFormSubmit={handleSubmit}
+                />
+              ) : null}
             </VStack>
           </Form>
         )}

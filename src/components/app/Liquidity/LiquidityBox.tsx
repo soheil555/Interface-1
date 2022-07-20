@@ -28,7 +28,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const token0Info = useTokenInfo(liquidity.token0);
   const token1Info = useTokenInfo(liquidity.token1);
-  const boxBg = useColorModeValue("gray.100", "gray.700");
+  const boxBg = useColorModeValue("brand.100", "brand.700");
   const dividerBg = useColorModeValue("gray.100", "gray.900");
 
   if (!token0Info || !token1Info) return null;

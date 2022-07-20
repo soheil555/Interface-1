@@ -10,7 +10,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import useUnstakedAXOBalance from "../../../hooks/useUnstakedAXOBalance";
 import useXolotlContract from "../../../hooks/useXolotlContract";
 import { UnstakeAXOFormValues } from "../../../types";
 import {
