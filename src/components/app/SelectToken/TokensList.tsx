@@ -89,7 +89,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
                       </Box>
                       <Box>
                         <Text fontWeight="bold">{token.name}</Text>
-                        <Text color="gray.600">${token.symbol}</Text>
+                        <Text>${token.symbol}</Text>
                       </Box>
                     </HStack>
                   </Box>

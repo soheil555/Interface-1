@@ -145,11 +145,11 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
               <token.logo fontSize="2xl" />
               <Box>
                 <Text fontWeight="bold">{token.name}</Text>
-                <Text color="gray.600">${token.symbol}</Text>
+                <Text>${token.symbol}</Text>
               </Box>
             </HStack>
 
-            <Text fontSize="sm" color="gray.600">
+            <Text fontSize="sm">
               <>
                 Balance{" "}
                 {!token.isCoin && !!tokenBalance
