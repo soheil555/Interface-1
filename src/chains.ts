@@ -43,4 +43,15 @@ export const CHAINS: {
     blockExplorerUrls: ["https://polygonscan.com"],
     logo: Matic,
   },
+  80001: {
+    urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
+      ? [
+          `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
+        ]
+      : [],
+    name: "Polygon Mumbai",
+    nativeCurrency: MATIC,
+    blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+    logo: Matic,
+  },
 };
