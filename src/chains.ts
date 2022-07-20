@@ -29,21 +29,9 @@ export function getAddChainParameters(
     blockExplorerUrls: chainInformation.blockExplorerUrls,
   };
 }
-
 export const CHAINS: {
   [chainId: number]: ChainInformation;
 } = {
-  80001: {
-    urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
-      ? [
-          `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
-        ]
-      : [],
-    name: "Polygon Mumbai",
-    nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://mumbai.polygonscan.com"],
-    logo: Matic,
-  },
   137: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
       ? [
@@ -54,5 +42,9 @@ export const CHAINS: {
     nativeCurrency: MATIC,
     blockExplorerUrls: ["https://polygonscan.com"],
     logo: Matic,
+<<<<<<< HEAD
   }
+=======
+  },
+>>>>>>> 068397dd7d99cf960f00e3090de9c7ac1a9bd5b9
 };
