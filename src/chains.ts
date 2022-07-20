@@ -42,9 +42,5 @@ export const CHAINS: {
     nativeCurrency: MATIC,
     blockExplorerUrls: ["https://polygonscan.com"],
     logo: Matic,
-<<<<<<< HEAD
-  }
-=======
   },
->>>>>>> 068397dd7d99cf960f00e3090de9c7ac1a9bd5b9
 };
