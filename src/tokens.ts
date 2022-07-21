@@ -1,4 +1,4 @@
-import { Dai, Eth, Matic, Usdc, Usdt } from "@chakra-icons/cryptocurrency-icons";
+import { Aave, Dai, Eth, Matic, Usdc, Usdt,Chain} from "@chakra-icons/cryptocurrency-icons";
 import { Token } from "./types";
 import { AXOToken } from "./icons";
 
@@ -45,5 +45,25 @@ export const tokens: Array<Token> = [
     symbol: "wEth",
     decimals: 18,
     logo: Eth,
-  }
+  },
+  {
+    decimals: 18,
+    logo: Aave,
+    name: "Aave",
+    symbol: "AAVE"
+  },
+  {
+    "decimals": 18,
+    "logo": Dai,
+    "name": "Dai Stablecoin",
+    "symbol": "DAI"
+  },
+  {
+
+    "decimals": 18,
+    "logo":Chain,
+    "name": "ChainLink Token",
+    "symbol": "LINK"
+  },
+  
 ];
