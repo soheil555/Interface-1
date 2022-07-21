@@ -57,7 +57,7 @@ const SwapConfirmationModal = ({
     tokenOut.decimals
   );
 
-  const boxBg = useColorModeValue("gray.100", "gray.600");
+  const boxBg = useColorModeValue("black.100", "black.600");
 
   return (
     <Modal size="xl" isCentered isOpen={isOpen} onClose={onClose}>
@@ -85,7 +85,7 @@ const SwapConfirmationModal = ({
                 top="43%"
                 left="50%"
                 transform="translate(-50%, -50%)"
-                bg="gray.400"
+                bg="black.400"
                 borderRadius="full"
                 fontSize="2xl"
                 w="30px"
@@ -131,7 +131,7 @@ const SwapConfirmationModal = ({
                 </Text>
               </HStack>
             </VStack>
-            <Text variant="gray">
+            <Text variant="black">
               Output is estimated. You will receive at least{" "}
               <span style={{ fontWeight: "bold" }}>
                 {amountOutWithSlippage} {tokenOut.symbol}{" "}

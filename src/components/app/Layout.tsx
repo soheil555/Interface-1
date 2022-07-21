@@ -28,6 +28,7 @@ const Layout = (page: ReactElement) => {
         pt={20}
         pb={40}
         pl={{ base: undefined, lg: "8rem" }}
+        opacity={0.9}
       >
         {page}
       </Container>
