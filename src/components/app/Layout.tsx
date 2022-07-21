@@ -27,7 +27,6 @@ const Layout = (page: ReactElement) => {
         justifyContent="center"
         pt={20}
         pb={40}
-        pl={{ base: undefined, lg: "8rem" }}
       >
         {page}
       </Container>
