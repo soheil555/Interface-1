@@ -26,7 +26,7 @@ const Web3ConnectWithSelect = ({
   setError,
 }: Web3ConnectWithSelectProps) => {
   const toast = useToast();
-  const [desiredChainId, setDesiredChainId] = useState(80001);
+  const [desiredChainId, setDesiredChainId] = useState(137);
   const chainIds = Object.keys(CHAINS).map((chainId) => Number(chainId));
 
   useEffect(() => {
