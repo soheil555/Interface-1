@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text, Link} from "@chakra-ui/react";
 
 const HeroBanner = () => {
   return (
@@ -19,8 +19,9 @@ const HeroBanner = () => {
         AXOSWAP <Text color="brand.300">PROTOCOL</Text>
       </Heading>
       <Text textAlign="center" fontSize="3xl">
-        ICO sale starts on 15/07/2022
+        Join our ICO event on Sushiswap
       </Text>
+      <Link href="https://app.sushi.com/miso/0x697aa88C848599d9F172625D6fA510AB74cb23DA?chainId=137" isExternal></Link>
     </Flex>
   );
 };
