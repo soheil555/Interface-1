@@ -2,9 +2,9 @@ import { Icon, IconProps } from "@chakra-ui/react";
 
 export const AXOToken = (props: IconProps) => (
   <Icon
-    bg="brand.000"
+    bg="brand.100"
     borderRadius="full"
-    padding={0.5}
+    padding={0.8}
     viewBox="0 0 309.42 220.4"
     {...props}
   >
@@ -23,9 +23,9 @@ export const AXOToken = (props: IconProps) => (
 export const XolotlToken = (props: IconProps) => (
   <Icon
     viewBox="0 0 309.42 220.4"
-    bg="brand.000"
+    bg="brand.700"
     borderRadius="full"
-    padding={0.5}
+    padding={0.8}
     {...props}
   >
     <svg xmlns="http://www.w3.org/2000/svg">
