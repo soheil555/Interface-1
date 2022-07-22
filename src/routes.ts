@@ -19,7 +19,7 @@ export const homeRoutes: Route[] = [
   },
   {
     label: "Community",
-    href: "#",
+    href: "https://discord.gg/PJr44AxWAt",
     isExternal: true,
   },
   {
