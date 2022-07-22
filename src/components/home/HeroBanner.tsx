@@ -1,5 +1,5 @@
-import { Flex, Heading, Text, Link} from "@chakra-ui/react";
-
+import { Flex, Heading, Text, Link, Button} from "@chakra-ui/react";
+import NextLink from "next/link";
 const HeroBanner = () => {
   return (
     <Flex
@@ -21,7 +21,9 @@ const HeroBanner = () => {
       <Text textAlign="center" fontSize="3xl">
         Join our ICO event on Sushiswap
       </Text>
-      <Link href="https://app.sushi.com/miso/0x697aa88C848599d9F172625D6fA510AB74cb23DA?chainId=137" isExternal></Link>
+      <Link href="https://app.sushi.com/miso/0x697aa88C848599d9F172625D6fA510AB74cb23DA?chainId=137" isExternal>
+            <Button variant="brand-outline">Join event</Button>
+          </Link>
     </Flex>
   );
 };

@@ -24,7 +24,7 @@ const Protocol = () => {
             AXOSWAP
           </Heading>
           <Heading textAlign="center" fontWeight="light" size="lg">
-            Disclaimer
+            PROJECT
           </Heading>
           <Text
             textAlign="center"
@@ -34,7 +34,7 @@ const Protocol = () => {
             variant="gray"
             w={{ base: "100%", md: "80%" }}
           >
-            Development phase has concluded, we are offially live!
+            All in one decentralized exchange for leveraging diversified funds across Polygon Network.
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>
