@@ -19,7 +19,7 @@ const HeroBanner = () => {
         AXOSWAP <Text color="brand.300">PROTOCOL</Text>
       </Heading>
       <Text textAlign="center" fontSize="3xl">
-        Join our ICO event on Sushiswap
+        Project Status: ICO event live on Sushiswap!
       </Text>
       <Link href="https://app.sushi.com/miso/0x697aa88C848599d9F172625D6fA510AB74cb23DA" isExternal>
             <Button variant="brand-outline">Join event</Button>
