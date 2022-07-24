@@ -14,16 +14,14 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
-import StakeAXO from "../../components/app/Bar/StakeAXO";
-import UnstakeAXO from "../../components/app/Bar/UnstakeAXO";
-import Layout from "../../components/app/Layout";
-import useUnstakedAXOBalance from "../../hooks/useUnstakedAXOBalance";
-import useXltBalance from "../../hooks/useXltBalance";
-import { AXOToken, XolotlToken } from "../../icons";
-import { parseBalance } from "../../utils";
-import { NextPageWithLayout } from "../_app";
+import StakeAXO from "./StakeAXO";
+import UnstakeAXO from "./UnstakeAXO";
+import useUnstakedAXOBalance from "../../../hooks/useUnstakedAXOBalance";
+import useXltBalance from "../../../hooks/useXltBalance";
+import { AXOToken, XolotlToken } from "../../../icons";
+import { parseBalance } from "../../../utils";
 
-const Bar: NextPageWithLayout = () => {
+const Bar = () => {
   const { data: xltBalance } = useXltBalance();
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
 
@@ -85,7 +83,5 @@ const Bar: NextPageWithLayout = () => {
     </VStack>
   );
 };
-
-Bar.getLayout = Layout;
 
 export default Bar;

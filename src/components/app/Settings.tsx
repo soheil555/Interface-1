@@ -13,9 +13,7 @@ import {
   NumberInput,
   NumberInputField,
   useDisclosure,
-  Box,
   HStack,
-  PopoverHeader,
 } from "@chakra-ui/react";
 import { FiSettings } from "react-icons/fi";
 import { Formik, FormikErrors } from "formik";

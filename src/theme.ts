@@ -1,5 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
-import { StyleConfig } from "@chakra-ui/theme-tools";
+import { StyleConfig, mode } from "@chakra-ui/theme-tools";
 
 const components: Record<string, StyleConfig> = {
   Button: {
@@ -71,6 +71,14 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
+
+  styles: {
+    global: (props: any) => ({
+      body: {
+        bg: mode("white", "black")(props),
+      },
+    }),
+  },
 
   fonts: {
     body: "Lato, sans-serif",
