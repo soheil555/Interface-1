@@ -26,7 +26,7 @@ const Layout = (page: ReactElement) => {
         justifyContent="center"
         pt={20}
         pb={40}
-        opacity={0.9}
+        // opacity={0.9}
       >
         {page}
       </Container>

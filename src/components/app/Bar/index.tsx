@@ -27,7 +27,7 @@ const Bar = () => {
 
   return (
     <VStack
-      bg={useColorModeValue("white", "gray.700")}
+      bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
       borderRadius="lg"
       p={4}
@@ -65,7 +65,7 @@ const Bar = () => {
         </HStack>
       </Stack>
 
-      <Tabs colorScheme="brand" variant="enclosed" w="full" isFitted>
+      <Tabs variant="enclosed" w="full" isFitted>
         <TabList>
           <Tab>Stake AXO</Tab>
           <Tab>Unstake</Tab>

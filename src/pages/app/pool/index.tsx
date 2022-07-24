@@ -24,7 +24,7 @@ const Pool: NextPageWithLayout = () => {
       <Bar />
 
       <VStack
-        bg={useColorModeValue("white", "gray.700")}
+        bg={useColorModeValue("white", "gray.900")}
         boxShadow="lg"
         borderRadius="lg"
         p={4}
@@ -57,7 +57,7 @@ const Pool: NextPageWithLayout = () => {
         {!liquidities || liquidities.length === 0 ? (
           <Text
             textAlign="center"
-            variant="gray"
+            variant="subtext"
             w="full"
             py={4}
             borderRadius="lg"

@@ -1,4 +1,8 @@
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import {
+  extendTheme,
+  ThemeConfig,
+  withDefaultColorScheme,
+} from "@chakra-ui/react";
 import { StyleConfig, mode } from "@chakra-ui/theme-tools";
 
 const components: Record<string, StyleConfig> = {
@@ -57,9 +61,49 @@ const components: Record<string, StyleConfig> = {
 
   Text: {
     variants: {
-      gray: ({ colorMode }) => ({
+      subtext: ({ colorMode }) => ({
         color: colorMode === "light" ? "gray.600" : "gray.300",
       }),
+    },
+  },
+
+  Menu: {
+    variants: {
+      primary: ({ colorMode }) => ({
+        list: {
+          bg: colorMode === "light" ? "white" : "gray.800",
+        },
+      }),
+    },
+    defaultProps: {
+      variant: "primary",
+    },
+  },
+  Popover: {
+    variants: {
+      primary: ({ colorMode }) => ({
+        content: {
+          bg: colorMode === "light" ? "white" : "gray.800",
+        },
+      }),
+    },
+    defaultProps: {
+      variant: "primary",
+    },
+  },
+  Modal: {
+    variants: {
+      primary: ({ colorMode }) => ({
+        header: {
+          bg: colorMode === "light" ? "white" : "gray.800",
+        },
+        body: {
+          bg: colorMode === "light" ? "white" : "gray.800",
+        },
+      }),
+    },
+    defaultProps: {
+      variant: "primary",
     },
   },
 };
@@ -69,38 +113,43 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({
-  config,
+const theme = extendTheme(
+  {
+    config,
 
-  styles: {
-    global: (props: any) => ({
-      body: {
-        bg: mode("white", "black")(props),
-      },
-    }),
-  },
-
-  fonts: {
-    body: "Lato, sans-serif",
-    heading: "DM Sans, sans-serif",
-  },
-  colors: {
-    brand: {
-      "50": "#FFE5F2",
-      "100": "#FFB8DA",
-      "200": "#FF8AC2",
-      "300": "#FF5CAA",
-      "400": "#FF2E92",
-      "500": "#FF007A",
-      "600": "#CC0062",
-      "700": "#990049",
-      "800": "#660031",
-      "900": "#330018",
-      gradient: "linear-gradient(89.83deg, #d065d8 8.99%, #ff60a0 99.84%)",
+    styles: {
+      global: (props: any) => ({
+        body: {
+          bg: mode("white", "black")(props),
+        },
+      }),
     },
-  },
 
-  components,
-});
+    fonts: {
+      body: "Lato, sans-serif",
+      heading: "DM Sans, sans-serif",
+    },
+    colors: {
+      brand: {
+        "50": "#FFE5F2",
+        "100": "#FFB8DA",
+        "200": "#FF8AC2",
+        "300": "#FF5CAA",
+        "400": "#FF2E92",
+        "500": "#FF007A",
+        "600": "#CC0062",
+        "700": "#990049",
+        "800": "#660031",
+        "900": "#330018",
+        gradient: "linear-gradient(89.83deg, #d065d8 8.99%, #ff60a0 99.84%)",
+      },
+    },
+    components,
+  },
+  withDefaultColorScheme({
+    colorScheme: "brand",
+    components: ["Button", "Tabs", "Checkbox", "Slider", "Switch"],
+  })
+);
 
 export default theme;

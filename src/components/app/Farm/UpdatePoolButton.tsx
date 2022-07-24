@@ -54,7 +54,6 @@ const UpdatePoolButton = ({ pid }: UpdatePoolButtonProps) => {
         isDisabled={!masterChefContract}
         isLoading={isLoading}
         onClick={handleUpdatePool}
-        colorScheme="brand"
         variant="ghost"
       >
         Update Pool

@@ -14,6 +14,7 @@ import {
   NumberInputField,
   useDisclosure,
   HStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiSettings } from "react-icons/fi";
 import { Formik, FormikErrors } from "formik";
@@ -71,6 +72,7 @@ const Settings = () => {
             <IconButton
               aria-label="settings"
               variant="ghost"
+              color={useColorModeValue("gray.900", "white")}
               icon={<FiSettings />}
             />
           </PopoverTrigger>
@@ -93,11 +95,7 @@ const Settings = () => {
                 >
                   <NumberInputField placeholder="0.1" />
                 </NumberInput>
-                <Button
-                  onClick={() => setFieldValue("slippage", "0.1")}
-                  colorScheme="brand"
-                  ml={2}
-                >
+                <Button onClick={() => setFieldValue("slippage", "0.1")} ml={2}>
                   Auto
                 </Button>
               </InputGroup>

@@ -145,7 +145,6 @@ const SwapConfirmationModal = ({
             isLoading={isFormSubmitting}
             isDisabled={!isFormValid || !isWalletConnected}
             onClick={handleFormSubmit}
-            colorScheme="brand"
             w="full"
             fontSize="xl"
           >

@@ -20,7 +20,7 @@ const Tab = ({ href, label, icon }: TabProps) => {
         cursor="pointer"
         role="group"
         color={isActive ? "brand.300" : undefined}
-        variant="gray"
+        variant="subtext"
         fontSize="xl"
       >
         <VStack>
