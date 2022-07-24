@@ -131,7 +131,7 @@ const SwapConfirmationModal = ({
                 </Text>
               </HStack>
             </VStack>
-            <Text variant="black">
+            <Text>
               Output is estimated. You will receive at least{" "}
               <span style={{ fontWeight: "bold" }}>
                 {amountOutWithSlippage} {tokenOut.symbol}{" "}

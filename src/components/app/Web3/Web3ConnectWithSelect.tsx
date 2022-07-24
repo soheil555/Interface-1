@@ -1,10 +1,20 @@
-import { HStack, Button, useToast } from "@chakra-ui/react";
+import {
+  HStack,
+  Button,
+  useToast,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 import type { Web3ReactHooks } from "@web3-react/core";
 import type { MetaMask } from "@web3-react/metamask";
 import { useCallback, useEffect, useState } from "react";
 import { CHAINS, getAddChainParameters } from "../../../chains";
 import { shortenAddress } from "../../../utils";
 import ChainSelect from "./ChainSelect";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { BiExit } from "react-icons/bi";
 
 interface Web3ConnectWithSelectProps {
   connector: MetaMask;
@@ -88,7 +98,26 @@ const Web3ConnectWithSelect = ({
     return (
       <HStack>
         <ChainSelect chainId={desiredChainId} switchChain={switchChain} />
-        <Button variant="brand-2">{shortenAddress(account)}</Button>
+
+        <Menu>
+          <MenuButton
+            as={Button}
+            rightIcon={<ChevronDownIcon />}
+            variant="brand-2"
+          >
+            {shortenAddress(account)}
+          </MenuButton>
+          <MenuList fontSize="xl">
+            <MenuItem
+              onClick={() => {
+                connector.deactivate();
+              }}
+              icon={<BiExit />}
+            >
+              Disconnect
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </HStack>
     );
   }
