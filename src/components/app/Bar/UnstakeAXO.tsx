@@ -69,7 +69,7 @@ const UnstakeAXO = () => {
   const validator = ({ amount }: UnstakeAXOFormValues) => {
     const errors: FormikErrors<UnstakeAXOFormValues> = {};
 
-    if (amount === "") {
+    if (amount === "" || parseBalanceToBigNumber(amount).isZero()) {
       errors.amount = "Enter an amount";
       return errors;
     }
@@ -95,7 +95,7 @@ const UnstakeAXO = () => {
                 <FormLabel>
                   <HStack justify="space-between">
                     <Text>Unstake</Text>
-                    <Text variant="gray" fontSize="sm"></Text>
+                    <Text variant="subtext" fontSize="sm"></Text>
                   </HStack>
                 </FormLabel>
 
@@ -124,7 +124,6 @@ const UnstakeAXO = () => {
                 isDisabled={!isValid || !walletConnected}
                 isLoading={isSubmitting}
                 type="submit"
-                colorScheme="brand"
               >
                 {errors.amount ? errors.amount : "Unstake"}
               </Button>

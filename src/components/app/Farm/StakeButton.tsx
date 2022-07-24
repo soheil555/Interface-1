@@ -120,9 +120,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="brand">
-        Stake
-      </Button>
+      <Button onClick={onOpen}>Stake</Button>
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -155,7 +153,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                           <FormLabel>
                             <HStack justify="space-between">
                               <Text>LP Token Amount</Text>
-                              <Text variant="gray" fontSize="sm">
+                              <Text variant="subtext" fontSize="sm">
                                 Balance{" "}
                                 {lpTokenBalance.lte(
                                   ethers.utils.parseEther("0.000001")
@@ -204,15 +202,10 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                             isDisabled={!isValid || !walletConnected}
                             isLoading={isSubmitting}
                             type="submit"
-                            colorScheme="brand"
                           >
                             {errors.amount ? errors.amount : "Stake"}
                           </Button>
-                          <Button
-                            onClick={onClose}
-                            colorScheme="brand"
-                            variant="outline"
-                          >
+                          <Button onClick={onClose} variant="outline">
                             Cancel
                           </Button>
                         </HStack>

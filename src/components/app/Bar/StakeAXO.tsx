@@ -82,7 +82,7 @@ const StakeAXO = () => {
   const validator = ({ amount }: StakeAXOFormValues) => {
     const errors: FormikErrors<StakeAXOFormValues> = {};
 
-    if (amount === "") {
+    if (amount === "" || parseBalanceToBigNumber(amount).isZero()) {
       errors.amount = "Enter an amount";
       return errors;
     }
@@ -111,7 +111,7 @@ const StakeAXO = () => {
                 <FormLabel>
                   <HStack justify="space-between">
                     <Text>Stake AXO</Text>
-                    <Text variant="gray" fontSize="sm"></Text>
+                    <Text variant="subtext" fontSize="sm"></Text>
                   </HStack>
                 </FormLabel>
 
@@ -143,7 +143,6 @@ const StakeAXO = () => {
                 isDisabled={!isValid || !walletConnected}
                 isLoading={isSubmitting}
                 type="submit"
-                colorScheme="brand"
               >
                 {errors.amount ? errors.amount : "Stake"}
               </Button>

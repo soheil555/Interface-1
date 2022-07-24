@@ -180,7 +180,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     value={values.percent}
                     onChange={(value) => setFieldValue("percent", value)}
                     aria-label="remove-liquidity-amount"
-                    colorScheme="brand"
                     defaultValue={30}
                   >
                     <SliderMark value={25} {...labelStyles}>
@@ -245,7 +244,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                         onChange={() => {
                           setFieldValue("receiveMatic", !values.receiveMatic);
                         }}
-                        colorScheme="brand"
                       >
                         Receive MATIC
                       </Checkbox>
@@ -260,7 +258,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     type="submit"
                     isDisabled={!isValid || !walletConnected}
                     isLoading={isSubmitting}
-                    colorScheme="brand"
                   >
                     Remove
                   </Button>

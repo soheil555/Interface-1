@@ -131,7 +131,7 @@ const SwapConfirmationModal = ({
                 </Text>
               </HStack>
             </VStack>
-            <Text variant="black">
+            <Text>
               Output is estimated. You will receive at least{" "}
               <span style={{ fontWeight: "bold" }}>
                 {amountOutWithSlippage} {tokenOut.symbol}{" "}
@@ -145,7 +145,6 @@ const SwapConfirmationModal = ({
             isLoading={isFormSubmitting}
             isDisabled={!isFormValid || !isWalletConnected}
             onClick={handleFormSubmit}
-            colorScheme="brand"
             w="full"
             fontSize="xl"
           >

@@ -15,6 +15,7 @@ import {
   Input,
   Divider,
   Flex,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
