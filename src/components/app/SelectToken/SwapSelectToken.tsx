@@ -23,6 +23,7 @@ import { SwapFormValues } from "../../../types";
 import { useEffect } from "react";
 import usePairReserves from "../../../hooks/usePairReserves";
 import useMaticBalance from "../../../hooks/useMaticBalance";
+import useWrapType from "../../../hooks/useWrapType";
 
 interface SwapSelectTokenProps {
   isTokenIn?: boolean;
@@ -40,8 +41,8 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
     : [tokenOut, tokenIn];
 
   const amount = isTokenIn ? amountIn : amountOut;
-
   const tokenFieldName = isTokenIn ? "tokenIn" : "tokenOut";
+  const wrapType = useWrapType(tokenIn, tokenOut);
 
   const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
@@ -53,6 +54,11 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       amountIn: value,
       amountOut: "",
     };
+
+    if (wrapType !== "invalid") {
+      amounts["amountOut"] = value;
+      return amounts;
+    }
 
     if (
       reserves &&
@@ -80,6 +86,11 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       amountIn: "",
       amountOut: value,
     };
+
+    if (wrapType !== "invalid") {
+      amounts["amountIn"] = value;
+      return amounts;
+    }
 
     if (
       reserves &&
@@ -110,6 +121,12 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       }
     }
   }, [tokenBalance]);
+
+  useEffect(() => {
+    if (tokenFieldName === "tokenIn") {
+      setFieldValue("wrapType", wrapType);
+    }
+  }, [wrapType]);
 
   useEffect(() => {
     if (isTokenIn) {
