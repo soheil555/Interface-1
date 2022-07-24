@@ -1,7 +1,11 @@
+import useAddresses from "./useAddresses";
 import useContract from "./useContract";
-import { Xolotl } from "../abis/types/Xolotl";
 import ABI from "../abis/Xolotl.json";
+import { Xolotl } from "../abis/types/Xolotl";
 
 export default function useXolotlContract() {
-  return useContract<Xolotl>("0x453b3aCf7e968f7ff7859a9eEBD4Cdf4B20924c0", ABI);
+  const addresses = useAddresses();
+  const address = addresses?.tokens.Xolotl;
+
+  return useContract<Xolotl>(address, ABI);
 }

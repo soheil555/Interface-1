@@ -1,14 +1,12 @@
 import { Contract } from "ethers";
 import { useMemo } from "react";
-import { metaMaskHooks } from "../connectors/metaMask";
+import { useWeb3React } from "@web3-react/core";
 
 export default function useContract<T extends Contract = Contract>(
   address: string | undefined,
   ABI: any
 ): T | null {
-  const { useProvider, useAccount } = metaMaskHooks;
-  const account = useAccount();
-  const provider = useProvider();
+  const { account, provider } = useWeb3React();
 
   return useMemo(() => {
     if (!address || !provider || !ABI || !account) return null;

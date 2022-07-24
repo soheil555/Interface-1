@@ -1,10 +1,11 @@
-import { UniswapV2Factory } from "../abis/types/UniswapV2Factory";
-import ABI from "../abis/UniswapV2Factory.json";
+import { Factory } from "../abis/types/Factory";
+import ABI from "../abis/Factory.json";
 import useContract from "./useContract";
+import useAddresses from "./useAddresses";
 
 export default function useFactoryContract() {
-  return useContract<UniswapV2Factory>(
-    "0x1495C7B8d37E2b7624c60Cb28475E1B59d93919e",
-    ABI.abi
-  );
+  const addresses = useAddresses();
+  const address = addresses?.factory;
+
+  return useContract<Factory>(address, ABI);
 }
