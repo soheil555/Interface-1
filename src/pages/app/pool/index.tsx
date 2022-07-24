@@ -20,8 +20,12 @@ const Pool: NextPageWithLayout = () => {
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
+<<<<<<< Updated upstream
     <VStack gap={5} w="full">
       <Bar />
+=======
+   
+>>>>>>> Stashed changes
 
       <VStack
         bg={useColorModeValue("white", "gray.900")}
@@ -74,7 +78,10 @@ const Pool: NextPageWithLayout = () => {
           ))
         )}
       </VStack>
+<<<<<<< Updated upstream
     </VStack>
+=======
+>>>>>>> Stashed changes
   );
 };
 

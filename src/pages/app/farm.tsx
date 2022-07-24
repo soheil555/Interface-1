@@ -19,6 +19,7 @@ import AddLPButton from "../../components/app/Farm/AddLPButton";
 import FarmBox from "../../components/app/Farm/FarmBox";
 import useFarms from "../../hooks/useFarms";
 import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
+import Bar from "../../components/app/Bar";
 
 const Farm: NextPageWithLayout = () => {
   const [stakedOnly, setStakedOnly] = useBoolean();
@@ -28,6 +29,8 @@ const Farm: NextPageWithLayout = () => {
   const masterChefOwner = useMasterChefOwner();
 
   return (
+    <VStack gap={5} w="full">
+    <Bar />
     <VStack
       bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
@@ -94,6 +97,7 @@ const Farm: NextPageWithLayout = () => {
           farms.map((farm) => <FarmBox key={farm.lpToken} farm={farm} />)
         )}
       </VStack>
+    </VStack>
     </VStack>
   );
 };
