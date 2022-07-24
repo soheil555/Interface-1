@@ -33,7 +33,11 @@ export const CHAINS: {
   80001: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
       ? [
+<<<<<<< Updated upstream:chains.ts
           `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
+=======
+          `https://polygon-mainnet.g.alchemy.com/v2/XJFcsw5NaDcoP9UZlOe-4-evEVOtoJen`,
+>>>>>>> Stashed changes:src/chains.ts
         ]
       : [],
     name: "Polygon Mumbai",
@@ -43,7 +47,11 @@ export const CHAINS: {
   137: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
       ? [
+<<<<<<< Updated upstream:chains.ts
           `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
+=======
+          `https://polygon-mumbai.g.alchemy.com/v2/doKjQnQMS-xMqIiku2ZXy7A4RHuzzdFb`,
+>>>>>>> Stashed changes:src/chains.ts
         ]
       : [],
     name: "Polygon Mainnet",
