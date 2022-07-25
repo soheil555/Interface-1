@@ -22,7 +22,8 @@ import { useAtom } from "jotai";
 import useAddresses from "../../hooks/useAddresses";
 import { Contract } from "ethers";
 import ERC20ABI from "../../abis/ERC20.json";
-import { ERC20 } from "../../abis/types";
+import WETH9ABI from "../../abis/WETH9.json";
+import { ERC20, WETH9 } from "../../abis/types";
 import { settingsAtom } from "../../store";
 import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
 
@@ -34,6 +35,7 @@ const initialValues: SwapFormValues = {
   tokenInBalance: undefined,
   tokenInReserve: undefined,
   tokenOutReserve: undefined,
+  wrapType: "invalid",
 };
 
 const Swap: NextPageWithLayout = () => {
@@ -53,11 +55,14 @@ const Swap: NextPageWithLayout = () => {
     !!addresses;
 
   const handleSwap = async (
-    { tokenIn, tokenOut, amountIn, amountOut }: SwapFormValues,
+    { tokenIn, tokenOut, amountIn, amountOut, wrapType }: SwapFormValues,
     { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
     if (!walletConnected || !tokenIn || !tokenOut || !amountIn || !amountOut)
       return;
+
+    const actionType =
+      wrapType === "invalid" ? "Swap" : wrapType === "wrap" ? "Wrap" : "Unwrap";
 
     try {
       const amountInBigNumber = parseBalanceToBigNumber(
@@ -73,7 +78,33 @@ const Swap: NextPageWithLayout = () => {
       const tokenInaddress = addresses.tokens[tokenIn.symbol];
       const tokenOutaddress = addresses.tokens[tokenOut.symbol];
 
-      if (tokenIn.symbol === "MATIC") {
+      // Handle wrap
+      if (wrapType === "wrap") {
+        const wMaticContract = new Contract(
+          tokenOutaddress,
+          WETH9ABI,
+          routerContract.signer
+        ) as WETH9;
+
+        const tx = await wMaticContract.deposit({
+          value: amountInBigNumber,
+          gasLimit: 1000000,
+        });
+        await tx.wait();
+      }
+      // Handle unwrap
+      else if (wrapType === "unwrap") {
+        const wMaticContract = new Contract(
+          tokenInaddress,
+          WETH9ABI,
+          routerContract.signer
+        ) as WETH9;
+
+        const tx = await wMaticContract.withdraw(amountInBigNumber, {
+          gasLimit: 1000000,
+        });
+        await tx.wait();
+      } else if (tokenIn.symbol === "MATIC") {
         const path = [tokenInaddress, tokenOutaddress];
 
         const timestamp = (await provider.getBlock("latest")).timestamp;
@@ -145,8 +176,8 @@ const Swap: NextPageWithLayout = () => {
       }
 
       toast({
-        title: "Swap",
-        description: "Swapped successfully",
+        title: actionType,
+        description: `${actionType}ped successfully`,
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -155,7 +186,7 @@ const Swap: NextPageWithLayout = () => {
       resetForm();
     } catch (error: any) {
       toast({
-        title: "Swap",
+        title: actionType,
         description: error.message,
         status: "error",
         duration: 9000,
@@ -172,10 +203,28 @@ const Swap: NextPageWithLayout = () => {
     tokenInBalance,
     tokenInReserve,
     tokenOutReserve,
+    wrapType,
   }: SwapFormValues) => {
     const errors: FormikErrors<SwapFormValues> = {};
     if (!tokenIn || !tokenOut) {
       errors.tokenIn = "Select a token";
+      return errors;
+    }
+
+    if (wrapType !== "invalid") {
+      if (!amountIn || !amountOut) {
+        errors.amountIn = "Enter an amount";
+        return errors;
+      }
+
+      const amountInBigNumber = parseBalanceToBigNumber(
+        amountIn,
+        tokenIn.decimals
+      );
+
+      if (!tokenInBalance || amountInBigNumber.gt(tokenInBalance)) {
+        errors.amountIn = `Insufficient ${tokenIn.symbol} balance`;
+      }
       return errors;
     }
 
@@ -220,7 +269,7 @@ const Swap: NextPageWithLayout = () => {
 
   return (
     <Box
-      bg={useColorModeValue("white", "gray.700")}
+      bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
       borderRadius="lg"
       p={4}
@@ -277,11 +326,21 @@ const Swap: NextPageWithLayout = () => {
                 variant="brand-2-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
-                onClick={onOpen}
+                onClick={
+                  values.wrapType !== "invalid"
+                    ? () => {
+                        handleSubmit();
+                      }
+                    : onOpen
+                }
               >
                 {walletConnected
                   ? isValid
-                    ? "Swap"
+                    ? values.wrapType !== "invalid"
+                      ? values.wrapType === "wrap"
+                        ? "Wrap"
+                        : "Unwrap"
+                      : "Swap"
                     : errors.tokenIn || errors.amountIn
                   : "Connect Wallet to Continue"}
               </Button>

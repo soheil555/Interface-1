@@ -15,7 +15,6 @@ const ThemeToggler = () => {
         display={useColorModeValue("none", "inline")}
       />
       <Switch
-        colorScheme="brand"
         size="lg"
         isChecked={useColorModeValue(false, true)}
         onChange={toggleColorMode}

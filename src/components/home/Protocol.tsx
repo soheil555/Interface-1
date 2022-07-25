@@ -31,10 +31,11 @@ const Protocol = () => {
             mt={6}
             mb={8}
             fontSize={{ base: "lg", md: "xl" }}
-            variant="gray"
+            variant="subtext"
             w={{ base: "100%", md: "80%" }}
           >
-            All in one decentralized exchange for leveraging diversified funds across Polygon Network.
+            All in one decentralized exchange for leveraging diversified funds
+            across Polygon Network.
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>
@@ -73,7 +74,7 @@ const Protocol = () => {
           <Text
             textAlign="center"
             my={8}
-            variant="gray"
+            variant="subtext"
             fontSize={{ base: "lg", md: "xl" }}
             w={["100%", "80%", "60%"]}
           >

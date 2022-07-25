@@ -7,7 +7,7 @@ import React from "react";
 const Layout = (page: ReactElement) => {
   return (
     <>
- <Image
+      <Image
         src="/images/background.png"
         position="fixed"
         objectFit="cover"
@@ -17,7 +17,7 @@ const Layout = (page: ReactElement) => {
         height="full"
         zIndex={-100}
       />
- <TopImage />
+      <TopImage />
       <AppHeader />
       <Tabs />
       <Container
@@ -26,13 +26,12 @@ const Layout = (page: ReactElement) => {
         justifyContent="center"
         pt={20}
         pb={40}
-        pl={{ base: undefined, lg: "8rem" }}
-        opacity={0.9}
+        // opacity={0.9}
       >
         {page}
       </Container>
     </>
   );
-}
+};
 
 export default Layout;

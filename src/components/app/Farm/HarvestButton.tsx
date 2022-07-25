@@ -109,11 +109,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        disabled={!isHarvestAvailable}
-        colorScheme="brand"
-      >
+      <Button onClick={onOpen} disabled={!isHarvestAvailable}>
         Harvest
       </Button>
 
@@ -147,7 +143,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                         <FormLabel>
                           <HStack justify="space-between">
                             <Text>LP Token Amount</Text>
-                            <Text variant="gray" fontSize="sm">
+                            <Text variant="subtext" fontSize="sm">
                               Balance{" "}
                               {userInfo
                                 ? userInfo.amount.lte(
@@ -199,7 +195,6 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                           isDisabled={!isValid || !masterChefContract}
                           isLoading={isSubmitting}
                           type="submit"
-                          colorScheme="brand"
                         >
                           {errors.amount
                             ? errors.amount
@@ -207,11 +202,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             ? "Harvest reward"
                             : "Unstake LP tokens and harvest reward"}
                         </Button>
-                        <Button
-                          onClick={onClose}
-                          colorScheme="brand"
-                          variant="outline"
-                        >
+                        <Button onClick={onClose} variant="outline">
                           Cancel
                         </Button>
                       </HStack>

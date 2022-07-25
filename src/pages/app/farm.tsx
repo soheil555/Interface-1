@@ -19,6 +19,7 @@ import AddLPButton from "../../components/app/Farm/AddLPButton";
 import FarmBox from "../../components/app/Farm/FarmBox";
 import useFarms from "../../hooks/useFarms";
 import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
+import Bar from "../../components/app/Bar";
 
 const Farm: NextPageWithLayout = () => {
   const [stakedOnly, setStakedOnly] = useBoolean();
@@ -28,8 +29,10 @@ const Farm: NextPageWithLayout = () => {
   const masterChefOwner = useMasterChefOwner();
 
   return (
+    <VStack gap={5} w="full">
+    <Bar />
     <VStack
-      bg={useColorModeValue("white", "gray.700")}
+      bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
       borderRadius="lg"
       p={4}
@@ -42,7 +45,7 @@ const Farm: NextPageWithLayout = () => {
         textTransform="uppercase"
         letterSpacing="widest"
       >
-        Farming
+        Liquid Farm
       </Heading>
 
       <Stack
@@ -64,7 +67,6 @@ const Farm: NextPageWithLayout = () => {
           </Heading>
           <FormControl display="flex" alignItems="center" gap={2}>
             <Switch
-              colorScheme="brand"
               size="lg"
               isChecked={stakedOnly}
               onChange={setStakedOnly.toggle}
@@ -80,7 +82,7 @@ const Farm: NextPageWithLayout = () => {
         {!farms || farms.length === 0 ? (
           <Text
             textAlign="center"
-            variant="gray"
+            variant="subtext"
             w="full"
             py={4}
             borderRadius="lg"
@@ -95,6 +97,7 @@ const Farm: NextPageWithLayout = () => {
           farms.map((farm) => <FarmBox key={farm.lpToken} farm={farm} />)
         )}
       </VStack>
+    </VStack>
     </VStack>
   );
 };

@@ -154,7 +154,6 @@ const AddLPButton = () => {
                       </FormControl>
 
                       <Checkbox
-                        colorScheme="brand"
                         isChecked={values.update}
                         onChange={() => {
                           setFieldValue("update", !values.update);
@@ -165,18 +164,12 @@ const AddLPButton = () => {
                     </VStack>
                   </ModalBody>
                   <ModalFooter>
-                    <Button
-                      colorScheme="brand"
-                      variant="outline"
-                      mr={3}
-                      onClick={onClose}
-                    >
+                    <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
                     <Button
                       isLoading={isSubmitting}
                       isDisabled={!isValid}
-                      colorScheme="brand"
                       type="submit"
                     >
                       Add

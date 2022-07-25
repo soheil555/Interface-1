@@ -19,52 +19,59 @@ const Pool: NextPageWithLayout = () => {
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
-    <VStack
-      bg={useColorModeValue("white", "gray.700")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={4}
-      gap={22}
-      w="full"
-    >
-      <Stack align="center" direction={{ base: "column", md: "row" }} w="full">
-        <NextLink href="/app/pool/add-liquidity">
-          <Button variant="brand-2-outline" w="full">
-            create a pair
-          </Button>
-        </NextLink>
-        <NextLink href="/app/pool/add-liquidity">
-          <Button variant="brand-2-outline" w="full">
-            add liquidity
-          </Button>
-        </NextLink>
-      </Stack>
+    <VStack gap={5} w="full">
 
-      <Heading alignSelf="flex-start" size="lg">
-        Your Liquidity
-      </Heading>
-
-      <Divider />
-
-      {!liquidities || liquidities.length === 0 ? (
-        <Text
-          textAlign="center"
-          variant="gray"
+      <VStack
+        bg={useColorModeValue("white", "gray.900")}
+        boxShadow="lg"
+        borderRadius="lg"
+        p={4}
+        gap={22}
+        w="full"
+      >
+        <Stack
+          align="center"
+          direction={{ base: "column", md: "row" }}
           w="full"
-          py={4}
-          borderRadius="lg"
-          border="solid"
-          borderWidth={1}
-          borderColor="gray.200"
-          overflow="hidden"
         >
-          {!liquidities ? "Loading..." : "No liquidity found"}
-        </Text>
-      ) : (
-        liquidities.map((liquidity) => (
-          <LiquidityBox key={liquidity.address} liquidity={liquidity} />
-        ))
-      )}
+          <NextLink href="/app/pool/add-liquidity">
+            <Button variant="brand-2-outline" w="full">
+              create a pair
+            </Button>
+          </NextLink>
+          <NextLink href="/app/pool/add-liquidity">
+            <Button variant="brand-2-outline" w="full">
+              Add Liquidity
+            </Button>
+          </NextLink>
+        </Stack>
+
+        <Heading alignSelf="flex-start" size="lg">
+          Your Liquidity
+        </Heading>
+
+        <Divider />
+
+        {!liquidities || liquidities.length === 0 ? (
+          <Text
+            textAlign="center"
+            variant="subtext"
+            w="full"
+            py={4}
+            borderRadius="lg"
+            border="solid"
+            borderWidth={1}
+            borderColor="gray.200"
+            overflow="hidden"
+          >
+            {!liquidities ? "Loading..." : "No liquidity found"}
+          </Text>
+        ) : (
+          liquidities.map((liquidity) => (
+            <LiquidityBox key={liquidity.address} liquidity={liquidity} />
+          ))
+        )}
+      </VStack>
     </VStack>
   );
 };

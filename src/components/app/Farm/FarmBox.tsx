@@ -37,7 +37,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
   const token1Info = useTokenInfo(tokens?.token1);
   const { account } = useWeb3React();
   const masterChefOwner = useMasterChefOwner();
-  const boxBg = useColorModeValue("gray.100", "gray.600");
+  const boxBg = useColorModeValue("gray.100", "gray.700");
 
   if (!token0Info || !token1Info) return null;
 

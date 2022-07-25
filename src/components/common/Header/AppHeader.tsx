@@ -1,4 +1,4 @@
-import { Flex, Link, Image, HStack, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Link, HStack, useColorModeValue } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { appRoutes } from "../../../routes";
@@ -18,7 +18,7 @@ const AppHeader = () => {
       justify="space-between"
       align="center"
       p={5}
-      bg={useColorModeValue("gray.50", "gray.700")}
+      bg={useColorModeValue("gray.50", "gray.900")}
       boxShadow="sm"
     >
       {

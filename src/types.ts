@@ -29,6 +29,7 @@ export interface SwapFormValues {
   tokenInBalance: BigNumber | undefined;
   tokenInReserve: BigNumber | undefined;
   tokenOutReserve: BigNumber | undefined;
+  wrapType: WrapType;
 }
 
 export interface RemoveLiquidityFormValues {
@@ -90,3 +91,5 @@ export interface Farm {
   lastRewardBlock: BigNumber;
   accAXOPerShare: BigNumber;
 }
+
+export type WrapType = "wrap" | "unwrap" | "invalid";

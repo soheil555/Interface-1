@@ -6,6 +6,7 @@ import {
   MenuGroup,
   Button,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { CHAINS } from "../../../chains";
@@ -20,7 +21,12 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
 
   return (
     <Menu autoSelect={false}>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+      <MenuButton
+        as={Button}
+        variant="outline"
+        color={useColorModeValue("gray.900", "white")}
+        rightIcon={<ChevronDownIcon />}
+      >
         <>
           <chainInfo.logo mr={2} />
           <Box display={{ base: "none", md: "inline-block" }}>

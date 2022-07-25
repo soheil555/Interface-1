@@ -141,7 +141,6 @@ const EditAllocPointButton = ({
                       </FormControl>
 
                       <Checkbox
-                        colorScheme="brand"
                         isChecked={values.update}
                         onChange={() => {
                           setFieldValue("update", !values.update);
@@ -152,12 +151,7 @@ const EditAllocPointButton = ({
                     </VStack>
                   </ModalBody>
                   <ModalFooter>
-                    <Button
-                      colorScheme="brand"
-                      variant="outline"
-                      mr={3}
-                      onClick={onClose}
-                    >
+                    <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
                     <Button
@@ -167,7 +161,6 @@ const EditAllocPointButton = ({
                         Number(values.allocPoint) ===
                           Number(initialValues.allocPoint)
                       }
-                      colorScheme="brand"
                       type="submit"
                     >
                       Edit

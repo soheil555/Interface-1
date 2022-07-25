@@ -14,30 +14,28 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
-import StakeAXO from "../../components/app/Bar/StakeAXO";
-import UnstakeAXO from "../../components/app/Bar/UnstakeAXO";
-import Layout from "../../components/app/Layout";
-import useUnstakedAXOBalance from "../../hooks/useUnstakedAXOBalance";
-import useXltBalance from "../../hooks/useXltBalance";
-import { AXOToken, XolotlToken } from "../../icons";
-import { parseBalance } from "../../utils";
-import { NextPageWithLayout } from "../_app";
+import StakeAXO from "./StakeAXO";
+import UnstakeAXO from "./UnstakeAXO";
+import useUnstakedAXOBalance from "../../../hooks/useUnstakedAXOBalance";
+import useXltBalance from "../../../hooks/useXltBalance";
+import { AXOToken, XolotlToken } from "../../../icons";
+import { parseBalance } from "../../../utils";
 
-const Bar: NextPageWithLayout = () => {
+const Bar = () => {
   const { data: xltBalance } = useXltBalance();
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
 
   return (
     <VStack
-      bg={useColorModeValue("white", "gray.700")}
+      bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
       borderRadius="lg"
-      p={4}
+      p={2}
       gap={14}
       w="full"
     >
       <Heading size="xl" fontWeight="light" letterSpacing="wider">
-        Staking AXO for XLT
+        Stake AXO for XLT
       </Heading>
 
       <Stack
@@ -67,7 +65,7 @@ const Bar: NextPageWithLayout = () => {
         </HStack>
       </Stack>
 
-      <Tabs colorScheme="brand" variant="enclosed" w="full" isFitted>
+      <Tabs variant="enclosed" w="full" isFitted>
         <TabList>
           <Tab>Stake AXO</Tab>
           <Tab>Unstake</Tab>
@@ -85,7 +83,5 @@ const Bar: NextPageWithLayout = () => {
     </VStack>
   );
 };
-
-Bar.getLayout = Layout;
 
 export default Bar;
