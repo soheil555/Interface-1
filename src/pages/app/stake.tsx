@@ -6,6 +6,7 @@ import { VStack } from "@chakra-ui/react";
 const Stake: NextPageWithLayout = () => {
     return (
         <VStack gap={5} w="full">
+            Stake Your Liquidity Tokens Here And Earn AXO!
             <Bar />
         </VStack>
     )

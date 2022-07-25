@@ -20,7 +20,6 @@ const Pool: NextPageWithLayout = () => {
 
   return (
     <VStack gap={5} w="full">
-
       <VStack
         bg={useColorModeValue("white", "gray.900")}
         boxShadow="lg"
@@ -49,7 +48,6 @@ const Pool: NextPageWithLayout = () => {
         <Heading alignSelf="flex-start" size="lg">
           Your Liquidity
         </Heading>
-
         <Divider />
 
         {!liquidities || liquidities.length === 0 ? (

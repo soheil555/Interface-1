@@ -261,6 +261,12 @@ const AddLiquidity: NextPageWithLayout = () => {
                       errors.token2Amount
                   : "Connect Wallet to Continue"}
               </Button>
+              <Text
+      textAlign="center"
+      variant="subtext"
+      w="full"
+      overflow="hidden"
+      >Supply two tokens in equal values</Text>
             </VStack>
           </Form>
         )}

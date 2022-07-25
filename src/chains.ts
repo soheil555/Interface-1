@@ -33,7 +33,7 @@ export const CHAINS: {
   [chainId: number]: ChainInformation;
 } = {
   137: {
-    urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
+    urls: "https://urqjwgwhprgj.usemoralis.com:2053/server"
       ? [
           `https://polygon-mainnet.g.alchemy.com/v2/XJFcsw5NaDcoP9UZlOe-4-evEVOtoJen`,
         ]

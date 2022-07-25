@@ -44,10 +44,10 @@ const Farm: NextPageWithLayout = () => {
         textTransform="uppercase"
         letterSpacing="widest"
       >
-        Liquid Farm
+        Liquidity Pool
       </Heading>
       <Text fontSize="s">
-          Reward Bonus: 3 AXO/block!
+          Block Reward: 3 AXO
           </Text>
       <Stack
         direction={{ base: "column", lg: "row" }}

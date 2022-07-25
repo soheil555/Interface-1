@@ -13,6 +13,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Box,
+  Text
 } from "@chakra-ui/react";
 import StakeAXO from "./StakeAXO";
 import UnstakeAXO from "./UnstakeAXO";
@@ -35,9 +37,8 @@ const Bar = () => {
       w="full"
     >
       <Heading size="xl" fontWeight="light" letterSpacing="wider">
-        Stake AXO for XLT
+        AXO Stake
       </Heading>
-
       <Stack
         gap={2}
         direction={{ base: "column", md: "row" }}
@@ -47,7 +48,7 @@ const Bar = () => {
         <HStack flex={1}>
           <XolotlToken fontSize="4rem" />
           <Stat>
-            <StatLabel>Balance</StatLabel>
+            <StatLabel> Wallet Balance</StatLabel>
             <StatNumber>{xltBalance && parseBalance(xltBalance)}</StatNumber>
             <StatHelpText>XLT</StatHelpText>
           </Stat>
@@ -56,7 +57,7 @@ const Bar = () => {
         <HStack flex={1}>
           <AXOToken fontSize="4rem" />
           <Stat>
-            <StatLabel>Unstaked</StatLabel>
+            <StatLabel>Wallet Balance</StatLabel>
             <StatNumber>
               {unstakedAXOBalance && parseBalance(unstakedAXOBalance)}
             </StatNumber>
@@ -80,6 +81,11 @@ const Bar = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <Box w="full" p={4} borderRadius="lg">
+      <HStack justifyContent="space-between">
+      <Text fontSize="m">This pool automatically earns 15% of all trade fees to buyback AXO, increasing ratio overtime</Text>
+        </HStack>
+        </Box>
     </VStack>
   );
 };

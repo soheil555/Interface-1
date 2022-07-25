@@ -1,8 +1,9 @@
 import type { IconType } from "react-icons";
 import { IoLogoGithub } from "react-icons/io5";
 import { IoSwapVertical } from "react-icons/io5";
-import { CgDropOpacity } from "react-icons/cg";
-import { GiFarmer } from "react-icons/gi";
+import { GiCancer } from "react-icons/gi";
+import { GiWaveCrest } from "react-icons/gi";
+import {GiHarpoonChain} from "react-icons/gi"
 
 interface Route {
   label: string;
@@ -40,19 +41,19 @@ export const appRoutes: Route[] = [
   {
     href: "/app/pool",
     label: "Liquidity",
-    icon: CgDropOpacity,
+    icon: GiCancer,
     isExternal: false,
   },
   {
     href: "/app/farm",
-    label: "Farm",
-    icon: GiFarmer,
+    label: "Pool",
+    icon: GiWaveCrest,
     isExternal: false,
   },
   {
     href: "/app/stake",
-    label: "Stake AXO",
-    icon: GiFarmer,
+    label: "Stake",
+    icon: GiHarpoonChain,
     isExternal: false,
   },
 ];
