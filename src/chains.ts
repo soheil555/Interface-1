@@ -1,6 +1,6 @@
 import { IconProps } from "@chakra-ui/react";
 import type { AddEthereumChainParameter } from "@web3-react/types";
-import { Eth, Matic } from "@chakra-icons/cryptocurrency-icons";
+import { Matic } from "@chakra-icons/cryptocurrency-icons";
 
 const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
   name: "Matic",
@@ -54,4 +54,11 @@ export const CHAINS: {
     blockExplorerUrls: ["https://mumbai.polygonscan.com"],
     logo: Matic,
   },
+  // 31337: {
+  //   urls: ["http://127.0.0.1:8545"],
+  //   name: "Hardhat",
+  //   nativeCurrency: MATIC,
+  //   blockExplorerUrls: [],
+  //   logo: Matic,
+  // },
 };
