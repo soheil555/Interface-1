@@ -72,7 +72,6 @@ const Settings = () => {
             <IconButton
               aria-label="settings"
               variant="ghost"
-              color={useColorModeValue("gray.900", "white")}
               icon={<FiSettings />}
             />
           </PopoverTrigger>

@@ -13,19 +13,13 @@ import Layout from "../../../components/app/Layout";
 import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
 import { useWeb3React } from "@web3-react/core";
 import LiquidityBox from "../../../components/app/Liquidity/LiquidityBox";
-import Bar from "../../../components/app/Bar";
 
 const Pool: NextPageWithLayout = () => {
   const { account } = useWeb3React();
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
-<<<<<<< Updated upstream
     <VStack gap={5} w="full">
-      <Bar />
-=======
-   
->>>>>>> Stashed changes
 
       <VStack
         bg={useColorModeValue("white", "gray.900")}
@@ -47,7 +41,7 @@ const Pool: NextPageWithLayout = () => {
           </NextLink>
           <NextLink href="/app/pool/add-liquidity">
             <Button variant="brand-2-outline" w="full">
-              add liquidity
+              Add Liquidity
             </Button>
           </NextLink>
         </Stack>
@@ -78,10 +72,7 @@ const Pool: NextPageWithLayout = () => {
           ))
         )}
       </VStack>
-<<<<<<< Updated upstream
     </VStack>
-=======
->>>>>>> Stashed changes
   );
 };
 

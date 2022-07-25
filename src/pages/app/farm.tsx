@@ -45,7 +45,7 @@ const Farm: NextPageWithLayout = () => {
         textTransform="uppercase"
         letterSpacing="widest"
       >
-        Farming
+        Liquid Farm
       </Heading>
 
       <Stack

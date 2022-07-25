@@ -30,7 +30,7 @@ const Bar = () => {
       bg={useColorModeValue("white", "gray.900")}
       boxShadow="lg"
       borderRadius="lg"
-      p={4}
+      p={2}
       gap={14}
       w="full"
     >
