@@ -35,7 +35,7 @@ const Bar = () => {
       w="full"
     >
       <Heading size="xl" fontWeight="light" letterSpacing="wider">
-        Staking AXO for XLT
+        Stake AXO for XLT
       </Heading>
 
       <Stack
