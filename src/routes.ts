@@ -39,13 +39,19 @@ export const appRoutes: Route[] = [
   },
   {
     href: "/app/pool",
-    label: "Pool",
+    label: "Liquidity",
     icon: CgDropOpacity,
     isExternal: false,
   },
   {
     href: "/app/farm",
     label: "Farm",
+    icon: GiFarmer,
+    isExternal: false,
+  },
+  {
+    href: "/app/stake",
+    label: "Stake AXO",
     icon: GiFarmer,
     isExternal: false,
   },

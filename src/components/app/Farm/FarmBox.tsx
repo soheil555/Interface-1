@@ -69,7 +69,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           p={2}
         >
           <Stat>
-            <StatLabel>AXO Allocation Point</StatLabel>
+            <StatLabel>Base Bonus Multiplier</StatLabel>
             <HStack>
               <StatNumber>{farm.allocPoint.toString()}</StatNumber>
               {masterChefOwner && masterChefOwner === account ? (
