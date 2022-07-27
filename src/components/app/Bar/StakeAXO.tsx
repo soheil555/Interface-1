@@ -8,18 +8,22 @@ import {
   FormLabel,
   Text,
   useToast,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import useUnstakedAXOBalance from "../../../hooks/useUnstakedAXOBalance";
 import useXolotlContract from "../../../hooks/useXolotlContract";
 import { StakeAXOFormValues } from "../../../types";
 import {
+  AXOForXLT,
   isNumberValid,
   parseBalance,
   parseBalanceToBigNumber,
 } from "../../../utils";
 import useAXOContract from "../../../hooks/useAXOContract";
 import { useWeb3React } from "@web3-react/core";
+import useXolotTotalSupply from "../../../hooks/useXolotTotalSupply";
+import useXltBalance from "../../../hooks/useXltBalance";
 
 const initialValues: StakeAXOFormValues = {
   amount: "",
@@ -29,7 +33,9 @@ const StakeAXO = () => {
   const toast = useToast();
   const axoContract = useAXOContract();
   const xolotlContract = useXolotlContract();
+  const { data: xolotlTotalSupply } = useXolotTotalSupply();
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
+  const { data: xltBalance } = useXltBalance();
   const { account } = useWeb3React();
   const walletConnected = !!axoContract && !!xolotlContract && !!account;
 
@@ -137,6 +143,25 @@ const StakeAXO = () => {
                     MAX
                   </Button>
                 </HStack>
+                <FormHelperText>
+                  {xolotlTotalSupply &&
+                  unstakedAXOBalance &&
+                  xltBalance &&
+                  values.amount.length > 0 ? (
+                    <>
+                      You will receive:{" "}
+                      {parseBalance(
+                        AXOForXLT(
+                          parseBalanceToBigNumber(values.amount),
+                          xolotlTotalSupply,
+                          xltBalance,
+                          unstakedAXOBalance
+                        )
+                      )}{" "}
+                      XLT
+                    </>
+                  ) : null}
+                </FormHelperText>
               </FormControl>
               <Button
                 w="full"

@@ -75,3 +75,21 @@ export function calculatePrice(
     tokenOutDecimals
   );
 }
+
+export function XLtForAXO(
+  xltAmount: BigNumber,
+  xltTotalSupply: BigNumber,
+  axoBalance: BigNumber
+) {
+  return xltAmount.mul(axoBalance).div(xltTotalSupply);
+}
+
+export function AXOForXLT(
+  axoAmount: BigNumber,
+  xltTotalSupply: BigNumber,
+  xltBalance: BigNumber,
+  axoBalance: BigNumber
+) {
+  if (xltBalance.isZero() || axoBalance) return axoAmount;
+  return axoAmount.mul(xltTotalSupply).div(axoBalance);
+}
