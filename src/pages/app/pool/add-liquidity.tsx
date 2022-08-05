@@ -92,7 +92,19 @@ const AddLiquidity: NextPageWithLayout = () => {
         }
 
         const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Number(settings.deadline) * 60;
+        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60);
+
+        let gasPrice = await routerContract.provider.getGasPrice();
+
+        let estimatedGas = await routerContract.estimateGas.addLiquidityETH(
+          tokenContract.address,
+          tokenAmount,
+          amountWithSlippage(tokenAmount, settings.slippage),
+          amountWithSlippage(maticAmount, settings.slippage),
+          account,
+          deadline,
+          { value: maticAmount }
+        );
 
         //TODO: set gasLimit
         let tx = await routerContract.addLiquidityETH(
@@ -103,7 +115,8 @@ const AddLiquidity: NextPageWithLayout = () => {
           account,
           deadline,
           {
-            gasLimit: 1000000,
+            gasLimit: estimatedGas.add(1000000),
+            gasPrice,
             value: maticAmount,
           }
         );
@@ -137,7 +150,20 @@ const AddLiquidity: NextPageWithLayout = () => {
         }
 
         const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Number(settings.deadline) * 60;
+        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60);
+
+        let gasPrice = await routerContract.provider.getGasPrice();
+
+        let estimatedGas = await routerContract.estimateGas.addLiquidity(
+          token1Contract.address,
+          token2Contract.address,
+          amount1,
+          amount2,
+          amountWithSlippage(amount1, settings.slippage),
+          amountWithSlippage(amount2, settings.slippage),
+          account,
+          deadline
+        );
 
         //TODO: set gasLimit
         let tx = await routerContract.addLiquidity(
@@ -149,7 +175,7 @@ const AddLiquidity: NextPageWithLayout = () => {
           amountWithSlippage(amount2, settings.slippage),
           account,
           deadline,
-          { gasLimit: 1000000 }
+          { gasLimit: estimatedGas.add(1000000), gasPrice }
         );
 
         await tx.wait();
@@ -262,11 +288,13 @@ const AddLiquidity: NextPageWithLayout = () => {
                   : "Connect Wallet to Continue"}
               </Button>
               <Text
-      textAlign="center"
-      variant="subtext"
-      w="full"
-      overflow="hidden"
-      >Supply two tokens in equal values</Text>
+                textAlign="center"
+                variant="subtext"
+                w="full"
+                overflow="hidden"
+              >
+                Supply two tokens in equal values
+              </Text>
             </VStack>
           </Form>
         )}
