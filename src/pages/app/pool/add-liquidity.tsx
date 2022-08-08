@@ -24,7 +24,9 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
 import { BigNumber } from "ethers";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
+const web3 = createAlchemyWeb3("https://polygon-mainnet.g.alchemy.com/v2/XJFcsw5NaDcoP9UZlOe-4-evEVOtoJen");
 const initialValues: LiquidityFormValues = {
   token1: undefined,
   token2: undefined,
@@ -154,7 +156,7 @@ const AddLiquidity: NextPageWithLayout = () => {
 
         let gasPrice = await routerContract.provider.getGasPrice();
 
-        let estimatedGas = await routerContract.estimateGas.addLiquidity(
+        let estimatedGas = await web3.eth.estimateGas.addLiquidity(
           token1Contract.address,
           token2Contract.address,
           amount1,
