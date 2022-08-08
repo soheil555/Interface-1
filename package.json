@@ -33,7 +33,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "swr": "^1.3.0",
-    "yarn": "^1.22.19"
+    "yarn": "^1.22.19",
+    "@alch/alchemy-web3": "1.4.6"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.1.0",
