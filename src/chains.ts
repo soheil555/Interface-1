@@ -33,7 +33,7 @@ export const CHAINS: {
   [chainId: number]: ChainInformation;
 } = {
   137: {
-    urls: "https://urqjwgwhprgj.usemoralis.com:2053/server"
+    urls: "https://polygon-mainnet.infura.io/v3/20e476dbde784dda8a0d6a6cd2c060ea"
       ? [
           `https://polygon-mainnet.g.alchemy.com/v2/XJFcsw5NaDcoP9UZlOe-4-evEVOtoJen`,
         ]
