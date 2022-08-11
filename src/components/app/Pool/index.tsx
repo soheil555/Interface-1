@@ -23,7 +23,7 @@ import useXltBalance from "../../../hooks/useXltBalance";
 import { AXOToken, XolotlToken } from "../../../icons";
 import { parseBalance } from "../../../utils";
 
-const Bar = () => {
+const Pool = () => {
   const { data: xltBalance } = useXltBalance();
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
 
@@ -90,4 +90,4 @@ const Bar = () => {
   );
 };
 
-export default Bar;
+export default Pool;

@@ -39,13 +39,13 @@ export const appRoutes: Route[] = [
     isExternal: false,
   },
   {
-    href: "/app/pool",
+    href: "/app/liquid",
     label: "Liquidity",
     icon: GiCancer,
     isExternal: false,
   },
   {
-    href: "/app/farm",
+    href: "/app/pool",
     label: "Pool",
     icon: GiWaveCrest,
     isExternal: false,
