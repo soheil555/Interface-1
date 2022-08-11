@@ -44,7 +44,7 @@ export const tokens: Array<Token> = [
   },
   {
     name: "wrapped Ethereum",
-    symbol: "wEth",
+    symbol: "wETH",
     decimals: 18,
     logo: Eth,
   },
