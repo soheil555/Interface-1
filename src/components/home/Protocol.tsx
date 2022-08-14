@@ -20,12 +20,6 @@ const Protocol = () => {
         py={20}
       >
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Heading textAlign="center" mb={4} size="xl">
-            AXOSWAP
-          </Heading>
-          <Heading textAlign="center" fontWeight="light" size="lg">
-            PROJECT
-          </Heading>
           <Text
             textAlign="center"
             mt={6}
@@ -34,8 +28,7 @@ const Protocol = () => {
             variant="subtext"
             w={{ base: "100%", md: "80%" }}
           >
-            All in one decentralized exchange for leveraging diversified funds
-            across Polygon Network.
+           Swap tokens, farm liquidity and explore the future of Defi!
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>
@@ -66,7 +59,7 @@ const Protocol = () => {
 
         <Flex direction="column" align="center" pt={10}>
           <Heading textAlign="center" mb={5} size="xl">
-            Crowdfunding Campaign
+            Crowdfunding Campaig
           </Heading>
           <Heading textAlign="center" fontWeight="light" size="lg">
             AxoGenesis Collection
