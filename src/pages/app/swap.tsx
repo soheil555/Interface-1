@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
 import useFactoryContract from "../../hooks/useFactoryContract";
-import Layout from "../../components/app/Layout";
+import Layout from "../../components/app/Layout/Layout";
 import useRouterContract from "../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";

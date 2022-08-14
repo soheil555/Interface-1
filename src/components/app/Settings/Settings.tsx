@@ -18,10 +18,10 @@ import {
 } from "@chakra-ui/react";
 import { FiSettings } from "react-icons/fi";
 import { Formik, FormikErrors } from "formik";
-import { SettingsFormValues } from "../../types";
-import { settingsAtom } from "../../store";
+import { SettingsFormValues } from "../../../types";
+import { settingsAtom } from "../../../store";
 import { useAtom } from "jotai";
-import ThemeToggler from "../common/ThemeToggler";
+import ThemeToggler from "../../common/ThemeToggler";
 
 const Settings = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();

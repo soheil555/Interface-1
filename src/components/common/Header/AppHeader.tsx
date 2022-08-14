@@ -1,9 +1,17 @@
-import { Flex, Link, HStack, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Link,
+  HStack,
+  useColorModeValue,
+  Image,
+  Box,
+  Center,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { appRoutes } from "../../../routes";
 import MetaMaskConnect from "../../app/Web3/MetaMaskConnect";
-import Settings from "../../app/Settings";
+import Settings from "../../app/Settings/Settings";
 
 const AppHeader = () => {
   const router = useRouter();
@@ -21,33 +29,39 @@ const AppHeader = () => {
       bg={useColorModeValue("gray.50", "gray.900")}
       boxShadow="sm"
     >
-      {
-        <HStack gap={10}>
-          <HStack
-            display={{ base: "none", lg: "flex" }}
-            fontSize={22}
-            gap={10}
-            mx={10}
-            justify="center"
-          >
-            {appRoutes.map((route) => {
-              const isActive = router.pathname.startsWith(route.href);
+      <HStack gap={10}>
+        <Center
+          w={{ base: "2rem", md: "3rem" }}
+          h={{ base: "2rem", md: "3rem" }}
+        >
+          <Image src="/images/logo@2x.png" />
+        </Center>
+        <HStack
+          display={{ base: "none", lg: "flex" }}
+          fontSize={22}
+          gap={10}
+          mx={10}
+          justify="center"
+        >
+          {appRoutes.map((route) => {
+            const isActive = router.pathname.startsWith(route.href);
 
-              return (
-                <NextLink key={route.label} href={route.href} passHref>
-                  <Link color={isActive ? "brand.300" : undefined}>
-                    {route.label}
-                  </Link>
-                </NextLink>
-              );
-            })}
-          </HStack>
+            return (
+              <NextLink key={route.label} href={route.href} passHref>
+                <Link color={isActive ? "brand.300" : undefined}>
+                  {route.label}
+                </Link>
+              </NextLink>
+            );
+          })}
         </HStack>
-      }
+      </HStack>
 
       <HStack gap={2}>
         <Settings />
-        <MetaMaskConnect />
+        <Box>
+          <MetaMaskConnect />
+        </Box>
       </HStack>
     </Flex>
   );

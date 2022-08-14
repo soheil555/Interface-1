@@ -102,6 +102,7 @@ const Web3ConnectWithSelect = ({
 
         <Menu>
           <MenuButton
+            fontSize={{ base: "sm", md: "md" }}
             as={Button}
             rightIcon={<ChevronDownIcon />}
             variant="brand-2"

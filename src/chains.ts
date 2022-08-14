@@ -54,11 +54,11 @@ export const CHAINS: {
     blockExplorerUrls: ["https://mumbai.polygonscan.com"],
     logo: Matic,
   },
-  // 31337: {
-  //   urls: ["http://127.0.0.1:8545"],
-  //   name: "Hardhat",
-  //   nativeCurrency: MATIC,
-  //   blockExplorerUrls: [],
-  //   logo: Matic,
-  // },
+  31337: {
+    urls: ["http://127.0.0.1:8545"],
+    name: "Hardhat",
+    nativeCurrency: MATIC,
+    blockExplorerUrls: [],
+    logo: Matic,
+  },
 };
