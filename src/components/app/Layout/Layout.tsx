@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
 import { Box, Container, Image, VStack } from "@chakra-ui/react";
-import AppHeader from "../../common/Header/AppHeader";
+import Header from "../Header/Header";
 import React from "react";
 import AmplifyBadge from "../../common/AmplifyBadge";
 
@@ -17,7 +17,7 @@ const Layout = (page: ReactElement) => {
         height="full"
         zIndex={-100}
       />
-      <AppHeader />
+      <Header />
       <Container
         maxW="container.md"
         display="flex"

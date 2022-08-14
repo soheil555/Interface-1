@@ -12,11 +12,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import ThemeToggler from "../ThemeToggler";
+import ThemeToggler from "../common/ThemeToggler";
 import { Fade as Hamburger } from "hamburger-react";
-import { homeRoutes } from "../../../routes";
+import { homeRoutes } from "../../routes";
 
-const HomeHeader = () => {
+const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -94,4 +94,4 @@ const getLinks = () => {
   });
 };
 
-export default HomeHeader;
+export default Header;

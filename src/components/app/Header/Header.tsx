@@ -6,14 +6,17 @@ import {
   Image,
   Box,
   Center,
+  IconButton,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { appRoutes } from "../../../routes";
 import MetaMaskConnect from "../../app/Web3/MetaMaskConnect";
 import Settings from "../../app/Settings/Settings";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import SideDrawer from "../SideDrawer/SideDrawer";
 
-const AppHeader = () => {
+const Header = () => {
   const router = useRouter();
 
   return (
@@ -29,6 +32,8 @@ const AppHeader = () => {
       bg={useColorModeValue("gray.50", "gray.900")}
       boxShadow="sm"
     >
+      <SideDrawer />
+
       <HStack gap={10}>
         <Center
           w={{ base: "2rem", md: "3rem" }}
@@ -59,7 +64,7 @@ const AppHeader = () => {
 
       <HStack gap={2}>
         <Settings />
-        <Box>
+        <Box display={{ base: "none", lg: "block" }}>
           <MetaMaskConnect />
         </Box>
       </HStack>
@@ -67,4 +72,4 @@ const AppHeader = () => {
   );
 };
 
-export default AppHeader;
+export default Header;

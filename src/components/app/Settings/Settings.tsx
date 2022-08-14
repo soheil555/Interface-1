@@ -94,8 +94,12 @@ const Settings = () => {
                 >
                   <NumberInputField placeholder="0.1" />
                 </NumberInput>
-                <Button onClick={() => setFieldValue("slippage", "0.1")} ml={2}>
-                  Auto
+                <Button
+                  variant="outline"
+                  onClick={() => setFieldValue("slippage", "0.1")}
+                  ml={2}
+                >
+                  0.1
                 </Button>
               </InputGroup>
               <FormErrorMessage>{errors.slippage}</FormErrorMessage>
