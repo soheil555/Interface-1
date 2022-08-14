@@ -16,7 +16,7 @@ const HeroBanner = () => {
         lineHeight="1"
         fontWeight="black"
       >
-        AXOSWAP <Text color="brand.300">PROJECT</Text>
+        AXOSWAP <Text color="brand.300">DECENTRALIZED EXCHANGE</Text>
       </Heading>
       <Text textAlign="center" fontSize="3xl">
         Project Status: ICO event live on Sushiswap!
