@@ -24,15 +24,17 @@ const Protocol = () => {
             textAlign="center"
             mt={6}
             mb={8}
-            fontSize={{ base: "lg", md: "xl" }}
+            fontSize={{ base: "lg", md: "3xl" }}
             variant="subtext"
             w={{ base: "100%", md: "80%" }}
           >
-           Swap tokens, farm liquidity and explore the future of Defi!
+           Swap tokens, farm liquidity and explore DeFi's latest protocols!
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>
           </Link>
+          <Text fontSize="s">Coming soon! </Text>
+          <Text>Platform content breakdown with DeFi's first V-Tuber!</Text>
         </Box>
 
         <Image
@@ -59,7 +61,7 @@ const Protocol = () => {
 
         <Flex direction="column" align="center" pt={10}>
           <Heading textAlign="center" mb={5} size="xl">
-            Crowdfunding Campaig
+            Crowdfunding campaign
           </Heading>
           <Heading textAlign="center" fontWeight="light" size="lg">
             AxoGenesis Collection
