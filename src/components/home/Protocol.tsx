@@ -60,11 +60,8 @@ const Protocol = () => {
         </Box>
 
         <Flex direction="column" align="center" pt={10}>
-          <Heading textAlign="center" mb={5} size="xl">
-            Crowdfunding campaign
-          </Heading>
           <Heading textAlign="center" fontWeight="light" size="lg">
-            AxoGenesis Collection
+            Axoswap's Official NFT Collection!
           </Heading>
           <Text
             textAlign="center"
@@ -73,19 +70,7 @@ const Protocol = () => {
             fontSize={{ base: "lg", md: "xl" }}
             w={["100%", "80%", "60%"]}
           >
-            Purchase our crowdfunding NFT collection to support our platform
-            development and receive future rewards!
           </Text>
-
-          <Link
-            href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits/"
-            isExternal
-          >
-            <Button variant="brand-outline" mb={3}>
-              Announcement
-            </Button>
-          </Link>
-
           <Link href="https://nft.axoswap.io" isExternal>
             <Button variant="brand-outline">Mint Now</Button>
           </Link>
