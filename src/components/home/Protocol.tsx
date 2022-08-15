@@ -28,13 +28,13 @@ const Protocol = () => {
             variant="subtext"
             w={{ base: "100%", md: "80%" }}
           >
-           Swap tokens, farm liquidity and explore DeFi's latest protocols!
+           Swap tokens, farm liquidity and explore the Metaverse
           </Text>
           <Link href="https://docs.axoswap.io" isExternal>
             <Button variant="brand-outline">View our docs</Button>
           </Link>
-          <Text fontSize="s">Coming soon! </Text>
-          <Text>Platform content breakdown with DeFi's first V-Tuber!</Text>
+          <Text fontSize="s">Coming soon </Text>
+          <Text>Platform content breakdown with DeFi first V-Tuber</Text>
         </Box>
 
         <Image
@@ -61,7 +61,7 @@ const Protocol = () => {
 
         <Flex direction="column" align="center" pt={10}>
           <Heading textAlign="center" fontWeight="light" size="lg">
-            Axoswap's Official NFT Collection!
+            Axoswap Official NFT Collection
           </Heading>
           <Text
             textAlign="center"
