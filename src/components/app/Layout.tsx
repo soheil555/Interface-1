@@ -7,7 +7,7 @@ const Layout = (page: ReactElement) => {
   return (
     <>
       <Image
-        src="/images/background.svg"
+        src="/images/background.png"
         position="fixed"
         objectFit="cover"
         top="0"

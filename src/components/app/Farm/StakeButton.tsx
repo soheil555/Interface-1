@@ -221,7 +221,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                   pool tokens in this area. However, you do not have enough{" "}
                   {token0Info?.symbol} / {token1Info?.symbol} pool tokens yet.
                 </Text>
-                <NextLink href="/app/pool/add-liquidity">
+                <NextLink href="/app/liquid/add-liquidity">
                   <Button variant="brand-2-outline">
                     Add liquidity to {token0Info?.symbol} / {token1Info?.symbol}
                   </Button>
