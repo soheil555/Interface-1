@@ -33,12 +33,12 @@ const Pool: NextPageWithLayout = () => {
           direction={{ base: "column", md: "row" }}
           w="full"
         >
-          <NextLink href="/app/pool/add-liquidity">
+          <NextLink href="/app/liquid/add-liquidity">
             <Button variant="brand-2-outline" w="full">
               create a pair
             </Button>
           </NextLink>
-          <NextLink href="/app/pool/add-liquidity">
+          <NextLink href="/app/liquid/add-liquidity">
             <Button variant="brand-2-outline" w="full">
               Add Liquidity
             </Button>

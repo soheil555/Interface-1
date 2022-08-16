@@ -3,7 +3,7 @@ import useCountDown from "../../hooks/useCountDown";
 
 const Counter = () => {
   const { days, hours, minutes, seconds } = useCountDown(
-    new Date(1657827000000)
+    new Date(1663070000000)
   );
 
   return (
