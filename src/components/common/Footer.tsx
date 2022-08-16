@@ -1,5 +1,14 @@
-import { HStack, Image, Link, Box, VStack } from "@chakra-ui/react";
+import {
+  HStack,
+  Image,
+  Link,
+  Box,
+  VStack,
+  Divider,
+  Flex,
+} from "@chakra-ui/react";
 import { BsTwitter, BsDiscord } from "react-icons/bs";
+import AmplifyBadge from "./AmplifyBadge";
 const Footer = () => {
   return (
     <VStack align="center" justify="center" p={5} gap={5}>
@@ -47,6 +56,12 @@ const Footer = () => {
 
         <Link href="#">Contact Us</Link>
       </HStack>
+
+      <Divider />
+
+      <Flex flexDir="row-reverse" w="full">
+        <AmplifyBadge />
+      </Flex>
     </VStack>
   );
 };

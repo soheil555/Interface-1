@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import useFactoryContract from "../../../hooks/useFactoryContract";
-import Layout from "../../../components/app/Layout";
+import Layout from "../../../components/app/Layout/Layout";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
 import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
@@ -24,8 +24,6 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
 import { BigNumber } from "ethers";
-
-
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,

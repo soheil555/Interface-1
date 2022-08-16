@@ -22,6 +22,7 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
   return (
     <Menu autoSelect={false}>
       <MenuButton
+        fontSize={{ base: "sm", lg: "md" }}
         as={Button}
         variant="outline"
         color={useColorModeValue("gray.900", "white")}
@@ -29,9 +30,7 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
       >
         <>
           <chainInfo.logo mr={2} />
-          <Box display={{ base: "none", md: "inline-block" }}>
-            {chainInfo.name}
-          </Box>
+          <Box display="inline-block">{chainInfo.name}</Box>
         </>
       </MenuButton>
       <MenuList>

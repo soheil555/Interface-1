@@ -1,5 +1,5 @@
 import type { NextPageWithLayout } from "./_app";
-import HomeHeader from "../components/common/Header/HomeHeader";
+import Header from "../components/home/Header";
 import HeroBanner from "../components/home/HeroBanner";
 import Counter from "../components/home/Counter";
 import Protocol from "../components/home/Protocol";
@@ -9,7 +9,7 @@ import { Container } from "@chakra-ui/react";
 const Home: NextPageWithLayout = () => {
   return (
     <Container maxW="container.xl">
-      <HomeHeader />
+      <Header />
       <HeroBanner />
       <Counter />
       <Protocol />

@@ -1,8 +1,9 @@
 import { type ReactElement } from "react";
-import { Container, Image } from "@chakra-ui/react";
-import AppHeader from "../common/Header/AppHeader";
-import Tabs from "./Tabs/Tabs";
+import { Box, Container, Image, VStack } from "@chakra-ui/react";
+import Header from "../Header/Header";
 import React from "react";
+import AmplifyBadge from "../../common/AmplifyBadge";
+
 const Layout = (page: ReactElement) => {
   return (
     <>
@@ -16,17 +17,20 @@ const Layout = (page: ReactElement) => {
         height="full"
         zIndex={-100}
       />
-      <AppHeader />
-      <Tabs />
+      <Header />
       <Container
         maxW="container.md"
         display="flex"
         justifyContent="center"
         pt={20}
         pb={40}
-        // opacity={0.9}
       >
-        {page}
+        <VStack gap={2} w="full">
+          {page}
+          <Box alignSelf="center">
+            <AmplifyBadge />
+          </Box>
+        </VStack>
       </Container>
     </>
   );

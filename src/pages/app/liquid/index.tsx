@@ -9,7 +9,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import Layout from "../../../components/app/Layout";
+import Layout from "../../../components/app/Layout/Layout";
 import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
 import { useWeb3React } from "@web3-react/core";
 import LiquidityBox from "../../../components/app/Liquidity/LiquidityBox";
