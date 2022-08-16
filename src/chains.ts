@@ -33,9 +33,9 @@ export const CHAINS: {
   [chainId: number]: ChainInformation;
 } = {
   137: {
-    urls: "https://polygon-mainnet.infura.io/v3/20e476dbde784dda8a0d6a6cd2c060ea"
+    urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
       ? [
-          `https://polygon-mainnet.g.alchemy.com/v2/XJFcsw5NaDcoP9UZlOe-4-evEVOtoJen`,
+          `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         ]
       : [],
     name: "Polygon Mainnet",
@@ -46,7 +46,7 @@ export const CHAINS: {
   80001: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
       ? [
-          `https://polygon-mumbai.g.alchemy.com/v2/doKjQnQMS-xMqIiku2ZXy7A4RHuzzdFb`,
+          `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         ]
       : [],
     name: "Polygon Mumbai",
@@ -54,11 +54,11 @@ export const CHAINS: {
     blockExplorerUrls: ["https://mumbai.polygonscan.com"],
     logo: Matic,
   },
-  31337: {
-    urls: ["http://127.0.0.1:8545"],
-    name: "Hardhat",
-    nativeCurrency: MATIC,
-    blockExplorerUrls: [],
-    logo: Matic,
-  },
+  // 31337: {
+  //   urls: ["http://127.0.0.1:8545"],
+  //   name: "Hardhat",
+  //   nativeCurrency: MATIC,
+  //   blockExplorerUrls: [],
+  //   logo: Matic,
+  // },
 };

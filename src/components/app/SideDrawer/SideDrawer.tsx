@@ -2,17 +2,18 @@ import {
   Drawer,
   DrawerBody,
   DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Button,
   IconButton,
   useBreakpointValue,
+  VStack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import MetaMaskConnect from "../Web3/MetaMaskConnect";
+import { appRoutes } from "../../../routes";
+import SideDrawerItem from "./SideDrawerItem";
 
 const SideDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,7 +33,19 @@ const SideDrawer = () => {
         <DrawerContent>
           <DrawerCloseButton />
 
-          <DrawerBody></DrawerBody>
+          <DrawerBody>
+            <VStack mt={12} align="stretch" gap={3}>
+              {appRoutes.map((route) => (
+                <SideDrawerItem
+                  key={route.label}
+                  href={route.href}
+                  label={route.label}
+                  icon={route.icon}
+                  onClose={onClose}
+                />
+              ))}
+            </VStack>
+          </DrawerBody>
 
           <DrawerFooter justifyContent="center">
             <MetaMaskConnect />

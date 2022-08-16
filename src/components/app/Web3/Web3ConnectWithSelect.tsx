@@ -6,7 +6,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import type { Web3ReactHooks } from "@web3-react/core";
 import type { MetaMask } from "@web3-react/metamask";
@@ -127,7 +126,12 @@ const Web3ConnectWithSelect = ({
   return (
     <HStack>
       <ChainSelect chainId={desiredChainId} switchChain={switchChain} />
-      <Button variant="brand-2" isLoading={isActivating} onClick={onClick}>
+      <Button
+        fontSize={{ base: "sm", lg: "md" }}
+        variant="brand-2"
+        isLoading={isActivating}
+        onClick={onClick}
+      >
         Connect Wallet
       </Button>
     </HStack>
