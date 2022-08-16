@@ -1,14 +1,11 @@
 import {
   Text,
   Box,
-  Heading,
   Image,
   Stack,
   Button,
-  Flex,
   Link,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
 
 const Protocol = () => {
   return (
@@ -31,11 +28,14 @@ const Protocol = () => {
            Swap tokens, farm liquidity and explore DeFi cutting-edge technology.
           </Text>
           <Text fontSize="xxl">Need helps?</Text>
-          <Link href="https://docs.axoswap.io" isExternal>
+          <Link href="https://docs.axoswap.io" >
             <Button variant="brand-outline">View our docs</Button>
           </Link>
           <Text fontSize="l">Or</Text>
-          <Button variant="brand-outline">Watch our video</Button>
+          <Link href="#">
+            <Button variant="brand-outline">Watch our video</Button>
+          </Link>
+
         </Box>
 
         <Image
