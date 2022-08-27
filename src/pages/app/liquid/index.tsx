@@ -20,14 +20,7 @@ const Pool: NextPageWithLayout = () => {
 
   return (
     <VStack gap={5} w="full">
-      <VStack
-        bg={useColorModeValue("white", "gray.900")}
-        boxShadow="lg"
-        borderRadius="lg"
-        p={4}
-        gap={22}
-        w="full"
-      >
+      <VStack p={4} gap={22} w="full">
         <Stack
           align="center"
           direction={{ base: "column", md: "row" }}

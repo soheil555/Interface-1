@@ -1,8 +1,14 @@
 import { type ReactElement } from "react";
-import { Box, Container, Image, VStack } from "@chakra-ui/react";
+import {
+  Container,
+  Divider,
+  Image,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import Header from "../Header/Header";
 import React from "react";
-import AmplifyBadge from "../../common/AmplifyBadge";
+import Footer from "../../common/Footer";
 
 const Layout = (page: ReactElement) => {
   return (
@@ -25,11 +31,17 @@ const Layout = (page: ReactElement) => {
         pt={20}
         pb={40}
       >
-        <VStack gap={2} w="full">
+        <VStack
+          bg={useColorModeValue("white", "gray.900")}
+          boxShadow="lg"
+          borderRadius="lg"
+          align="stretch"
+          gap={2}
+          w="full"
+        >
           {page}
-          <Box alignSelf="center">
-            <AmplifyBadge />
-          </Box>
+          <Divider />
+          <Footer />
         </VStack>
       </Container>
     </>

@@ -1,11 +1,4 @@
-import {
-  Text,
-  Box,
-  Image,
-  Stack,
-  Button,
-  Link,
-} from "@chakra-ui/react";
+import { Text, Box, Image, Stack, Button, Link } from "@chakra-ui/react";
 
 const Protocol = () => {
   return (
@@ -25,17 +18,19 @@ const Protocol = () => {
             variant="subtext"
             w={{ base: "100%", md: "80%" }}
           >
-           Swap tokens, farm liquidity and explore DeFi cutting-edge technology.
+            Swap tokens, farm liquidity and explore DeFi cutting-edge
+            technology.
           </Text>
-          <Text fontSize="xxl">Need helps?</Text>
-          <Link href="https://docs.axoswap.io" >
+          <Text mb={4} fontSize="xl">
+            Need helps?
+          </Text>
+          <Link href="https://docs.axoswap.io">
             <Button variant="brand-outline">View our docs</Button>
           </Link>
-          <Text fontSize="l">Or</Text>
+          <Text fontSize="lg">Or</Text>
           <Link href="#">
             <Button variant="brand-outline">Watch our video</Button>
           </Link>
-
         </Box>
 
         <Image

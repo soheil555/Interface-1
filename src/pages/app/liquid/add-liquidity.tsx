@@ -238,12 +238,7 @@ const AddLiquidity: NextPageWithLayout = () => {
   };
 
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={4}
-    >
+    <Box p={4}>
       <Formik
         validateOnMount
         validateOnChange
