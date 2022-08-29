@@ -10,7 +10,11 @@ import Header from "../Header/Header";
 import React from "react";
 import Footer from "../../common/Footer";
 
-const Layout = (page: ReactElement) => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <>
       <Image
@@ -36,10 +40,11 @@ const Layout = (page: ReactElement) => {
           boxShadow="lg"
           borderRadius="lg"
           align="stretch"
-          gap={2}
+          gap={5}
           w="full"
+          p={4}
         >
-          {page}
+          {children}
           <Divider />
           <Footer />
         </VStack>

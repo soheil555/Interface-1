@@ -6,7 +6,6 @@ import {
   Text,
   IconButton,
   Box,
-  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
@@ -268,12 +267,7 @@ const Swap: NextPageWithLayout = () => {
   };
 
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={4}
-    >
+    <Layout>
       <Formik
         validateOnMount
         validateOnChange
@@ -290,8 +284,8 @@ const Swap: NextPageWithLayout = () => {
           setValues,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
-              <Box>
+            <VStack gap={2}>
+              <Box w="full">
                 <Text textTransform="uppercase" mb={2}>
                   From:
                 </Text>
@@ -313,7 +307,7 @@ const Swap: NextPageWithLayout = () => {
                 fontSize="xl"
               />
 
-              <Box>
+              <Box w="full">
                 <Text textTransform="uppercase" mb={2}>
                   To:
                 </Text>
@@ -367,10 +361,8 @@ const Swap: NextPageWithLayout = () => {
           </Form>
         )}
       </Formik>
-    </Box>
+    </Layout>
   );
 };
-
-Swap.getLayout = Layout;
 
 export default Swap;

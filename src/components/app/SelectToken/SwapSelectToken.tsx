@@ -148,7 +148,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   }, [reserves]);
 
   return (
-    <Box minW={{ base: "250", sm: "sm", md: "md" }}>
+    <Box w="full">
       {token ? (
         <Box
           borderRadius="lg"
@@ -156,7 +156,6 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
           borderWidth={1}
           borderColor="gray.200"
           overflow="hidden"
-          w="full"
         >
           <HStack
             _hover={{ bgColor: "gray.100", color: "gray.800" }}

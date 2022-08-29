@@ -6,7 +6,6 @@ import {
   Text,
   Heading,
   Divider,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import Layout from "../../../components/app/Layout/Layout";
@@ -19,8 +18,8 @@ const Pool: NextPageWithLayout = () => {
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
   return (
-    <VStack gap={5} w="full">
-      <VStack p={4} gap={22} w="full">
+    <Layout>
+      <VStack gap={22} w="full">
         <Stack
           align="center"
           direction={{ base: "column", md: "row" }}
@@ -63,9 +62,8 @@ const Pool: NextPageWithLayout = () => {
           ))
         )}
       </VStack>
-    </VStack>
+    </Layout>
   );
 };
 
-Pool.getLayout = Layout;
 export default Pool;

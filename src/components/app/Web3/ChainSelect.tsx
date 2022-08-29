@@ -22,7 +22,7 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
   return (
     <Menu autoSelect={false}>
       <MenuButton
-        fontSize={{ base: "sm", lg: "md" }}
+        fontSize={{ base: "xs", lg: "md" }}
         as={Button}
         variant="outline"
         color={useColorModeValue("gray.900", "white")}

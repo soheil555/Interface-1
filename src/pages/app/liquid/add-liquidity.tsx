@@ -7,7 +7,7 @@ import {
   HStack,
   Icon,
   Text,
-  useColorModeValue,
+  Center,
   Box,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -238,7 +238,7 @@ const AddLiquidity: NextPageWithLayout = () => {
   };
 
   return (
-    <Box p={4}>
+    <Layout>
       <Formik
         validateOnMount
         validateOnChange
@@ -248,7 +248,7 @@ const AddLiquidity: NextPageWithLayout = () => {
       >
         {({ handleSubmit, isSubmitting, isValid, errors }) => (
           <Form onSubmit={handleSubmit}>
-            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
+            <VStack w="full" gap={2}>
               <HStack fontSize="lg" alignSelf="flex-start">
                 <IconButton
                   onClick={() => {
@@ -294,10 +294,8 @@ const AddLiquidity: NextPageWithLayout = () => {
           </Form>
         )}
       </Formik>
-    </Box>
+    </Layout>
   );
 };
-
-AddLiquidity.getLayout = Layout;
 
 export default AddLiquidity;

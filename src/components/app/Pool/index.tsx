@@ -27,10 +27,16 @@ const Pool = () => {
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
 
   return (
-    <VStack p={2} gap={14} w="full">
-      <Heading size="xl" fontWeight="light" letterSpacing="wider">
-        AXO Stake
-      </Heading>
+    <VStack gap={14} w="full">
+      <VStack>
+        <Heading size="xl" fontWeight="light" letterSpacing="wider">
+          AXO Stake
+        </Heading>
+        <Text variant="subtext">
+          Stake Your Liquidity Tokens Here And Earn AXO!
+        </Text>
+      </VStack>
+
       <Stack
         gap={2}
         direction={{ base: "column", md: "row" }}

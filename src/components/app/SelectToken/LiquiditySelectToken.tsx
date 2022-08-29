@@ -123,7 +123,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   }, [reserves]);
 
   return (
-    <Box minW={{ base: "250", sm: "sm", md: "md" }}>
+    <Box w="full">
       {token ? (
         <Box
           borderRadius="lg"

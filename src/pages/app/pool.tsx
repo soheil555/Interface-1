@@ -27,8 +27,8 @@ const Farm: NextPageWithLayout = () => {
   const masterChefOwner = useMasterChefOwner();
 
   return (
-    <VStack gap={5} w="full">
-      <VStack p={4} gap={14} w="full">
+    <Layout>
+      <VStack gap={14} w="full">
         <Heading
           size="3xl"
           fontWeight="light"
@@ -88,10 +88,8 @@ const Farm: NextPageWithLayout = () => {
           )}
         </VStack>
       </VStack>
-    </VStack>
+    </Layout>
   );
 };
-
-Farm.getLayout = Layout;
 
 export default Farm;
