@@ -79,14 +79,10 @@ const Pool = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <Box w="full" p={4} borderRadius="lg">
-        <HStack justifyContent="space-between">
-          <Text fontSize="m">
-            This pool automatically earns 15% of all trade fees to buyback AXO,
-            increasing ratio overtime
-          </Text>
-        </HStack>
-      </Box>
+      <Text textAlign="center" variant="subtext" fontSize="m">
+        This pool automatically earns 15% of all trade fees to buyback AXO,
+        increasing ratio overtime.
+      </Text>
     </VStack>
   );
 };

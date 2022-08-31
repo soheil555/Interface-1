@@ -91,7 +91,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           p={2}
           justify="space-between"
         >
-          <Stack direction={{ base: "column", sm: "row" }} gap={5}>
+          <Stack direction={{ base: "column", md: "row" }} gap={5}>
             <Stat>
               <StatLabel>AXO Earned</StatLabel>
               <StatNumber>

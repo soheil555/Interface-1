@@ -37,7 +37,9 @@ const Farm: NextPageWithLayout = () => {
         >
           Liquidity Pool
         </Heading>
-        <Text fontSize="m">Stake your LPs here to earn AXO block reward.</Text>
+        <Text variant="subtext" fontSize="m">
+          Stake your LPs here to earn AXO block reward.
+        </Text>
         <Stack
           direction={{ base: "column", lg: "row" }}
           gap={2}
