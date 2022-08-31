@@ -7,8 +7,6 @@ import {
   HStack,
   Icon,
   Text,
-  Center,
-  Box,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import useFactoryContract from "../../../hooks/useFactoryContract";
@@ -23,7 +21,6 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
-import { BigNumber } from "ethers";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -288,7 +285,7 @@ const AddLiquidity: NextPageWithLayout = () => {
                 w="full"
                 overflow="hidden"
               >
-                Supply two tokens in equal values
+                Supply two tokens in equal values.
               </Text>
             </VStack>
           </Form>

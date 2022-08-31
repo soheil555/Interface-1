@@ -24,6 +24,8 @@ import { useEffect } from "react";
 import usePairReserves from "../../../hooks/usePairReserves";
 import useMaticBalance from "../../../hooks/useMaticBalance";
 import useWrapType from "../../../hooks/useWrapType";
+import useTokenNormalizedValueUSD from "../../../hooks/useTokenNormalizedValueUSD";
+import { tokens } from "../../../tokens";
 
 interface SwapSelectTokenProps {
   isTokenIn?: boolean;
@@ -43,11 +45,16 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const amount = isTokenIn ? amountIn : amountOut;
   const tokenFieldName = isTokenIn ? "tokenIn" : "tokenOut";
   const wrapType = useWrapType(tokenIn, tokenOut);
+  const coin = tokens.find((token) => token.isCoin === true);
+  const hstackBg = useColorModeValue("gray.50", "gray.600");
 
   const { data: maticBalance } = useMaticBalance();
   const { data: tokenBalance } = useTokenBalance(token);
   const { data: reserves } = usePairReserves(tokenIn, tokenOut);
-  const hstackBg = useColorModeValue("gray.50", "gray.600");
+
+  const amountValueUSD = useTokenNormalizedValueUSD(token, amount);
+  const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance);
+  const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance);
 
   const getAmountOut = (value: string) => {
     const amounts: Record<string, string> = {
@@ -173,65 +180,87 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
               </Box>
             </HStack>
 
-            <Text fontSize="sm">
-              <>
-                Balance{" "}
-                {!token.isCoin && !!tokenBalance
-                  ? parseBalance(tokenBalance, token.decimals)
-                  : null}
-                {token.isCoin && !!maticBalance
-                  ? parseBalance(maticBalance, token.decimals)
-                  : null}
-              </>
-            </Text>
+            <Box>
+              <Text fontSize="sm">
+                <>
+                  Balance{" "}
+                  {!token.isCoin && !!tokenBalance
+                    ? parseBalance(tokenBalance, token.decimals)
+                    : null}
+                  {token.isCoin && !!maticBalance
+                    ? parseBalance(maticBalance, token.decimals)
+                    : null}
+                  {!tokenBalance || (!maticBalance && 0)}
+                </>
+              </Text>
+              {token.isCoin && coinBalanceValueUSD ? (
+                <Text fontSize="sm" textAlign="end" variant="subtext">
+                  ≈ ${parseBalance(coinBalanceValueUSD, 6, 2)}
+                </Text>
+              ) : null}
+
+              {!token.isCoin && tokenBalanceValueUSD ? (
+                <Text fontSize="sm" textAlign="end" variant="subtext">
+                  ≈ ${parseBalance(tokenBalanceValueUSD, 6, 2)}
+                </Text>
+              ) : null}
+            </Box>
           </HStack>
 
           <Divider />
 
-          <HStack py={8} px={4} justify="space-between">
-            <NumberInput
-              min={0}
-              p={0}
-              value={amount}
-              onChange={(value) => {
-                const isValueValid = isNumberValid(value, token.decimals);
-                if (isValueValid) {
-                  const amounts = isTokenIn
-                    ? getAmountOut(value)
-                    : getAmountIn(value);
-                  setValues({ ...values, ...amounts });
-                }
-              }}
-            >
-              <NumberInputField
-                border="none"
-                placeholder="0.00"
-                fontSize="2xl"
-              />
-            </NumberInput>
-
-            {isTokenIn ? (
-              <Button
-                disabled={!tokenBalance}
-                onClick={() => {
-                  if (!token.isCoin && tokenBalance) {
-                    const amounts = getAmountOut(
-                      parseBalance(tokenBalance, token.decimals)
-                    );
-                    setValues({ ...values, ...amounts });
-                  } else if (token.isCoin && maticBalance) {
-                    const amounts = getAmountOut(
-                      parseBalance(maticBalance, token.decimals)
-                    );
+          <Box py={8} px={4}>
+            <HStack justify="space-between">
+              <NumberInput
+                w="full"
+                min={0}
+                p={0}
+                value={amount}
+                onChange={(value) => {
+                  const isValueValid = isNumberValid(value, token.decimals);
+                  if (isValueValid) {
+                    const amounts = isTokenIn
+                      ? getAmountOut(value)
+                      : getAmountIn(value);
                     setValues({ ...values, ...amounts });
                   }
                 }}
-                fontSize="sm"
               >
-                MAX
-              </Button>
-            ) : null}
-          </HStack>
+                <NumberInputField
+                  border="none"
+                  placeholder="0.00"
+                  fontSize="2xl"
+                />
+              </NumberInput>
+
+              {isTokenIn ? (
+                <Button
+                  disabled={!tokenBalance}
+                  onClick={() => {
+                    if (!token.isCoin && tokenBalance) {
+                      const amounts = getAmountOut(
+                        parseBalance(tokenBalance, token.decimals)
+                      );
+                      setValues({ ...values, ...amounts });
+                    } else if (token.isCoin && maticBalance) {
+                      const amounts = getAmountOut(
+                        parseBalance(maticBalance, token.decimals)
+                      );
+                      setValues({ ...values, ...amounts });
+                    }
+                  }}
+                  fontSize="sm"
+                >
+                  MAX
+                </Button>
+              ) : null}
+            </HStack>
+            {amountValueUSD && (
+              <Text pt={1} pl={2} variant="subtext">
+                ≈ ${parseBalance(amountValueUSD, 6, 2)}
+              </Text>
+            )}
+          </Box>
         </Box>
       ) : (
         <HStack
