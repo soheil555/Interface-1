@@ -1,48 +1,42 @@
-import { Text, Box, Image, Stack, Button, Link } from "@chakra-ui/react";
+import {
+  Stack,
+  Flex,
+  Button,
+  Text,
+  VStack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import "../../theme.ts";
 
-const Protocol = () => {
+export default function WithBackgroundImage() {
   return (
-    <Box>
-      <Stack
-        gap={2}
-        justify="center"
-        direction={{ base: "column", md: "row" }}
-        py={20}
+    <Flex
+      w={"full"}
+      h={"100vh"}
+      backgroundImage={"/images/hero.gif"}
+      backgroundSize={"cover"}
+      backgroundPosition={"center center"}
+    >
+      <VStack
+        w={"full"}
+        justify={"center"}
+        px={useBreakpointValue({ base: 4, md: 8 })}
       >
-        <Box flex={1} display="flex" flexDirection="column" alignItems="center">
+        <Stack maxW={"2xl"} align={"flex-start"} spacing={6}>
           <Text
-            textAlign="center"
-            mt={6}
-            mb={8}
-            fontSize={{ base: "lg", md: "3xl" }}
-            variant="subtext"
-            w={{ base: "70%", md: "100%" }}
+            color="white"
+            fontWeight={700}
+            lineHeight={1.2}
+            fontSize={useBreakpointValue({ base: "3xl", md: "4xl" })}
           >
-            Swap tokens, farm liquidity and explore DeFi cutting-edge
-            technology.
+            Defi's most cutting edge protocol!
           </Text>
-          <Text mb={4} fontSize="xl">
-            Need helps?
-          </Text>
-          <Link href="https://docs.axoswap.io">
-            <Button variant="brand-outline">View our docs</Button>
-          </Link>
-          <Text fontSize="lg">Or</Text>
-          <Link href="#">
-            <Button variant="brand-outline">Watch our video</Button>
-          </Link>
-        </Box>
-
-        <Box flex={1}>
-          <Image
-            h="full"
-            w="full"
-            objectFit="cover"
-            src="/images/protocol-img1.png"
-          />
-        </Box>
-      </Stack>
-    </Box>
+          <Stack direction={"row"}>
+            <Button variant="brand">View our docs</Button>
+            <Button variant="brand-2-outline">Buy AxO Token</Button>
+          </Stack>
+        </Stack>
+      </VStack>
+    </Flex>
   );
-};
-export default Protocol;
+}
