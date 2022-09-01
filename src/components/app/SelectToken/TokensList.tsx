@@ -15,7 +15,6 @@ import {
   Input,
   Divider,
   Flex,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
@@ -70,7 +69,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
             borderColor="gray.200"
             borderRadius="lg"
             overflowY="scroll"
-            maxH={500}
+            maxH={{ base: 400, md: 500 }}
           >
             {tokens.length ? (
               tokens.map((token, i) => (

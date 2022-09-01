@@ -103,7 +103,9 @@ const Footer = () => {
         justify="space-between"
         align="center"
       >
-        <Text>© {new Date().getFullYear()} Axoswap. All rights reserved</Text>
+        <Text fontSize={{ base: "sm", sm: "md" }} textAlign="center">
+          © {new Date().getFullYear()} Axoswap. All rights reserved
+        </Text>
         <AmplifyBadge />
       </Stack>
     </VStack>

@@ -27,6 +27,7 @@ const AmplifyBadge = () => {
         height="53px"
         src="https://static.alchemyapi.io/images/marketing/badge.png"
         alt="Alchemy Supercharged"
+        objectFit="contain"
       />
     </Link>
   );
