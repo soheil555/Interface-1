@@ -18,6 +18,7 @@ import {
   Text,
   useToast,
   Checkbox,
+  Box,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import useERC20Contract from "../../../hooks/useERC20Contract";
@@ -28,7 +29,6 @@ import { amountWithSlippage, parseBalance } from "../../../utils";
 import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
-import { BigNumber } from "ethers";
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity;
@@ -36,6 +36,14 @@ interface RemoveLiquidityButtonProps {
 
 const initialValues: RemoveLiquidityFormValues = {
   percent: 50,
+};
+
+const StyledSlidermark = ({ value }: { value: number }) => {
+  return (
+    <SliderMark value={value} mt={2} ml={-2.5} fontSize="sm">
+      {value}%
+    </SliderMark>
+  );
 };
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
@@ -55,12 +63,6 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
     !!token1Info;
   const isOneOfTokenswMatic =
     token0Info?.symbol === "wMATIC" || token1Info?.symbol === "wMATIC";
-
-  const labelStyles = {
-    mt: "2",
-    ml: "-2.5",
-    fontSize: "sm",
-  };
 
   const handleRemoveLiquidity = async (
     { percent, receiveMatic }: RemoveLiquidityFormValues,
@@ -182,15 +184,10 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     aria-label="remove-liquidity-amount"
                     defaultValue={30}
                   >
-                    <SliderMark value={25} {...labelStyles}>
-                      25%
-                    </SliderMark>
-                    <SliderMark value={50} {...labelStyles}>
-                      50%
-                    </SliderMark>
-                    <SliderMark value={75} {...labelStyles}>
-                      75%
-                    </SliderMark>
+                    <StyledSlidermark value={25} />
+                    <StyledSlidermark value={50} />
+                    <StyledSlidermark value={75} />
+
                     <SliderMark
                       value={values.percent}
                       textAlign="center"

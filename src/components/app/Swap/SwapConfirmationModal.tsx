@@ -57,7 +57,7 @@ const SwapConfirmationModal = ({
     tokenOut.decimals
   );
 
-  const boxBg = useColorModeValue("black.100", "black.600");
+  const boxBg = useColorModeValue("gray.100", "gray.600");
 
   return (
     <Modal size="xl" isCentered isOpen={isOpen} onClose={onClose}>

@@ -18,6 +18,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { parseBalance } from "../../../utils";
 import RemoveLiquidityButton from "./RemoveLiquidityButton";
 import { ethers } from "ethers";
+import useTokenNormalizedValueUSD from "../../../hooks/useTokenNormalizedValueUSD";
 
 interface LiquidityBoxProps {
   liquidity: Liquidity;
@@ -30,6 +31,14 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
   const token1Info = useTokenInfo(liquidity.token1);
   const boxBg = useColorModeValue("brand.100", "brand.900");
   const dividerBg = useColorModeValue("gray.100", "gray.900");
+  const token0ValueUSD = useTokenNormalizedValueUSD(
+    token0Info,
+    liquidity.amount0
+  );
+  const token1ValueUSD = useTokenNormalizedValueUSD(
+    token1Info,
+    liquidity.amount1
+  );
 
   if (!token0Info || !token1Info) return null;
 
@@ -86,6 +95,15 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
           <HStack justify="space-between">
             <Text fontWeight="bold">Pooled {token1Info.symbol}:</Text>
             <Text>{parseBalance(liquidity.amount1, token1Info.decimals)}</Text>
+          </HStack>
+
+          <HStack justify="space-between">
+            <Text fontWeight="bold">TVL:</Text>
+            <Text>
+              {token0ValueUSD && token1ValueUSD
+                ? `$${parseBalance(token0ValueUSD.add(token1ValueUSD), 6, 2)}`
+                : null}
+            </Text>
           </HStack>
         </VStack>
 

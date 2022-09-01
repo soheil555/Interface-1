@@ -9,7 +9,7 @@ import {
   Stack,
   IconButton,
 } from "@chakra-ui/react";
-import { BsTwitter, BsDiscord } from "react-icons/bs";
+import { BsTwitter, BsGithub, BsDiscord } from "react-icons/bs";
 import AmplifyBadge from "./AmplifyBadge";
 import NextLink from "next/link";
 
@@ -38,6 +38,16 @@ const Footer = () => {
                 icon={<BsTwitter />}
               />
             </Link>
+            <Link href="https://github.com/Axoswap-Project" isExternal>
+              <IconButton
+                aria-label="github"
+                size="sm"
+                fontSize="xl"
+                variant="outline"
+                icon={<BsGithub />}
+              />
+            </Link>
+
             <Link href="https://discord.gg/PJr44AxWAt" isExternal>
               <IconButton
                 aria-label="discord"
