@@ -19,7 +19,7 @@ export default function Protocol() {
           lineHeight={1.2}
           fontSize={{ base: "3xl", md: "4xl" }}
         >
-          Defi's most cutting edge protocol!
+          Defi&apos;s most cutting edge protocol!
         </Text>
         <Stack
           direction={{ base: "column", md: "row" }}
@@ -31,7 +31,7 @@ export default function Protocol() {
             <Button variant="brand">View our docs</Button>
           </Link>
           <Link href="#">
-            <Button variant="brand-2-outline">Buy AxO Token</Button>
+            <Button variant="brand-2-outline">Buy AXO Token</Button>
           </Link>
         </Stack>
       </VStack>

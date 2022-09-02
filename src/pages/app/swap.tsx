@@ -7,6 +7,8 @@ import {
   IconButton,
   Box,
   useDisclosure,
+  HStack,
+  Link,
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
 import useFactoryContract from "../../hooks/useFactoryContract";
@@ -25,6 +27,7 @@ import WETH9ABI from "../../abis/WETH9.json";
 import { ERC20, WETH9 } from "../../abis/types";
 import { settingsAtom } from "../../store";
 import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
+import NextLink from "next/link";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -285,6 +288,32 @@ const Swap: NextPageWithLayout = () => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <VStack gap={2}>
+              <HStack gap={2} w="full">
+                <NextLink href="/app/swap">
+                  <Link
+                    color="brand.300"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    Swap
+                  </Link>
+                </NextLink>
+                <NextLink href="#">
+                  <Link
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    Limit
+                  </Link>
+                </NextLink>
+              </HStack>
+
               <Box w="full">
                 <Text textTransform="uppercase" mb={2}>
                   From:
