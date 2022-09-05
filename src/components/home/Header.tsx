@@ -20,7 +20,7 @@ const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box h="20vh">
+    <Box minH="20vh">
       <Flex h="full" justify="space-between" align="center" py={10}>
         <NextLink href="/" passHref>
           <Link>
@@ -57,7 +57,7 @@ const Header = () => {
           </NextLink>
 
           <Box onClick={onToggle} display={{ lg: "none" }}>
-            <Hamburger direction="left" />
+            <Hamburger color="white" direction="left" />
           </Box>
         </HStack>
       </Flex>
@@ -67,7 +67,7 @@ const Header = () => {
           <VStack fontSize={22} gap={3}>
             {getLinks()}
             <NextLink href="/app/swap">
-              <Button borderRadius="lg" variant="brand">
+              <Button borderRadius="lg" variant="brand-outline">
                 Launch App
               </Button>
             </NextLink>
