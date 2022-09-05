@@ -1,33 +1,17 @@
-import { useColorMode, useColorModeValue, Switch, Box } from "@chakra-ui/react";
+import { useColorMode, useColorModeValue, IconButton } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 const ThemeToggler = () => {
   const { toggleColorMode } = useColorMode();
 
   return (
-    <Box position="relative">
-      <SunIcon
-        pointerEvents="none"
-        position="absolute"
-        zIndex={1}
-        top={1.5}
-        left={1}
-        display={useColorModeValue("none", "inline")}
-      />
-      <Switch
-        size="lg"
-        isChecked={useColorModeValue(false, true)}
-        onChange={toggleColorMode}
-      />
-      <MoonIcon
-        pointerEvents="none"
-        position="absolute"
-        zIndex={1}
-        top={1.5}
-        right={1}
-        display={useColorModeValue("inline", "none")}
-      />
-    </Box>
+    <IconButton
+      onClick={toggleColorMode}
+      variant="brand-outline"
+      fontSize="lg"
+      aria-label="theme-toggler"
+      icon={useColorModeValue(<MoonIcon />, <SunIcon />)}
+    />
   );
 };
 export default ThemeToggler;

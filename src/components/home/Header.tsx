@@ -20,8 +20,8 @@ const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box>
-      <Flex justify="space-between" align="center" py={10}>
+    <Box h="20vh">
+      <Flex h="full" justify="space-between" align="center" py={10}>
         <NextLink href="/" passHref>
           <Link>
             <Image
@@ -32,26 +32,29 @@ const Header = () => {
         </NextLink>
 
         <HStack
-          w={600}
+          justify="flex-end"
+          w={650}
           display={{ base: "none", lg: "flex" }}
           fontSize={22}
-          gap={4}
+          gap={16}
           mx={10}
         >
           {getLinks()}
         </HStack>
 
         <HStack gap={2}>
+          <ThemeToggler />
+
           <NextLink href="/app/swap">
             <Button
               borderRadius="lg"
-              variant="brand"
+              variant="brand-outline"
+              px={10}
               display={{ base: "none", lg: "block" }}
             >
               Launch App
             </Button>
           </NextLink>
-          <ThemeToggler />
 
           <Box onClick={onToggle} display={{ lg: "none" }}>
             <Hamburger direction="left" />
@@ -79,7 +82,7 @@ const getLinks = () => {
   return homeRoutes.map((route) => {
     return (
       <NextLink href={route.href} key={route.label} passHref>
-        <Link _hover={{ color: "brand.300" }} isExternal={route.isExternal}>
+        <Link color="white" isExternal={route.isExternal}>
           {route.icon ? (
             <Center gap={1}>
               <Icon as={route.icon} />
