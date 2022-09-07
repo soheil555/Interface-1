@@ -1,11 +1,10 @@
-import { Contract } from "ethers";
 import { useEffect, useState } from "react";
-import useAddresses from "../../../hooks/useAddresses";
 import { Token } from "../../../types";
-import { parseBalanceToBigNumber } from "../../../utils";
-import ERC20ABI from "../../../abis/ERC20.json";
+import useNotApprovedTokens, {
+  NotApprovedToken,
+} from "../../../hooks/useNotApprovedTokens";
+import { Button, useToast } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
-import { ERC20 } from "../../../abis/types";
 
 interface ApproveTokenProps {
   tokens: Token[];
@@ -14,59 +13,77 @@ interface ApproveTokenProps {
   setIsAllTokensApproved: (isAllTokensApproved: boolean) => void;
 }
 
-interface NotApprovedToken {
-  tokenContract: Contract;
-  spender: string;
-  owner: string;
-}
-
 const ApproveToken = ({
   tokens,
   amounts,
   isAllTokensApproved,
   setIsAllTokensApproved,
 }: ApproveTokenProps) => {
-  const [notApprovedTokens, setNotApprovedTokens] =
-    useState<NotApprovedToken[]>();
+  const toast = useToast();
+  const { data: notApprovedTokens } = useNotApprovedTokens(tokens, amounts);
+  const [isLoading, setIsLoading] = useState(false);
+  const { provider } = useWeb3React();
 
-  const addresses = useAddresses();
-  const { account, provider } = useWeb3React();
+  const handleApproveToken = async ({
+    tokenContract,
+    owner,
+    spender,
+    amount,
+  }: NotApprovedToken) => {
+    if (!provider) return;
+    setIsLoading(true);
+    try {
+      const signer = provider.getSigner(owner);
+      const tx = await tokenContract.connect(signer).approve(spender, amount);
+      await tx.wait();
+
+      toast({
+        title: "Approve Token",
+        description: `Token approved successfully`,
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (err: any) {
+      console.log(err);
+
+      toast({
+        title: "Approve Token",
+        description: err.message,
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    if (!addresses || !provider || !account) return;
+    if (notApprovedTokens && notApprovedTokens.length === 0) {
+      setIsAllTokensApproved(true);
+    } else {
+      setIsAllTokensApproved(false);
+    }
+  }, [notApprovedTokens]);
 
-    const notApprovedTokens: NotApprovedToken[] = [];
+  if (
+    isAllTokensApproved ||
+    !notApprovedTokens ||
+    notApprovedTokens.length === 0
+  )
+    return null;
 
-    (async () => {
-      for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-        const amount = amounts[i];
-        const amountBigNumber = parseBalanceToBigNumber(amount, token.decimals);
-        const tokenAddress = addresses.tokens[token.symbol];
-        const routerContractAddress = addresses.router;
-
-        const tokenContract = new Contract(
-          tokenAddress,
-          ERC20ABI,
-          provider
-        ) as ERC20;
-
-        const allowance = await tokenContract.allowance(
-          account,
-          routerContractAddress
-        );
-        if (allowance.lt(amountBigNumber)) {
-          notApprovedTokens.push({
-            tokenContract,
-            spender: routerContractAddress,
-            owner: account,
-          });
-        }
-      }
-    })();
-  }, [addresses, provider, account]);
-
-  if (isAllTokensApproved) return null;
+  return (
+    <Button
+      isDisabled={!provider}
+      variant="brand-outline"
+      w="full"
+      isLoading={isLoading}
+      onClick={() => handleApproveToken(notApprovedTokens[0])}
+    >
+      Approve {notApprovedTokens[0].tokenInfo.symbol}
+    </Button>
+  );
 };
 
 export default ApproveToken;

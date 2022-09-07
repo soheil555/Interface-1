@@ -29,7 +29,7 @@ const theme = extendTheme(
   },
   withDefaultColorScheme({
     colorScheme: "brand",
-    components: ["Tabs", "Checkbox", "Slider", "Switch"],
+    components: ["Button", "Tabs", "Checkbox", "Slider", "Switch"],
   })
 );
 

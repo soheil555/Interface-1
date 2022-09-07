@@ -3,7 +3,7 @@ import { IoLogoGithub } from "react-icons/io5";
 import { IoSwapVertical } from "react-icons/io5";
 import { GiCancer } from "react-icons/gi";
 import { GiWaveCrest } from "react-icons/gi";
-import {GiHarpoonChain} from "react-icons/gi"
+import { GiHarpoonChain } from "react-icons/gi";
 
 interface Route {
   label: string;

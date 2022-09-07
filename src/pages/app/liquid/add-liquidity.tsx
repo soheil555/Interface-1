@@ -13,7 +13,13 @@ import useFactoryContract from "../../../hooks/useFactoryContract";
 import Layout from "../../../components/app/Layout/Layout";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
+import {
+  Formik,
+  Form,
+  FormikErrors,
+  FormikHelpers,
+  validateYupSchema,
+} from "formik";
 import { LiquidityFormValues } from "../../../types";
 import { amountWithSlippage, parseBalanceToBigNumber } from "../../../utils";
 import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
@@ -21,6 +27,8 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
+import ApproveToken from "../../../components/app/ApproveToken/ApproveToken";
+import { useState } from "react";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -43,6 +51,7 @@ const AddLiquidity: NextPageWithLayout = () => {
   const { account, provider } = useWeb3React();
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
+  const [isAllTokensApproved, setIsAllTokensApproved] = useState(false);
 
   const handleAddLiquidity = async (
     {
@@ -243,7 +252,7 @@ const AddLiquidity: NextPageWithLayout = () => {
         validate={validator}
         onSubmit={handleAddLiquidity}
       >
-        {({ handleSubmit, isSubmitting, isValid, errors }) => (
+        {({ handleSubmit, isSubmitting, isValid, errors, values }) => (
           <Form onSubmit={handleSubmit}>
             <VStack w="full" gap={2}>
               <HStack fontSize="lg" alignSelf="flex-start">
@@ -263,11 +272,25 @@ const AddLiquidity: NextPageWithLayout = () => {
 
               <LiquiditySelectToken />
 
+              {values.token1 &&
+              values.token2 &&
+              values.token1Amount &&
+              values.token2Amount ? (
+                <ApproveToken
+                  tokens={[values.token1, values.token2]}
+                  amounts={[values.token1Amount, values.token2Amount]}
+                  isAllTokensApproved={isAllTokensApproved}
+                  setIsAllTokensApproved={setIsAllTokensApproved}
+                />
+              ) : null}
+
               <Button
                 type="submit"
                 isLoading={isSubmitting}
-                isDisabled={!isValid || !walletConnected}
-                variant="brand-2-outline"
+                isDisabled={
+                  !isValid || !walletConnected || !isAllTokensApproved
+                }
+                variant="brand-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
               >

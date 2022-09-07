@@ -28,6 +28,8 @@ import { ERC20, WETH9 } from "../../abis/types";
 import { settingsAtom } from "../../store";
 import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
 import NextLink from "next/link";
+import ApproveToken from "../../components/app/ApproveToken/ApproveToken";
+import { useState } from "react";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -48,6 +50,7 @@ const Swap: NextPageWithLayout = () => {
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
+  const [isTokenInApproved, setIsTokenInApproved] = useState(false);
 
   const walletConnected =
     !!routerContract &&
@@ -195,6 +198,7 @@ const Swap: NextPageWithLayout = () => {
         isClosable: true,
       });
     }
+    onClose();
   };
 
   const validator = ({
@@ -343,10 +347,19 @@ const Swap: NextPageWithLayout = () => {
                 <SwapSelectToken />
               </Box>
 
+              {values.tokenIn && values.amountIn ? (
+                <ApproveToken
+                  tokens={[values.tokenIn]}
+                  amounts={[values.amountIn]}
+                  isAllTokensApproved={isTokenInApproved}
+                  setIsAllTokensApproved={setIsTokenInApproved}
+                />
+              ) : null}
+
               <Button
                 isLoading={isSubmitting}
-                isDisabled={!isValid || !walletConnected}
-                variant="brand-2-outline"
+                isDisabled={!isValid || !walletConnected || !isTokenInApproved}
+                variant="brand-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
                 onClick={

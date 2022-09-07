@@ -26,12 +26,12 @@ const Pool: NextPageWithLayout = () => {
           w="full"
         >
           <NextLink href="/app/liquid/add-liquidity">
-            <Button variant="brand-2-outline" w="full">
+            <Button variant="brand-outline" w="full">
               create a pair
             </Button>
           </NextLink>
           <NextLink href="/app/liquid/add-liquidity">
-            <Button variant="brand-2-outline" w="full">
+            <Button variant="brand-outline" w="full">
               Add Liquidity
             </Button>
           </NextLink>

@@ -57,7 +57,7 @@ const HeroBanner = () => {
           <Text fontSize="lg" textAlign="center">
             Project Status: ICO event live on Sushiswap!
           </Text>
-          <Button variant="brand" w="15rem">
+          <Button variant="brand" rounded="full" w="15rem">
             Join Event
           </Button>
         </VStack>

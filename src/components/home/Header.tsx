@@ -48,7 +48,8 @@ const Header = () => {
           <NextLink href="/app/swap">
             <Button
               borderRadius="lg"
-              variant="brand-outline"
+              variant="brand-solid"
+              rounded="full"
               px={10}
               display={{ base: "none", lg: "block" }}
             >
@@ -67,7 +68,7 @@ const Header = () => {
           <VStack fontSize={22} gap={3}>
             {getLinks()}
             <NextLink href="/app/swap">
-              <Button borderRadius="lg" variant="brand-outline">
+              <Button rounded="full" variant="brand-solid">
                 Launch App
               </Button>
             </NextLink>

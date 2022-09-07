@@ -6,7 +6,6 @@ import {
   VStack,
   FormControl,
   FormLabel,
-  Text,
   useToast,
   FormHelperText,
 } from "@chakra-ui/react";
@@ -24,6 +23,9 @@ import useAXOContract from "../../../hooks/useAXOContract";
 import { useWeb3React } from "@web3-react/core";
 import useXolotTotalSupply from "../../../hooks/useXolotTotalSupply";
 import useXltBalance from "../../../hooks/useXltBalance";
+import { useState } from "react";
+import ApproveToken from "../ApproveToken/ApproveToken";
+import useTokenInfo from "../../../hooks/useTokenInfo";
 
 const initialValues: StakeAXOFormValues = {
   amount: "",
@@ -114,12 +116,7 @@ const StakeAXO = () => {
           <Form>
             <VStack mt={5} gap={2}>
               <FormControl>
-                <FormLabel>
-                  <HStack justify="space-between">
-                    <Text>Stake AXO</Text>
-                    <Text variant="subtext" fontSize="sm"></Text>
-                  </HStack>
-                </FormLabel>
+                <FormLabel>Stake AXO</FormLabel>
 
                 <HStack>
                   <NumberInput
@@ -163,11 +160,13 @@ const StakeAXO = () => {
                   ) : null}
                 </FormHelperText>
               </FormControl>
+
               <Button
                 w="full"
                 isDisabled={!isValid || !walletConnected}
                 isLoading={isSubmitting}
                 type="submit"
+                variant="brand-outline"
               >
                 {errors.amount ? errors.amount : "Stake"}
               </Button>

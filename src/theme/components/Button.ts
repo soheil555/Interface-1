@@ -5,12 +5,15 @@ const Button: ComponentStyleConfig = {
     brand: {
       bg: "brand.gradient",
       color: "white",
-      rounded: "full",
     },
-    "brand-outline": {
+    "brand-solid": {
       bg: "white",
       color: "brand.300",
-      rounded: "full",
+    },
+    "brand-outline": {
+      border: "2px solid",
+      borderImageSlice: 1,
+      borderImageSource: "linear-gradient(94.65deg, #e16adc, #ed8780)",
     },
   },
 };

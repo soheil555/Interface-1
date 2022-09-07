@@ -31,11 +31,19 @@ export default function Protocol() {
       <VStack alignSelf={{ base: "center", lg: "flex-start" }} w="47%">
         <Text mb={3}>Need Help?</Text>
         <Stack align="center" direction={{ base: "row", lg: "column" }}>
-          <Button variant="brand" w={{ base: "10rem", md: "15rem" }}>
+          <Button
+            variant="brand"
+            rounded="full"
+            w={{ base: "10rem", md: "15rem" }}
+          >
             View our Docs
           </Button>
           <Text>Or</Text>
-          <Button variant="brand" w={{ base: "10rem", md: "15rem" }}>
+          <Button
+            variant="brand"
+            rounded="full"
+            w={{ base: "10rem", md: "15rem" }}
+          >
             Watch our Video
           </Button>
         </Stack>

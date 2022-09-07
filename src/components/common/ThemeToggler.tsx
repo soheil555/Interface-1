@@ -7,9 +7,11 @@ const ThemeToggler = () => {
   return (
     <IconButton
       onClick={toggleColorMode}
-      variant="brand-outline"
+      variant="brand-solid"
+      rounded="full"
       fontSize="lg"
       aria-label="theme-toggler"
+      border="0.1px solid"
       icon={useColorModeValue(<MoonIcon />, <SunIcon />)}
     />
   );

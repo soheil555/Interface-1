@@ -51,7 +51,7 @@ const UpdatePoolsButton = () => {
         isDisabled={!masterChefContract}
         isLoading={isLoading}
         onClick={handleUpdatePools}
-        variant="brand-2-outline"
+        variant="brand-outline"
       >
         Update Pools
       </Button>
