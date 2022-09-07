@@ -92,14 +92,16 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
       const deadline = timestamp + Number(settings.deadline) * 60;
 
       if (isOneOfTokenswMatic && receiveMatic) {
-        const tokenAddress =
-          token0Info.symbol === "wMATIC" ? liquidity.token1 : liquidity.token0;
+        const [tokenAddress, tokenAmount, maticAmount] =
+          token0Info.symbol === "wMATIC"
+            ? [liquidity.token1, token1Amount, token0Amount]
+            : [liquidity.token0, token0Amount, token1Amount];
 
         let tx = await routerContract.removeLiquidityETH(
           tokenAddress,
           amountToRemove,
-          amountWithSlippage(token0Amount, settings.slippage),
-          amountWithSlippage(token1Amount, settings.slippage),
+          amountWithSlippage(tokenAmount, settings.slippage),
+          amountWithSlippage(maticAmount, settings.slippage),
           account,
           deadline
         );
