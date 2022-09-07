@@ -24,7 +24,8 @@ async function getNotApprovedTokens(
   amounts: string[],
   addresses: Address,
   provider: Web3Provider,
-  account: string
+  account: string,
+  spender: string
 ) {
   const notApprovedTokens: NotApprovedToken[] = [];
 
@@ -36,7 +37,6 @@ async function getNotApprovedTokens(
 
     const amountBigNumber = parseBalanceToBigNumber(amount, token.decimals);
     const tokenAddress = addresses.tokens[token.symbol];
-    const routerContractAddress = addresses.router;
 
     const tokenContract = new Contract(
       tokenAddress,
@@ -44,15 +44,12 @@ async function getNotApprovedTokens(
       provider
     ) as ERC20;
 
-    const allowance = await tokenContract.allowance(
-      account,
-      routerContractAddress
-    );
+    const allowance = await tokenContract.allowance(account, spender);
     if (allowance.lt(amountBigNumber)) {
       notApprovedTokens.push({
         tokenInfo: token,
         tokenContract,
-        spender: routerContractAddress,
+        spender,
         owner: account,
         amount: amountBigNumber,
       });
@@ -64,7 +61,8 @@ async function getNotApprovedTokens(
 
 export default function useNotApprovedTokens(
   tokens: Token[],
-  amounts: string[]
+  amounts: string[],
+  spender: string
 ) {
   const { account, provider } = useWeb3React();
   const addresses = useAddresses();
@@ -73,7 +71,15 @@ export default function useNotApprovedTokens(
 
   const result = useSWR(
     shouldFetch
-      ? ["NotApprovedTokens", tokens, amounts, addresses, provider, account]
+      ? [
+          "NotApprovedTokens",
+          tokens,
+          amounts,
+          addresses,
+          provider,
+          account,
+          spender,
+        ]
       : null,
     getNotApprovedTokens
   );

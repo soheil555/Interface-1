@@ -275,12 +275,14 @@ const AddLiquidity: NextPageWithLayout = () => {
               {values.token1 &&
               values.token2 &&
               values.token1Amount &&
-              values.token2Amount ? (
+              values.token2Amount &&
+              routerContract ? (
                 <ApproveToken
                   tokens={[values.token1, values.token2]}
                   amounts={[values.token1Amount, values.token2Amount]}
                   isAllTokensApproved={isAllTokensApproved}
                   setIsAllTokensApproved={setIsAllTokensApproved}
+                  spender={routerContract.address}
                 />
               ) : null}
 

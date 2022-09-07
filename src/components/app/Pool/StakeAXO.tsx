@@ -40,6 +40,8 @@ const StakeAXO = () => {
   const { data: xltBalance } = useXltBalance();
   const { account } = useWeb3React();
   const walletConnected = !!axoContract && !!xolotlContract && !!account;
+  const axoTokenInfo = useTokenInfo(axoContract?.address);
+  const [isAXOTokenApproved, setIsAXOTokenApproved] = useState(false);
 
   const handleStakeAXO = async (
     { amount }: StakeAXOFormValues,
@@ -161,9 +163,19 @@ const StakeAXO = () => {
                 </FormHelperText>
               </FormControl>
 
+              {!!axoTokenInfo && values.amount !== "" && !!xolotlContract ? (
+                <ApproveToken
+                  tokens={[axoTokenInfo]}
+                  amounts={[values.amount]}
+                  isAllTokensApproved={isAXOTokenApproved}
+                  setIsAllTokensApproved={setIsAXOTokenApproved}
+                  spender={xolotlContract.address}
+                />
+              ) : null}
+
               <Button
                 w="full"
-                isDisabled={!isValid || !walletConnected}
+                isDisabled={!isValid || !walletConnected || !isAXOTokenApproved}
                 isLoading={isSubmitting}
                 type="submit"
                 variant="brand-outline"

@@ -11,6 +11,7 @@ interface ApproveTokenProps {
   amounts: string[];
   isAllTokensApproved: boolean;
   setIsAllTokensApproved: (isAllTokensApproved: boolean) => void;
+  spender: string;
 }
 
 const ApproveToken = ({
@@ -18,9 +19,14 @@ const ApproveToken = ({
   amounts,
   isAllTokensApproved,
   setIsAllTokensApproved,
+  spender,
 }: ApproveTokenProps) => {
   const toast = useToast();
-  const { data: notApprovedTokens } = useNotApprovedTokens(tokens, amounts);
+  const { data: notApprovedTokens } = useNotApprovedTokens(
+    tokens,
+    amounts,
+    spender
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { provider } = useWeb3React();
 

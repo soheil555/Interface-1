@@ -347,12 +347,13 @@ const Swap: NextPageWithLayout = () => {
                 <SwapSelectToken />
               </Box>
 
-              {values.tokenIn && values.amountIn ? (
+              {values.tokenIn && values.amountIn && routerContract ? (
                 <ApproveToken
                   tokens={[values.tokenIn]}
                   amounts={[values.amountIn]}
                   isAllTokensApproved={isTokenInApproved}
                   setIsAllTokensApproved={setIsTokenInApproved}
+                  spender={routerContract.address}
                 />
               ) : null}
 
