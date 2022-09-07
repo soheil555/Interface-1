@@ -22,7 +22,7 @@ export default function Protocol() {
       <Text
         textAlign="center"
         fontWeight="bold"
-        fontSize={{ base: "2xl", lg: "3xl" }}
+        fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
       >
         Swap tokens, farm liquidity and
         <br /> explore DeFi cutting-edge technology.
@@ -30,11 +30,15 @@ export default function Protocol() {
 
       <VStack alignSelf={{ base: "center", lg: "flex-start" }} w="47%">
         <Text mb={3}>Need Help?</Text>
-        <Stack align="center" direction={{ base: "row", lg: "column" }}>
+        <Stack
+          align="center"
+          direction={{ base: "column", sm: "row", lg: "column" }}
+        >
           <Button
             variant="brand"
             rounded="full"
-            w={{ base: "10rem", md: "15rem" }}
+            w={{ base: "8rem", sm: "10rem", md: "15rem" }}
+            fontSize={{ base: "sm", sm: "md" }}
           >
             View our Docs
           </Button>
@@ -42,7 +46,8 @@ export default function Protocol() {
           <Button
             variant="brand"
             rounded="full"
-            w={{ base: "10rem", md: "15rem" }}
+            w={{ base: "8rem", sm: "10rem", md: "15rem" }}
+            fontSize={{ base: "sm", sm: "md" }}
           >
             Watch our Video
           </Button>
