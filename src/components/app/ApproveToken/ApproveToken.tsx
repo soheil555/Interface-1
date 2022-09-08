@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { Token } from "../../../types";
 import useNotApprovedTokens, {
   NotApprovedToken,
+  TokenInfo,
 } from "../../../hooks/useNotApprovedTokens";
 import { Button, useToast } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import { BigNumber } from "ethers";
 
 interface ApproveTokenProps {
-  tokens: Token[];
-  amounts: string[];
+  tokens: TokenInfo[];
+  amounts: (string | BigNumber)[];
   isAllTokensApproved: boolean;
   setIsAllTokensApproved: (isAllTokensApproved: boolean) => void;
   spender: string;
@@ -56,7 +57,7 @@ const ApproveToken = ({
       toast({
         title: "Approve Token",
         description: err.message,
-        status: "success",
+        status: "error",
         duration: 9000,
         isClosable: true,
       });
@@ -72,12 +73,10 @@ const ApproveToken = ({
     }
   }, [notApprovedTokens]);
 
-  if (
-    isAllTokensApproved ||
-    !notApprovedTokens ||
-    notApprovedTokens.length === 0
-  )
-    return null;
+  if (isAllTokensApproved) return null;
+
+  if (!notApprovedTokens || notApprovedTokens.length === 0)
+    return <Button w="full" variant="brand-outline" isLoading={true} />;
 
   return (
     <Button

@@ -10,8 +10,12 @@ import { ERC20 } from "../abis/types";
 import ERC20ABI from "../abis/ERC20.json";
 import { Web3Provider } from "@ethersproject/providers";
 
+export interface TokenInfo extends Token {
+  address?: string;
+}
+
 export interface NotApprovedToken {
-  tokenInfo: Token;
+  tokenInfo: TokenInfo;
   tokenContract: ERC20;
   spender: string;
   owner: string;
@@ -20,8 +24,8 @@ export interface NotApprovedToken {
 
 async function getNotApprovedTokens(
   _: string,
-  tokens: Token[],
-  amounts: string[],
+  tokens: TokenInfo[],
+  amounts: (string | BigNumber)[],
   addresses: Address,
   provider: Web3Provider,
   account: string,
@@ -35,8 +39,14 @@ async function getNotApprovedTokens(
 
     if (token.isCoin) continue;
 
-    const amountBigNumber = parseBalanceToBigNumber(amount, token.decimals);
-    const tokenAddress = addresses.tokens[token.symbol];
+    const amountBigNumber =
+      amount instanceof BigNumber
+        ? amount
+        : parseBalanceToBigNumber(amount, token.decimals);
+
+    const tokenAddress = token.address
+      ? token.address
+      : addresses.tokens[token.symbol];
 
     const tokenContract = new Contract(
       tokenAddress,
@@ -60,8 +70,8 @@ async function getNotApprovedTokens(
 }
 
 export default function useNotApprovedTokens(
-  tokens: Token[],
-  amounts: string[],
+  tokens: TokenInfo[],
+  amounts: (string | BigNumber)[],
   spender: string
 ) {
   const { account, provider } = useWeb3React();

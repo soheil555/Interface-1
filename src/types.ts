@@ -6,7 +6,7 @@ export interface Token {
   name: string;
   symbol: string;
   decimals: number;
-  logo: (props: IconProps) => JSX.Element;
+  logo?: (props: IconProps) => JSX.Element;
   isCoin?: boolean;
 }
 

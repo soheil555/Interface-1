@@ -8,17 +8,18 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
   VStack,
   HStack,
   Text,
   useToast,
   Checkbox,
-  Box,
+  NumberInput,
+  NumberInputField,
+  FormControl,
+  FormLabel,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import useERC20Contract from "../../../hooks/useERC20Contract";
@@ -29,6 +30,9 @@ import { amountWithSlippage, parseBalance } from "../../../utils";
 import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
+import ApproveToken from "../ApproveToken/ApproveToken";
+import { useEffect, useState } from "react";
+import { BigNumber } from "ethers";
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity;
@@ -36,14 +40,6 @@ interface RemoveLiquidityButtonProps {
 
 const initialValues: RemoveLiquidityFormValues = {
   percent: 50,
-};
-
-const StyledSlidermark = ({ value }: { value: number }) => {
-  return (
-    <SliderMark value={value} mt={2} ml={-2.5} fontSize="sm">
-      {value}%
-    </SliderMark>
-  );
 };
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
@@ -63,6 +59,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
     !!token1Info;
   const isOneOfTokenswMatic =
     token0Info?.symbol === "wMATIC" || token1Info?.symbol === "wMATIC";
+  const [isLPTokenApproved, setIsLPTokenApproved] = useState(false);
 
   const handleRemoveLiquidity = async (
     { percent, receiveMatic }: RemoveLiquidityFormValues,
@@ -176,38 +173,42 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
               setFieldValue,
             }) => (
               <Form onSubmit={handleSubmit}>
-                <ModalHeader>Remove Amount</ModalHeader>
+                <ModalHeader>Remove Liquidity</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody py={5} px={10}>
-                  <Slider
-                    mb={10}
-                    value={values.percent}
-                    onChange={(value) => setFieldValue("percent", value)}
-                    aria-label="remove-liquidity-amount"
-                    defaultValue={30}
-                  >
-                    <StyledSlidermark value={25} />
-                    <StyledSlidermark value={50} />
-                    <StyledSlidermark value={75} />
-
-                    <SliderMark
+                  <FormControl mb={5}>
+                    <FormLabel>Percent to remove</FormLabel>
+                    <NumberInput
+                      min={0}
+                      max={100}
+                      defaultValue={0}
                       value={values.percent}
-                      textAlign="center"
-                      bg="brand.500"
-                      color="white"
-                      mt="-10"
-                      ml="-5"
-                      w="12"
-                    >
-                      {values.percent}%
-                    </SliderMark>
-                    <SliderTrack>
-                      <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
+                      onChange={(valueString, value) => {
+                        if (valueString === "") value = 0;
+                        if (value > 100) value = 100;
 
-                  <VStack gap={1} fontSize="xl" align="stretch">
+                        setFieldValue("percent", value);
+                      }}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+
+                  <VStack
+                    gap={1}
+                    fontSize="xl"
+                    align="stretch"
+                    border="solid 1px"
+                    p={2}
+                    rounded="lg"
+                  >
+                    <Text fontSize="sm" mb={2}>
+                      You'll receive
+                    </Text>
                     <HStack justify="space-between">
                       <Text>
                         {parseBalance(
@@ -217,7 +218,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                       </Text>
 
                       <HStack>
-                        <token0Info.logo />
+                        {token0Info.logo && <token0Info.logo mr={1} />}
                         <Text>{token0Info.symbol}</Text>
                       </HStack>
                     </HStack>
@@ -231,7 +232,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                       </Text>
 
                       <HStack>
-                        <token1Info.logo />
+                        {token1Info.logo && <token1Info.logo />}
                         <Text>{token1Info.symbol}</Text>
                       </HStack>
                     </HStack>
@@ -249,13 +250,30 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     ) : null}
                   </VStack>
                 </ModalBody>
-                <ModalFooter>
-                  <Button mr={3} onClick={onClose}>
-                    Close
-                  </Button>
+                <ModalFooter flexDirection="column" gap={2}>
+                  {values.percent > 0 && !!routerContract ? (
+                    <ApproveToken
+                      tokens={[
+                        {
+                          name: "LP token",
+                          symbol: "LP token",
+                          decimals: 18,
+                          address: liquidity.address,
+                        },
+                      ]}
+                      amounts={[liquidity.liquidityBalance]}
+                      isAllTokensApproved={isLPTokenApproved}
+                      setIsAllTokensApproved={setIsLPTokenApproved}
+                      spender={routerContract.address}
+                    />
+                  ) : null}
+
                   <Button
+                    w="full"
                     type="submit"
-                    isDisabled={!isValid || !walletConnected}
+                    isDisabled={
+                      !isValid || !walletConnected || !isLPTokenApproved
+                    }
                     isLoading={isSubmitting}
                   >
                     Remove

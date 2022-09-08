@@ -14,10 +14,18 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import MetaMaskConnect from "../Web3/MetaMaskConnect";
 import { appRoutes } from "../../../routes";
 import SideDrawerItem from "./SideDrawerItem";
+import { useEffect } from "react";
 
 const SideDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isModalOpen = useBreakpointValue({ base: isOpen, lg: false }) || false;
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      onClose();
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       <IconButton
@@ -28,7 +36,12 @@ const SideDrawer = () => {
         aria-label="hamburger"
         icon={<HamburgerIcon />}
       />
-      <Drawer size="xs" isOpen={isModalOpen} placement="left" onClose={onClose}>
+      <Drawer
+        size="full"
+        isOpen={isModalOpen}
+        placement="left"
+        onClose={onClose}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -47,7 +60,7 @@ const SideDrawer = () => {
             </VStack>
           </DrawerBody>
 
-          <DrawerFooter justifyContent="center">
+          <DrawerFooter justifyContent="flex-start">
             <MetaMaskConnect />
           </DrawerFooter>
         </DrawerContent>

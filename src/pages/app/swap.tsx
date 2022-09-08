@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../_app";
 import {
   useToast,
   VStack,
@@ -22,14 +21,14 @@ import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
 import useAddresses from "../../hooks/useAddresses";
 import { Contract } from "ethers";
-import ERC20ABI from "../../abis/ERC20.json";
 import WETH9ABI from "../../abis/WETH9.json";
-import { ERC20, WETH9 } from "../../abis/types";
+import { WETH9 } from "../../abis/types";
 import { settingsAtom } from "../../store";
 import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
 import NextLink from "next/link";
 import ApproveToken from "../../components/app/ApproveToken/ApproveToken";
 import { useState } from "react";
+import { NextPage } from "next";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -42,7 +41,7 @@ const initialValues: SwapFormValues = {
   wrapType: "invalid",
 };
 
-const Swap: NextPageWithLayout = () => {
+const Swap: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [settings] = useAtom(settingsAtom);
   const toast = useToast();
@@ -128,25 +127,6 @@ const Swap: NextPageWithLayout = () => {
         );
         await tx.wait();
       } else {
-        const tokenInContract = new Contract(
-          tokenInaddress,
-          ERC20ABI,
-          routerContract.signer
-        ) as ERC20;
-
-        const token1Allowance = await tokenInContract.allowance(
-          account,
-          routerContract.address
-        );
-
-        if (token1Allowance.lt(amountInBigNumber)) {
-          let tx = await tokenInContract.approve(
-            routerContract.address,
-            amountInBigNumber
-          );
-          await tx.wait();
-        }
-
         const path = [tokenInaddress, tokenOutaddress];
 
         const timestamp = (await provider.getBlock("latest")).timestamp;

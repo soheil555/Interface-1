@@ -84,9 +84,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
                     _hover={{ bgColor: "gray.100", color: "gray.800" }}
                   >
                     <HStack gap={2}>
-                      <Box>
-                        <token.logo fontSize="2xl" />
-                      </Box>
+                      <Box>{token.logo && <token.logo fontSize="2xl" />}</Box>
                       <Box>
                         <Text fontWeight="bold">{token.name}</Text>
                         <Text>${token.symbol}</Text>

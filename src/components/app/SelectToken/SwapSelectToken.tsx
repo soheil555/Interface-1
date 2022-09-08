@@ -173,7 +173,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
             px={4}
           >
             <HStack>
-              <token.logo fontSize="2xl" />
+              {token.logo && <token.logo fontSize="2xl" />}
               <Box>
                 <Text fontWeight="bold">{token.name}</Text>
                 <Text>${token.symbol}</Text>
