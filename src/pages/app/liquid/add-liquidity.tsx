@@ -7,15 +7,19 @@ import {
   HStack,
   Icon,
   Text,
-  useColorModeValue,
-  Box,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
 import useFactoryContract from "../../../hooks/useFactoryContract";
 import Layout from "../../../components/app/Layout/Layout";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
+import {
+  Formik,
+  Form,
+  FormikErrors,
+  FormikHelpers,
+  validateYupSchema,
+} from "formik";
 import { LiquidityFormValues } from "../../../types";
 import { amountWithSlippage, parseBalanceToBigNumber } from "../../../utils";
 import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
@@ -23,7 +27,8 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
-import { BigNumber } from "ethers";
+import ApproveToken from "../../../components/app/ApproveToken/ApproveToken";
+import { useState } from "react";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -46,6 +51,7 @@ const AddLiquidity: NextPageWithLayout = () => {
   const { account, provider } = useWeb3React();
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider;
+  const [isAllTokensApproved, setIsAllTokensApproved] = useState(false);
 
   const handleAddLiquidity = async (
     {
@@ -238,12 +244,7 @@ const AddLiquidity: NextPageWithLayout = () => {
   };
 
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={4}
-    >
+    <Layout>
       <Formik
         validateOnMount
         validateOnChange
@@ -251,9 +252,9 @@ const AddLiquidity: NextPageWithLayout = () => {
         validate={validator}
         onSubmit={handleAddLiquidity}
       >
-        {({ handleSubmit, isSubmitting, isValid, errors }) => (
+        {({ handleSubmit, isSubmitting, isValid, errors, values }) => (
           <Form onSubmit={handleSubmit}>
-            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
+            <VStack w="full" gap={2}>
               <HStack fontSize="lg" alignSelf="flex-start">
                 <IconButton
                   onClick={() => {
@@ -271,11 +272,27 @@ const AddLiquidity: NextPageWithLayout = () => {
 
               <LiquiditySelectToken />
 
+              {values.token1 &&
+              values.token2 &&
+              values.token1Amount &&
+              values.token2Amount &&
+              routerContract ? (
+                <ApproveToken
+                  tokens={[values.token1, values.token2]}
+                  amounts={[values.token1Amount, values.token2Amount]}
+                  isAllTokensApproved={isAllTokensApproved}
+                  setIsAllTokensApproved={setIsAllTokensApproved}
+                  spender={routerContract.address}
+                />
+              ) : null}
+
               <Button
                 type="submit"
                 isLoading={isSubmitting}
-                isDisabled={!isValid || !walletConnected}
-                variant="brand-2-outline"
+                isDisabled={
+                  !isValid || !walletConnected || !isAllTokensApproved
+                }
+                variant="brand-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
               >
@@ -293,16 +310,14 @@ const AddLiquidity: NextPageWithLayout = () => {
                 w="full"
                 overflow="hidden"
               >
-                Supply two tokens in equal values
+                Supply two tokens in equal values.
               </Text>
             </VStack>
           </Form>
         )}
       </Formik>
-    </Box>
+    </Layout>
   );
 };
-
-AddLiquidity.getLayout = Layout;
 
 export default AddLiquidity;

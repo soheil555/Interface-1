@@ -22,14 +22,20 @@ const SideDrawerItem = ({
   return (
     <NextLink href={href} passHref>
       <HStack
+        p={4}
         onClick={onClose}
         color={isActive ? "brand.300" : undefined}
         fontSize="xl"
         role="group"
         cursor="pointer"
+        rounded="lg"
+        _hover={{
+          bg: "brand.300",
+          color: "white",
+        }}
       >
         {icon && <Icon as={icon} />}
-        <Text _groupHover={{ color: "brand.300" }}>{label}</Text>
+        <Text>{label}</Text>
       </HStack>
     </NextLink>
   );

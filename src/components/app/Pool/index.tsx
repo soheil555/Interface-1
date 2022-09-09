@@ -1,7 +1,6 @@
 import {
   Heading,
   HStack,
-  useColorModeValue,
   VStack,
   Stat,
   StatLabel,
@@ -14,7 +13,7 @@ import {
   Tab,
   TabPanel,
   Box,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import StakeAXO from "./StakeAXO";
 import UnstakeAXO from "./UnstakeAXO";
@@ -28,17 +27,16 @@ const Pool = () => {
   const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
 
   return (
-    <VStack
-      bg={useColorModeValue("white", "gray.900")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={2}
-      gap={14}
-      w="full"
-    >
-      <Heading size="xl" fontWeight="light" letterSpacing="wider">
-        AXO Stake
-      </Heading>
+    <VStack gap={14} w="full">
+      <VStack>
+        <Heading size="xl" fontWeight="light" letterSpacing="wider">
+          AXO Stake
+        </Heading>
+        <Text variant="subtext">
+          Stake Your Liquidity Tokens Here And Earn AXO!
+        </Text>
+      </VStack>
+
       <Stack
         gap={2}
         direction={{ base: "column", md: "row" }}
@@ -81,11 +79,10 @@ const Pool = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <Box w="full" p={4} borderRadius="lg">
-      <HStack justifyContent="space-between">
-      <Text fontSize="m">This pool automatically earns 15% of all trade fees to buyback AXO, increasing ratio overtime</Text>
-        </HStack>
-        </Box>
+      <Text textAlign="center" variant="subtext" fontSize="m">
+        This pool automatically earns 15% of all trade fees to buyback AXO,
+        increasing ratio overtime.
+      </Text>
     </VStack>
   );
 };

@@ -10,7 +10,6 @@ import {
   FormLabel,
   Switch,
   useBoolean,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import Layout from "../../components/app/Layout/Layout";
 import useMasterChefOwner from "../../hooks/useMasterChefOwner";
@@ -28,15 +27,8 @@ const Farm: NextPageWithLayout = () => {
   const masterChefOwner = useMasterChefOwner();
 
   return (
-    <VStack gap={5} w="full">
-      <VStack
-        bg={useColorModeValue("white", "gray.900")}
-        boxShadow="lg"
-        borderRadius="lg"
-        p={4}
-        gap={14}
-        w="full"
-      >
+    <Layout>
+      <VStack gap={14} w="full">
         <Heading
           size="3xl"
           fontWeight="light"
@@ -45,7 +37,9 @@ const Farm: NextPageWithLayout = () => {
         >
           Liquidity Pool
         </Heading>
-        <Text fontSize="m">Stake your LPs here to earn AXO block reward.</Text>
+        <Text variant="subtext" fontSize="m">
+          Stake your LPs here to earn AXO block reward.
+        </Text>
         <Stack
           direction={{ base: "column", lg: "row" }}
           gap={2}
@@ -96,10 +90,8 @@ const Farm: NextPageWithLayout = () => {
           )}
         </VStack>
       </VStack>
-    </VStack>
+    </Layout>
   );
 };
-
-Farm.getLayout = Layout;
 
 export default Farm;

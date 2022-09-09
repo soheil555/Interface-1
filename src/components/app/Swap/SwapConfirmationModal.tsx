@@ -57,10 +57,15 @@ const SwapConfirmationModal = ({
     tokenOut.decimals
   );
 
-  const boxBg = useColorModeValue("black.100", "black.600");
+  const boxBg = useColorModeValue("gray.100", "gray.600");
 
   return (
-    <Modal size="xl" isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal
+      size={{ base: "xs", sm: "sm", md: "xl" }}
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Confirm Swap</ModalHeader>
@@ -74,8 +79,8 @@ const SwapConfirmationModal = ({
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text>From</Text>
-                <Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>From</Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>
                   {amountIn} {tokenIn.symbol}
                 </Text>
               </HStack>
@@ -99,21 +104,21 @@ const SwapConfirmationModal = ({
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text>To</Text>
-                <Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>To</Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>
                   {amountOut} {tokenOut.symbol}
                 </Text>
               </HStack>
             </VStack>
 
-            <Text>
+            <Text fontSize={{ base: "sm", sm: "md" }}>
               1 {tokenIn.symbol} = {tokenOutPrice} {tokenOut.symbol}
             </Text>
 
             <VStack align="stretch" bg={boxBg} p={2} borderRadius="lg">
               <HStack justify="space-between">
-                <Text>Expected Output</Text>
-                <Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>Expected Output</Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>
                   {amountOut} {tokenOut.symbol}
                 </Text>
               </HStack>
@@ -121,17 +126,17 @@ const SwapConfirmationModal = ({
               <Divider />
 
               <HStack justify="space-between">
-                <Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>
                   Minimum received after slippage <br /> ({slippage}%)
                 </Text>
-                <Text>
+                <Text fontSize={{ base: "sm", sm: "md" }}>
                   <>
                     {amountOutWithSlippage} {tokenOut.symbol}
                   </>
                 </Text>
               </HStack>
             </VStack>
-            <Text>
+            <Text fontSize={{ base: "sm", sm: "md" }}>
               Output is estimated. You will receive at least{" "}
               <span style={{ fontWeight: "bold" }}>
                 {amountOutWithSlippage} {tokenOut.symbol}{" "}

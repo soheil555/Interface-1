@@ -124,6 +124,7 @@ const UnstakeAXO = () => {
                 isDisabled={!isValid || !walletConnected}
                 isLoading={isSubmitting}
                 type="submit"
+                variant="brand-outline"
               >
                 {errors.amount ? errors.amount : "Unstake"}
               </Button>

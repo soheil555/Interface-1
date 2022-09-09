@@ -46,8 +46,8 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
       <HStack p={4} justifyContent="space-between">
         <HStack gap={2}>
           <Flex fontSize="2xl">
-            <token0Info.logo mr={1} />
-            <token1Info.logo />
+            {token0Info.logo && <token0Info.logo mr={1} />}
+            {token1Info.logo && <token1Info.logo />}
           </Flex>
 
           <Text fontSize="xl">
@@ -91,7 +91,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           p={2}
           justify="space-between"
         >
-          <Stack direction={{ base: "column", sm: "row" }} gap={5}>
+          <Stack direction={{ base: "column", md: "row" }} gap={5}>
             <Stat>
               <StatLabel>AXO Earned</StatLabel>
               <StatNumber>

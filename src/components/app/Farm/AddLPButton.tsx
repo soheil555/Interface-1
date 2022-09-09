@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
-import useAllPairs from "../../../hooks/useAllPairs";
 import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import { AddLPFormValues } from "../../../types";
 import LPTokenSelect from "./LPTokenSelect";
@@ -94,7 +93,7 @@ const AddLPButton = () => {
 
   return (
     <>
-      <Button w="full" onClick={onOpen} variant="brand-2-outline">
+      <Button w="full" onClick={onOpen} variant="brand-outline">
         Add new lp to the pool
       </Button>
 

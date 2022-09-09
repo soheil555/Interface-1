@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../_app";
 import {
   useToast,
   VStack,
@@ -6,8 +5,9 @@ import {
   Text,
   IconButton,
   Box,
-  useColorModeValue,
   useDisclosure,
+  HStack,
+  Link,
 } from "@chakra-ui/react";
 import { IoSwapVertical } from "react-icons/io5";
 import useFactoryContract from "../../hooks/useFactoryContract";
@@ -21,11 +21,14 @@ import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
 import { useAtom } from "jotai";
 import useAddresses from "../../hooks/useAddresses";
 import { Contract } from "ethers";
-import ERC20ABI from "../../abis/ERC20.json";
 import WETH9ABI from "../../abis/WETH9.json";
-import { ERC20, WETH9 } from "../../abis/types";
+import { WETH9 } from "../../abis/types";
 import { settingsAtom } from "../../store";
 import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
+import NextLink from "next/link";
+import ApproveToken from "../../components/app/ApproveToken/ApproveToken";
+import { useState } from "react";
+import { NextPage } from "next";
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -38,7 +41,7 @@ const initialValues: SwapFormValues = {
   wrapType: "invalid",
 };
 
-const Swap: NextPageWithLayout = () => {
+const Swap: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [settings] = useAtom(settingsAtom);
   const toast = useToast();
@@ -46,6 +49,7 @@ const Swap: NextPageWithLayout = () => {
   const routerContract = useRouterContract();
   const factoryContract = useFactoryContract();
   const { account, provider } = useWeb3React();
+  const [isTokenInApproved, setIsTokenInApproved] = useState(false);
 
   const walletConnected =
     !!routerContract &&
@@ -123,25 +127,6 @@ const Swap: NextPageWithLayout = () => {
         );
         await tx.wait();
       } else {
-        const tokenInContract = new Contract(
-          tokenInaddress,
-          ERC20ABI,
-          routerContract.signer
-        ) as ERC20;
-
-        const token1Allowance = await tokenInContract.allowance(
-          account,
-          routerContract.address
-        );
-
-        if (token1Allowance.lt(amountInBigNumber)) {
-          let tx = await tokenInContract.approve(
-            routerContract.address,
-            amountInBigNumber
-          );
-          await tx.wait();
-        }
-
         const path = [tokenInaddress, tokenOutaddress];
 
         const timestamp = (await provider.getBlock("latest")).timestamp;
@@ -193,6 +178,7 @@ const Swap: NextPageWithLayout = () => {
         isClosable: true,
       });
     }
+    onClose();
   };
 
   const validator = ({
@@ -268,12 +254,7 @@ const Swap: NextPageWithLayout = () => {
   };
 
   return (
-    <Box
-      bg={useColorModeValue("white", "gray.900")}
-      boxShadow="lg"
-      borderRadius="lg"
-      p={4}
-    >
+    <Layout>
       <Formik
         validateOnMount
         validateOnChange
@@ -290,8 +271,34 @@ const Swap: NextPageWithLayout = () => {
           setValues,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <VStack maxW={{ base: "250", sm: "sm", md: "md" }} gap={2}>
-              <Box>
+            <VStack gap={2}>
+              <HStack gap={2} w="full">
+                <NextLink href="/app/swap">
+                  <Link
+                    color="brand.300"
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    Swap
+                  </Link>
+                </NextLink>
+                <NextLink href="#">
+                  <Link
+                    fontWeight="bold"
+                    fontSize="lg"
+                    _hover={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    Limit
+                  </Link>
+                </NextLink>
+              </HStack>
+
+              <Box w="full">
                 <Text textTransform="uppercase" mb={2}>
                   From:
                 </Text>
@@ -313,17 +320,27 @@ const Swap: NextPageWithLayout = () => {
                 fontSize="xl"
               />
 
-              <Box>
+              <Box w="full">
                 <Text textTransform="uppercase" mb={2}>
                   To:
                 </Text>
                 <SwapSelectToken />
               </Box>
 
+              {values.tokenIn && values.amountIn && routerContract ? (
+                <ApproveToken
+                  tokens={[values.tokenIn]}
+                  amounts={[values.amountIn]}
+                  isAllTokensApproved={isTokenInApproved}
+                  setIsAllTokensApproved={setIsTokenInApproved}
+                  spender={routerContract.address}
+                />
+              ) : null}
+
               <Button
                 isLoading={isSubmitting}
-                isDisabled={!isValid || !walletConnected}
-                variant="brand-2-outline"
+                isDisabled={!isValid || !walletConnected || !isTokenInApproved}
+                variant="brand-outline"
                 w="full"
                 fontSize={{ base: "sm", sm: "md" }}
                 onClick={
@@ -367,10 +384,8 @@ const Swap: NextPageWithLayout = () => {
           </Form>
         )}
       </Formik>
-    </Box>
+    </Layout>
   );
 };
-
-Swap.getLayout = Layout;
 
 export default Swap;

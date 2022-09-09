@@ -192,6 +192,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
 
                       <HStack gap={3} flexDir="row-reverse">
                         <Button
+                          w="full"
                           isDisabled={!isValid || !masterChefContract}
                           isLoading={isSubmitting}
                           type="submit"
@@ -201,9 +202,6 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             : isAmountZero(values.amount)
                             ? "Harvest reward"
                             : "Unstake LP tokens and harvest reward"}
-                        </Button>
-                        <Button onClick={onClose} variant="outline">
-                          Cancel
                         </Button>
                       </HStack>
                     </VStack>

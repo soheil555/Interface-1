@@ -9,14 +9,11 @@ import { metaMaskHooks, metaMask } from "../connectors/metaMask";
 import { Web3ReactProvider } from "@web3-react/core";
 
 // Fonts
-import "@fontsource/dm-sans/400.css";
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/700.css";
+import "@fontsource/inter/300.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/900.css";
 
-import "@fontsource/lato/300.css";
-import "@fontsource/lato/400.css";
-import "@fontsource/lato/700.css";
-import "@fontsource/lato/900.css";
 import { Web3ReactHooks } from "@web3-react/core";
 
 export type NextPageWithLayout = NextPage & {

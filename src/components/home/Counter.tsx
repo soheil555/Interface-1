@@ -1,5 +1,19 @@
-import { Flex, Text, Box, Stack } from "@chakra-ui/react";
+import { Text, Box, Stack } from "@chakra-ui/react";
 import useCountDown from "../../hooks/useCountDown";
+
+interface CounterItemProps {
+  label: string;
+  value: number;
+}
+
+const CounterItem = ({ label, value }: CounterItemProps) => {
+  return (
+    <Box textAlign="center">
+      <Text fontSize={{ base: "2xl", md: "3xl" }}>{value}</Text>
+      <Text>{label}</Text>
+    </Box>
+  );
+};
 
 const Counter = () => {
   const { days, hours, minutes, seconds } = useCountDown(
@@ -7,41 +21,22 @@ const Counter = () => {
   );
 
   return (
-    <Flex
-      align="center"
-      justify="center"
-      bg="brand.gradient"
+    <Stack
+      direction={{ base: "column", sm: "row" }}
+      w={{ base: "70%", sm: "full" }}
+      justify="space-between"
+      py={5}
+      px={8}
+      bg="white"
       borderRadius="lg"
-      color="white"
+      boxShadow="lg"
+      color="black"
     >
-      <Stack
-        direction={{ base: "column", sm: "row" }}
-        gap={1}
-        justify="space-between"
-        py={10}
-        w={{ base: 300, sm: 400, md: 700 }}
-      >
-        <Box textAlign="center">
-          <Text fontSize="4xl">{days}</Text>
-          <Text>Days</Text>
-        </Box>
-
-        <Box textAlign="center">
-          <Text fontSize="4xl">{hours}</Text>
-          <Text>Hours</Text>
-        </Box>
-
-        <Box textAlign="center">
-          <Text fontSize="4xl">{minutes}</Text>
-          <Text>Minutes</Text>
-        </Box>
-
-        <Box textAlign="center">
-          <Text fontSize="4xl">{seconds}</Text>
-          <Text>Seconds</Text>
-        </Box>
-      </Stack>
-    </Flex>
+      <CounterItem label="Days" value={days} />
+      <CounterItem label="Hours" value={hours} />
+      <CounterItem label="Minues" value={minutes} />
+      <CounterItem label="Seconds" value={seconds} />
+    </Stack>
   );
 };
 export default Counter;

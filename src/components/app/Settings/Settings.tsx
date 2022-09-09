@@ -14,7 +14,6 @@ import {
   NumberInputField,
   useDisclosure,
   HStack,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiSettings } from "react-icons/fi";
 import { Formik, FormikErrors } from "formik";
@@ -99,7 +98,7 @@ const Settings = () => {
                   onClick={() => setFieldValue("slippage", "0.1")}
                   ml={2}
                 >
-                  0.1
+                  Default
                 </Button>
               </InputGroup>
               <FormErrorMessage>{errors.slippage}</FormErrorMessage>

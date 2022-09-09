@@ -101,10 +101,10 @@ const Web3ConnectWithSelect = ({
 
         <Menu>
           <MenuButton
-            fontSize={{ base: "sm", lg: "md" }}
+            fontSize={{ base: "xs", sm: "md" }}
             as={Button}
             rightIcon={<ChevronDownIcon />}
-            variant="brand-2"
+            variant="brand"
           >
             {shortenAddress(account)}
           </MenuButton>
@@ -127,8 +127,8 @@ const Web3ConnectWithSelect = ({
     <HStack>
       <ChainSelect chainId={desiredChainId} switchChain={switchChain} />
       <Button
-        fontSize={{ base: "sm", lg: "md" }}
-        variant="brand-2"
+        fontSize={{ base: "xs", sm: "md" }}
+        variant="brand"
         isLoading={isActivating}
         onClick={onClick}
       >
