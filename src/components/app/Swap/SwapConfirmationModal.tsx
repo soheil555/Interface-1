@@ -61,6 +61,7 @@ const SwapConfirmationModal = ({
 
   return (
     <Modal
+      blockScrollOnMount={false}
       size={{ base: "xs", sm: "sm", md: "xl" }}
       isCentered
       isOpen={isOpen}

@@ -41,6 +41,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
 
   return (
     <Modal
+      blockScrollOnMount={false}
       size={{ base: "xs", sm: "sm", md: "md" }}
       isOpen={isOpen}
       onClose={onClose}

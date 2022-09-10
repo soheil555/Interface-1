@@ -31,8 +31,7 @@ import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
 import ApproveToken from "../ApproveToken/ApproveToken";
-import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
+import { useState } from "react";
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity;
@@ -155,7 +154,12 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   return (
     <>
       <Button onClick={onOpen}>Remove</Button>
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <Formik
@@ -207,7 +211,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     rounded="lg"
                   >
                     <Text fontSize="sm" mb={2}>
-                      You'll receive
+                      You&apos;ll receive
                     </Text>
                     <HStack justify="space-between">
                       <Text>

@@ -97,7 +97,12 @@ const AddLPButton = () => {
         Add new lp to the pool
       </Button>
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <Formik
           initialValues={initialValues}

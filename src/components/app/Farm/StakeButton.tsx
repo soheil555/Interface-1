@@ -125,7 +125,12 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
     <>
       <Button onClick={onOpen}>Stake</Button>
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Stake liquidity</ModalHeader>

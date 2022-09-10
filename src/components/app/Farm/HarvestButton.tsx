@@ -113,7 +113,12 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
         Harvest
       </Button>
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Unstake liquidity</ModalHeader>
