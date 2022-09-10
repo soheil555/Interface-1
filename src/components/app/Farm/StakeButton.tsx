@@ -32,6 +32,8 @@ import useMasterChefContract from "../../../hooks/useMasterChefContract";
 import useERC20Contract from "../../../hooks/useERC20Contract";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
+import ApproveToken from "../ApproveToken/ApproveToken";
+import { useState } from "react";
 
 interface StakeButtonProps {
   pid: number;
@@ -52,6 +54,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   const token1Info = useTokenInfo(tokens?.token1);
   const masterChefContract = useMasterChefContract();
   const { account } = useWeb3React();
+  const [isLPTokenApproved, setIsLPTokenApproved] = useState(false);
 
   const walletConnected =
     !!masterChefContract && !!lpTokenContract && !!account;
@@ -197,18 +200,34 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                           </FormHelperText>
                         </FormControl>
 
-                        <HStack gap={3} flexDir="row-reverse">
+                        <VStack align="stretch">
+                          {masterChefContract && values.amount !== "" ? (
+                            <ApproveToken
+                              tokens={[
+                                {
+                                  name: "LP token",
+                                  symbol: "LP token",
+                                  decimals: 18,
+                                  address: lpToken,
+                                },
+                              ]}
+                              amounts={[values.amount]}
+                              isAllTokensApproved={isLPTokenApproved}
+                              setIsAllTokensApproved={setIsLPTokenApproved}
+                              spender={masterChefContract.address}
+                            />
+                          ) : null}
+
                           <Button
-                            isDisabled={!isValid || !walletConnected}
+                            isDisabled={
+                              !isValid || !walletConnected || !isLPTokenApproved
+                            }
                             isLoading={isSubmitting}
                             type="submit"
                           >
                             {errors.amount ? errors.amount : "Stake"}
                           </Button>
-                          <Button onClick={onClose} variant="outline">
-                            Cancel
-                          </Button>
-                        </HStack>
+                        </VStack>
                       </VStack>
                     </Form>
                   );

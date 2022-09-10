@@ -9,6 +9,7 @@ import {
   IconButton,
   useBreakpointValue,
   VStack,
+  Box,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import MetaMaskConnect from "../Web3/MetaMaskConnect";
@@ -27,10 +28,9 @@ const SideDrawer = () => {
   }, [isModalOpen]);
 
   return (
-    <>
+    <Box display={{ base: "block", lg: "none" }}>
       <IconButton
         onClick={onOpen}
-        display={{ base: "block", lg: "none" }}
         fontSize="2xl"
         variant="unstyled"
         aria-label="hamburger"
@@ -41,6 +41,7 @@ const SideDrawer = () => {
         isOpen={isModalOpen}
         placement="left"
         onClose={onClose}
+        preserveScrollBarGap={true}
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -65,7 +66,7 @@ const SideDrawer = () => {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Box>
   );
 };
 

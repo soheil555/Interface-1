@@ -5,6 +5,7 @@ export const globalStyles = {
     global: (props: any) => ({
       body: {
         bg: mode("white", "black")(props),
+        overflowY: "scroll", // Always show scrollbar to avoid flickering
       },
     }),
   },
