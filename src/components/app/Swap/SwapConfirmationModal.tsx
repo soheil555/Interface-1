@@ -1,4 +1,4 @@
-import { ArrowDownIcon } from "@chakra-ui/icons";
+import { ArrowDownIcon } from '@chakra-ui/icons'
 import {
   VStack,
   Button,
@@ -13,22 +13,22 @@ import {
   HStack,
   Divider,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { Token } from "../../../types";
-import { balanceWithSlippage, calculatePrice } from "../../../utils";
+} from '@chakra-ui/react'
+import { Token } from '../../../types'
+import { balanceWithSlippage, calculatePrice } from '../../../utils'
 
 interface SwapConfirmationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  tokenIn: Token;
-  tokenOut: Token;
-  amountIn: string;
-  amountOut: string;
-  slippage: string;
-  isFormValid: boolean;
-  isFormSubmitting: boolean;
-  isWalletConnected: boolean;
-  handleFormSubmit: () => void;
+  isOpen: boolean
+  onClose: () => void
+  tokenIn: Token
+  tokenOut: Token
+  amountIn: string
+  amountOut: string
+  slippage: string
+  isFormValid: boolean
+  isFormSubmitting: boolean
+  isWalletConnected: boolean
+  handleFormSubmit: () => void
 }
 
 const SwapConfirmationModal = ({
@@ -48,21 +48,21 @@ const SwapConfirmationModal = ({
     amountOut,
     slippage,
     tokenOut.decimals
-  );
+  )
 
   const tokenOutPrice = calculatePrice(
     amountIn,
     amountOut,
     tokenIn.decimals,
     tokenOut.decimals
-  );
+  )
 
-  const boxBg = useColorModeValue("gray.100", "gray.600");
+  const boxBg = useColorModeValue('gray.100', 'gray.600')
 
   return (
     <Modal
       blockScrollOnMount={false}
-      size={{ base: "xs", sm: "sm", md: "xl" }}
+      size={{ base: 'xs', sm: 'sm', md: 'xl' }}
       isCentered
       isOpen={isOpen}
       onClose={onClose}
@@ -80,8 +80,8 @@ const SwapConfirmationModal = ({
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text fontSize={{ base: "sm", sm: "md" }}>From</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>From</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   {amountIn} {tokenIn.symbol}
                 </Text>
               </HStack>
@@ -105,21 +105,21 @@ const SwapConfirmationModal = ({
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text fontSize={{ base: "sm", sm: "md" }}>To</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>To</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   {amountOut} {tokenOut.symbol}
                 </Text>
               </HStack>
             </VStack>
 
-            <Text fontSize={{ base: "sm", sm: "md" }}>
+            <Text fontSize={{ base: 'sm', sm: 'md' }}>
               1 {tokenIn.symbol} = {tokenOutPrice} {tokenOut.symbol}
             </Text>
 
             <VStack align="stretch" bg={boxBg} p={2} borderRadius="lg">
               <HStack justify="space-between">
-                <Text fontSize={{ base: "sm", sm: "md" }}>Expected Output</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>Expected Output</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   {amountOut} {tokenOut.symbol}
                 </Text>
               </HStack>
@@ -127,20 +127,20 @@ const SwapConfirmationModal = ({
               <Divider />
 
               <HStack justify="space-between">
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   Minimum received after slippage <br /> ({slippage}%)
                 </Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   <>
                     {amountOutWithSlippage} {tokenOut.symbol}
                   </>
                 </Text>
               </HStack>
             </VStack>
-            <Text fontSize={{ base: "sm", sm: "md" }}>
-              Output is estimated. You will receive at least{" "}
-              <span style={{ fontWeight: "bold" }}>
-                {amountOutWithSlippage} {tokenOut.symbol}{" "}
+            <Text fontSize={{ base: 'sm', sm: 'md' }}>
+              Output is estimated. You will receive at least{' '}
+              <span style={{ fontWeight: 'bold' }}>
+                {amountOutWithSlippage} {tokenOut.symbol}{' '}
               </span>
               or the transaction will revert.
             </Text>
@@ -159,7 +159,7 @@ const SwapConfirmationModal = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default SwapConfirmationModal;
+export default SwapConfirmationModal

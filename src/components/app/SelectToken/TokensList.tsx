@@ -1,5 +1,5 @@
-import { tokens as allTokens } from "../../../tokens";
-import { Token } from "../../../types";
+import { tokens as allTokens } from '../../../tokens'
+import { Token } from '../../../types'
 import {
   Box,
   HStack,
@@ -15,34 +15,34 @@ import {
   Input,
   Divider,
   Flex,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { SearchIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { SearchIcon } from '@chakra-ui/icons'
 
 interface TokensMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-  setSelectedToken: (token: Token) => void;
+  isOpen: boolean
+  onClose: () => void
+  setSelectedToken: (token: Token) => void
 }
 
 const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
-  const [tokens, setTokens] = useState<Token[]>(allTokens);
+  const [tokens, setTokens] = useState<Token[]>(allTokens)
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchInput = e.target.value.toLowerCase();
+    const searchInput = e.target.value.toLowerCase()
     const filteredTokens = allTokens.filter(
       (token) =>
         token.name.toLowerCase().includes(searchInput) ||
         token.symbol.toLowerCase().includes(searchInput)
-    );
+    )
 
-    setTokens(filteredTokens);
-  };
+    setTokens(filteredTokens)
+  }
 
   return (
     <Modal
       blockScrollOnMount={false}
-      size={{ base: "xs", sm: "sm", md: "md" }}
+      size={{ base: 'xs', sm: 'sm', md: 'md' }}
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -77,12 +77,12 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
                 <Box key={token.symbol}>
                   <Box
                     onClick={() => {
-                      setSelectedToken(token);
-                      onClose();
+                      setSelectedToken(token)
+                      onClose()
                     }}
                     cursor="pointer"
                     p={2}
-                    _hover={{ bgColor: "gray.100", color: "gray.800" }}
+                    _hover={{ bgColor: 'gray.100', color: 'gray.800' }}
                   >
                     <HStack gap={2}>
                       <Box>{token.logo && <token.logo fontSize="2xl" />}</Box>
@@ -104,7 +104,7 @@ const TokensList = ({ setSelectedToken, isOpen, onClose }: TokensMenuProps) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default TokensList;
+export default TokensList

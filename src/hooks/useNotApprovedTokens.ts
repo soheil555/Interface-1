@@ -1,25 +1,25 @@
-import { useWeb3React } from "@web3-react/core";
-import { BigNumber, Contract } from "ethers";
-import useSWR from "swr";
-import { Address } from "../addresses";
-import { Token } from "../types";
-import { parseBalanceToBigNumber } from "../utils";
-import useAddresses from "./useAddresses";
-import { useKeepSWRDataLiveAsBlocksArrive } from "./useKeepSWRDataLiveAsBlocksArrive";
-import { ERC20 } from "../abis/types";
-import ERC20ABI from "../abis/ERC20.json";
-import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from '@web3-react/core'
+import { BigNumber, Contract } from 'ethers'
+import useSWR from 'swr'
+import { Address } from '../addresses'
+import { Token } from '../types'
+import { parseBalanceToBigNumber } from '../utils'
+import useAddresses from './useAddresses'
+import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
+import { ERC20 } from '../abis/types'
+import ERC20ABI from '../abis/ERC20.json'
+import { Web3Provider } from '@ethersproject/providers'
 
 export interface TokenInfo extends Token {
-  address?: string;
+  address?: string
 }
 
 export interface NotApprovedToken {
-  tokenInfo: TokenInfo;
-  tokenContract: ERC20;
-  spender: string;
-  owner: string;
-  amount: BigNumber;
+  tokenInfo: TokenInfo
+  tokenContract: ERC20
+  spender: string
+  owner: string
+  amount: BigNumber
 }
 
 async function getNotApprovedTokens(
@@ -31,30 +31,30 @@ async function getNotApprovedTokens(
   account: string,
   spender: string
 ) {
-  const notApprovedTokens: NotApprovedToken[] = [];
+  const notApprovedTokens: NotApprovedToken[] = []
 
   for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    const amount = amounts[i];
+    const token = tokens[i]
+    const amount = amounts[i]
 
-    if (token.isCoin) continue;
+    if (token.isCoin) continue
 
     const amountBigNumber =
       amount instanceof BigNumber
         ? amount
-        : parseBalanceToBigNumber(amount, token.decimals);
+        : parseBalanceToBigNumber(amount, token.decimals)
 
     const tokenAddress = token.address
       ? token.address
-      : addresses.tokens[token.symbol];
+      : addresses.tokens[token.symbol]
 
     const tokenContract = new Contract(
       tokenAddress,
       ERC20ABI,
       provider
-    ) as ERC20;
+    ) as ERC20
 
-    const allowance = await tokenContract.allowance(account, spender);
+    const allowance = await tokenContract.allowance(account, spender)
     if (allowance.lt(amountBigNumber)) {
       notApprovedTokens.push({
         tokenInfo: token,
@@ -62,11 +62,11 @@ async function getNotApprovedTokens(
         spender,
         owner: account,
         amount: amountBigNumber,
-      });
+      })
     }
   }
 
-  return notApprovedTokens;
+  return notApprovedTokens
 }
 
 export default function useNotApprovedTokens(
@@ -74,15 +74,15 @@ export default function useNotApprovedTokens(
   amounts: (string | BigNumber)[],
   spender: string
 ) {
-  const { account, provider } = useWeb3React();
-  const addresses = useAddresses();
+  const { account, provider } = useWeb3React()
+  const addresses = useAddresses()
 
-  const shouldFetch = !!addresses && !!account && !!provider;
+  const shouldFetch = !!addresses && !!account && !!provider
 
   const result = useSWR(
     shouldFetch
       ? [
-          "NotApprovedTokens",
+          'NotApprovedTokens',
           tokens,
           amounts,
           addresses,
@@ -92,9 +92,9 @@ export default function useNotApprovedTokens(
         ]
       : null,
     getNotApprovedTokens
-  );
+  )
 
-  useKeepSWRDataLiveAsBlocksArrive(result.mutate);
+  useKeepSWRDataLiveAsBlocksArrive(result.mutate)
 
-  return result;
+  return result
 }

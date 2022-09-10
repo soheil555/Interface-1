@@ -16,96 +16,96 @@ import {
   NumberInputField,
   HStack,
   useToast,
-} from "@chakra-ui/react";
-import useFarmUserInfo from "../../../hooks/useFarmUserInfo";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
+} from '@chakra-ui/react'
+import useFarmUserInfo from '../../../hooks/useFarmUserInfo'
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import {
   isNumberValid,
   parseBalance,
   parseBalanceToBigNumber,
-} from "../../../utils";
-import { UnstakeFormValues } from "../../../types";
-import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
-import useTokenInfo from "../../../hooks/useTokenInfo";
-import useMasterChefContract from "../../../hooks/useMasterChefContract";
-import usePendingAXO from "../../../hooks/usePendingAXO";
-import { ethers } from "ethers";
+} from '../../../utils'
+import { UnstakeFormValues } from '../../../types'
+import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
+import useTokenInfo from '../../../hooks/useTokenInfo'
+import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import usePendingAXO from '../../../hooks/usePendingAXO'
+import { ethers } from 'ethers'
 
 interface HarvestButtonProps {
-  pid: number;
-  lpToken: string;
+  pid: number
+  lpToken: string
 }
 
 const initialValues: UnstakeFormValues = {
-  amount: "",
-};
+  amount: '',
+}
 
 const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
-  const { data: pendingAXO } = usePendingAXO(pid);
-  const toast = useToast();
-  const tokens = useLiquidityInfo(lpToken);
-  const token0Info = useTokenInfo(tokens?.token0);
-  const token1Info = useTokenInfo(tokens?.token1);
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const { data: userInfo } = useFarmUserInfo(pid);
+  const { data: pendingAXO } = usePendingAXO(pid)
+  const toast = useToast()
+  const tokens = useLiquidityInfo(lpToken)
+  const token0Info = useTokenInfo(tokens?.token0)
+  const token1Info = useTokenInfo(tokens?.token1)
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const { data: userInfo } = useFarmUserInfo(pid)
   const isHarvestAvailable =
     userInfo &&
     pendingAXO &&
-    (!userInfo.amount.isZero() || !pendingAXO.isZero());
-  const masterChefContract = useMasterChefContract();
+    (!userInfo.amount.isZero() || !pendingAXO.isZero())
+  const masterChefContract = useMasterChefContract()
 
   const isAmountZero = (amount: string) => {
-    return amount.length === 0 || parseBalanceToBigNumber(amount).isZero();
-  };
+    return amount.length === 0 || parseBalanceToBigNumber(amount).isZero()
+  }
 
   const handleUnstake = async (
     { amount }: UnstakeFormValues,
     { resetForm }: FormikHelpers<UnstakeFormValues>
   ) => {
-    if (!masterChefContract) return;
+    if (!masterChefContract) return
     try {
       const amountBigNumber =
-        amount.length === 0 ? 0 : parseBalanceToBigNumber(amount);
+        amount.length === 0 ? 0 : parseBalanceToBigNumber(amount)
 
       const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
-        gasLimit: "1000000",
-      });
-      await tx.wait();
+        gasLimit: '1000000',
+      })
+      await tx.wait()
 
       toast({
-        title: "Unstake liquidity",
-        description: "Unstaked successfully",
-        status: "success",
+        title: 'Unstake liquidity',
+        description: 'Unstaked successfully',
+        status: 'success',
         isClosable: true,
         duration: 9000,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Unstake liquidity",
+        title: 'Unstake liquidity',
         description: error.message,
-        status: "error",
+        status: 'error',
         isClosable: true,
         duration: 9000,
-      });
+      })
     }
 
-    resetForm();
-    onClose();
-  };
+    resetForm()
+    onClose()
+  }
   const validator = ({ amount }: UnstakeFormValues) => {
-    const errors: FormikErrors<UnstakeFormValues> = {};
+    const errors: FormikErrors<UnstakeFormValues> = {}
 
     if (
       userInfo &&
       amount.length !== 0 &&
       parseBalanceToBigNumber(amount).gt(userInfo.amount)
     ) {
-      errors.amount = `Insufficient LP balance`;
+      errors.amount = `Insufficient LP balance`
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <>
@@ -149,14 +149,14 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                           <HStack justify="space-between">
                             <Text>LP Token Amount</Text>
                             <Text variant="subtext" fontSize="sm">
-                              Balance{" "}
+                              Balance{' '}
                               {userInfo
                                 ? userInfo.amount.lte(
-                                    ethers.utils.parseEther("0.000001")
+                                    ethers.utils.parseEther('0.000001')
                                   )
                                   ? parseBalance(userInfo.amount, 18, 18)
                                   : parseBalance(userInfo.amount)
-                                : "0.00"}
+                                : '0.00'}
                             </Text>
                           </HStack>
                         </FormLabel>
@@ -166,7 +166,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             value={values.amount}
                             onChange={(value) => {
                               isNumberValid(value) &&
-                                setFieldValue("amount", value);
+                                setFieldValue('amount', value)
                             }}
                           >
                             <NumberInputField />
@@ -176,13 +176,13 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             onClick={() => {
                               userInfo &&
                                 setFieldValue(
-                                  "amount",
+                                  'amount',
                                   userInfo.amount.lte(
-                                    ethers.utils.parseEther("0.000001")
+                                    ethers.utils.parseEther('0.000001')
                                   )
                                     ? parseBalance(userInfo.amount, 18, 18)
                                     : parseBalance(userInfo.amount)
-                                );
+                                )
                             }}
                           >
                             MAX
@@ -190,7 +190,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                         </HStack>
 
                         <FormHelperText>
-                          Unstake your {token0Info?.symbol} /{" "}
+                          Unstake your {token0Info?.symbol} /{' '}
                           {token1Info?.symbol} pool tokens
                         </FormHelperText>
                       </FormControl>
@@ -205,20 +205,20 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                           {errors.amount
                             ? errors.amount
                             : isAmountZero(values.amount)
-                            ? "Harvest reward"
-                            : "Unstake LP tokens and harvest reward"}
+                            ? 'Harvest reward'
+                            : 'Unstake LP tokens and harvest reward'}
                         </Button>
                       </HStack>
                     </VStack>
                   </Form>
-                );
+                )
               }}
             </Formik>
           </ModalBody>
         </ModalContent>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default HarvestButton;
+export default HarvestButton

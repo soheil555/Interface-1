@@ -2,18 +2,18 @@ import {
   extendTheme,
   ThemeConfig,
   withDefaultColorScheme,
-} from "@chakra-ui/react";
-import { globalStyles } from "./styles";
-import Button from "./components/Button";
-import Menu from "./components/Menu";
-import Modal from "./components/Modal";
-import Popover from "./components/Popover";
-import Text from "./components/Text";
+} from '@chakra-ui/react'
+import { globalStyles } from './styles'
+import Button from './components/Button'
+import Menu from './components/Menu'
+import Modal from './components/Modal'
+import Popover from './components/Popover'
+import Text from './components/Text'
 
 const config: ThemeConfig = {
-  initialColorMode: "light",
+  initialColorMode: 'light',
   useSystemColorMode: true,
-};
+}
 
 const theme = extendTheme(
   {
@@ -28,9 +28,9 @@ const theme = extendTheme(
     },
   },
   withDefaultColorScheme({
-    colorScheme: "brand",
-    components: ["Button", "Tabs", "Checkbox", "Slider", "Switch"],
+    colorScheme: 'brand',
+    components: ['Button', 'Tabs', 'Checkbox', 'Slider', 'Switch'],
   })
-);
+)
 
-export default theme;
+export default theme

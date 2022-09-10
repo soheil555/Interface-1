@@ -8,77 +8,77 @@ import {
   FormLabel,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import useXolotlContract from "../../../hooks/useXolotlContract";
-import { UnstakeAXOFormValues } from "../../../types";
+} from '@chakra-ui/react'
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
+import useXolotlContract from '../../../hooks/useXolotlContract'
+import { UnstakeAXOFormValues } from '../../../types'
 import {
   isNumberValid,
   parseBalance,
   parseBalanceToBigNumber,
-} from "../../../utils";
-import useAXOContract from "../../../hooks/useAXOContract";
-import { useWeb3React } from "@web3-react/core";
-import useXltBalance from "../../../hooks/useXltBalance";
+} from '../../../utils'
+import useAXOContract from '../../../hooks/useAXOContract'
+import { useWeb3React } from '@web3-react/core'
+import useXltBalance from '../../../hooks/useXltBalance'
 
 const initialValues: UnstakeAXOFormValues = {
-  amount: "",
-};
+  amount: '',
+}
 
 const UnstakeAXOPanel = () => {
-  const toast = useToast();
-  const axoContract = useAXOContract();
-  const xolotlContract = useXolotlContract();
-  const { data: xltBalance } = useXltBalance();
-  const { account } = useWeb3React();
-  const walletConnected = !!axoContract && !!xolotlContract && !!account;
+  const toast = useToast()
+  const axoContract = useAXOContract()
+  const xolotlContract = useXolotlContract()
+  const { data: xltBalance } = useXltBalance()
+  const { account } = useWeb3React()
+  const walletConnected = !!axoContract && !!xolotlContract && !!account
 
   const handleUnstakeAXO = async (
     { amount }: UnstakeAXOFormValues,
     { resetForm }: FormikHelpers<UnstakeAXOFormValues>
   ) => {
-    if (!walletConnected) return;
+    if (!walletConnected) return
 
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount);
+      const amountBigNumber = parseBalanceToBigNumber(amount)
 
-      const tx = await xolotlContract.leave(amountBigNumber);
-      await tx.wait();
+      const tx = await xolotlContract.leave(amountBigNumber)
+      await tx.wait()
 
       toast({
-        title: "Unstake AXO",
-        description: "AXO unstaked successfully",
-        status: "success",
+        title: 'Unstake AXO',
+        description: 'AXO unstaked successfully',
+        status: 'success',
         isClosable: true,
         duration: 9000,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Unstake AXO",
+        title: 'Unstake AXO',
         description: error.message,
-        status: "error",
+        status: 'error',
         isClosable: true,
         duration: 9000,
-      });
+      })
     }
 
-    resetForm();
-  };
+    resetForm()
+  }
 
   const validator = ({ amount }: UnstakeAXOFormValues) => {
-    const errors: FormikErrors<UnstakeAXOFormValues> = {};
+    const errors: FormikErrors<UnstakeAXOFormValues> = {}
 
-    if (amount === "" || parseBalanceToBigNumber(amount).isZero()) {
-      errors.amount = "Enter an amount";
-      return errors;
+    if (amount === '' || parseBalanceToBigNumber(amount).isZero()) {
+      errors.amount = 'Enter an amount'
+      return errors
     }
 
     if (!xltBalance || parseBalanceToBigNumber(amount).gt(xltBalance)) {
-      errors.amount = "Unsufficient XLT balance";
-      return errors;
+      errors.amount = 'Unsufficient XLT balance'
+      return errors
     }
-  };
+  }
 
   return (
     <Formik
@@ -104,7 +104,7 @@ const UnstakeAXOPanel = () => {
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
-                      isNumberValid(value) && setFieldValue("amount", value);
+                      isNumberValid(value) && setFieldValue('amount', value)
                     }}
                   >
                     <NumberInputField placeholder="0 XLT" />
@@ -112,7 +112,7 @@ const UnstakeAXOPanel = () => {
                   <Button
                     onClick={() => {
                       xltBalance &&
-                        setFieldValue("amount", parseBalance(xltBalance));
+                        setFieldValue('amount', parseBalance(xltBalance))
                     }}
                   >
                     MAX
@@ -126,14 +126,14 @@ const UnstakeAXOPanel = () => {
                 type="submit"
                 variant="brand-outline"
               >
-                {errors.amount ? errors.amount : "Unstake"}
+                {errors.amount ? errors.amount : 'Unstake'}
               </Button>
             </VStack>
           </Form>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default UnstakeAXOPanel;
+export default UnstakeAXOPanel

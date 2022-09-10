@@ -14,48 +14,48 @@ import {
   NumberInputField,
   useDisclosure,
   HStack,
-} from "@chakra-ui/react";
-import { FiSettings } from "react-icons/fi";
-import { Formik, FormikErrors } from "formik";
-import { SettingsFormValues } from "../../../types";
-import { settingsAtom } from "../../../store";
-import { useAtom } from "jotai";
-import ThemeToggler from "../../common/ThemeToggler";
+} from '@chakra-ui/react'
+import { FiSettings } from 'react-icons/fi'
+import { Formik, FormikErrors } from 'formik'
+import { SettingsFormValues } from '../../../types'
+import { settingsAtom } from '../../../store'
+import { useAtom } from 'jotai'
+import ThemeToggler from '../../common/ThemeToggler'
 
 const Settings = () => {
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  const [settings, updateSettings] = useAtom(settingsAtom);
+  const { onOpen, onClose, isOpen } = useDisclosure()
+  const [settings, updateSettings] = useAtom(settingsAtom)
 
   const handleSaveSettings = (values: SettingsFormValues) => {
     updateSettings({
-      slippage: values.slippage !== "" ? values.slippage : "0.1",
-      deadline: values.deadline !== "" ? values.deadline : "30",
-    });
-    onClose();
-  };
+      slippage: values.slippage !== '' ? values.slippage : '0.1',
+      deadline: values.deadline !== '' ? values.deadline : '30',
+    })
+    onClose()
+  }
 
   const validator = (values: SettingsFormValues) => {
-    const errors: FormikErrors<SettingsFormValues> = {};
+    const errors: FormikErrors<SettingsFormValues> = {}
 
-    const slippageNumber = Number(values.slippage);
-    const deadlineNumber = Number(values.deadline);
+    const slippageNumber = Number(values.slippage)
+    const deadlineNumber = Number(values.deadline)
 
     if (
       isNaN(slippageNumber) ||
       !(slippageNumber >= 0 && slippageNumber <= 50)
     ) {
-      errors.slippage = "Enter a valid slippage perecentage";
+      errors.slippage = 'Enter a valid slippage perecentage'
     }
 
     if (
       values.deadline.length > 0 &&
       (isNaN(deadlineNumber) || !(deadlineNumber > 0 && deadlineNumber <= 4320))
     ) {
-      errors.deadline = "Enter a valid deadline";
+      errors.deadline = 'Enter a valid deadline'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <Formik
@@ -93,14 +93,14 @@ const Settings = () => {
               <FormLabel htmlFor="slippage">Slippage tolerance</FormLabel>
               <InputGroup id="slippage">
                 <NumberInput
-                  onChange={(value) => setFieldValue("slippage", value)}
+                  onChange={(value) => setFieldValue('slippage', value)}
                   value={values.slippage}
                 >
                   <NumberInputField placeholder="0.1" />
                 </NumberInput>
                 <Button
                   variant="outline"
-                  onClick={() => setFieldValue("slippage", "0.1")}
+                  onClick={() => setFieldValue('slippage', '0.1')}
                   ml={2}
                 >
                   Default
@@ -116,7 +116,7 @@ const Settings = () => {
               <FormLabel htmlFor="deadline">Transaction deadline</FormLabel>
               <InputGroup display="flex" alignItems="center" id="deadline">
                 <NumberInput
-                  onChange={(value) => setFieldValue("deadline", value)}
+                  onChange={(value) => setFieldValue('deadline', value)}
                   value={values.deadline}
                   w="10rem"
                 >
@@ -139,7 +139,7 @@ const Settings = () => {
         </Popover>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

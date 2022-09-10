@@ -13,19 +13,19 @@ import {
   Tab,
   TabPanel,
   Text,
-} from "@chakra-ui/react";
-import StakeAXOPanel from "../../components/app/Stake/StakeAXOPanel";
-import UnstakeAXOPanel from "../../components/app/Stake/UnstakeAXOPanel";
-import useUnstakedAXOBalance from "../../hooks/useUnstakedAXOBalance";
-import useXltBalance from "../../hooks/useXltBalance";
-import { AXOToken, XolotlToken } from "../../icons";
-import { parseBalance } from "../../utils";
-import Layout from "../../components/app/Layout/Layout";
-import { NextPage } from "next";
+} from '@chakra-ui/react'
+import StakeAXOPanel from '../../components/app/Stake/StakeAXOPanel'
+import UnstakeAXOPanel from '../../components/app/Stake/UnstakeAXOPanel'
+import useUnstakedAXOBalance from '../../hooks/useUnstakedAXOBalance'
+import useXltBalance from '../../hooks/useXltBalance'
+import { AXOToken, XolotlToken } from '../../icons'
+import { parseBalance } from '../../utils'
+import Layout from '../../components/app/Layout/Layout'
+import { NextPage } from 'next'
 
 const Stake: NextPage = () => {
-  const { data: xltBalance } = useXltBalance();
-  const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
+  const { data: xltBalance } = useXltBalance()
+  const { data: unstakedAXOBalance } = useUnstakedAXOBalance()
 
   return (
     <Layout>
@@ -39,7 +39,7 @@ const Stake: NextPage = () => {
 
         <Stack
           gap={2}
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: 'column', md: 'row' }}
           w="full"
           justify="space-between"
         >
@@ -85,7 +85,7 @@ const Stake: NextPage = () => {
         </Text>
       </VStack>
     </Layout>
-  );
-};
+  )
+}
 
-export default Stake;
+export default Stake

@@ -1,9 +1,9 @@
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image } from '@chakra-ui/react'
 
 const SideImage = () => {
   return (
     <Box
-      display={{ base: "none", lg: "block" }}
+      display={{ base: 'none', lg: 'block' }}
       zIndex={1}
       w="8rem"
       h="100vh"
@@ -12,7 +12,7 @@ const SideImage = () => {
     >
       <Image w="full" h="full" objectFit="cover" src="/images/vertical.jpg" />
     </Box>
-  );
-};
+  )
+}
 
-export default SideImage;
+export default SideImage

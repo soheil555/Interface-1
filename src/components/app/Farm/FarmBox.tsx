@@ -10,36 +10,36 @@ import {
   StatNumber,
   VStack,
   Stack,
-} from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
-import useFarmUserInfo from "../../../hooks/useFarmUserInfo";
-import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
-import useMasterChefOwner from "../../../hooks/useMasterChefOwner";
-import usePendingAXO from "../../../hooks/usePendingAXO";
-import useTokenInfo from "../../../hooks/useTokenInfo";
-import { Farm } from "../../../types";
-import { parseBalance } from "../../../utils";
-import EditAllocPointButton from "./EditAllocPointButton";
-import HarvestButton from "./HarvestButton";
-import StakeButton from "./StakeButton";
-import UpdatePoolButton from "./UpdatePoolButton";
+} from '@chakra-ui/react'
+import { useWeb3React } from '@web3-react/core'
+import { ethers } from 'ethers'
+import useFarmUserInfo from '../../../hooks/useFarmUserInfo'
+import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
+import useMasterChefOwner from '../../../hooks/useMasterChefOwner'
+import usePendingAXO from '../../../hooks/usePendingAXO'
+import useTokenInfo from '../../../hooks/useTokenInfo'
+import { Farm } from '../../../types'
+import { parseBalance } from '../../../utils'
+import EditAllocPointButton from './EditAllocPointButton'
+import HarvestButton from './HarvestButton'
+import StakeButton from './StakeButton'
+import UpdatePoolButton from './UpdatePoolButton'
 
 interface FarmBoxProps {
-  farm: Farm;
+  farm: Farm
 }
 
 const FarmBox = ({ farm }: FarmBoxProps) => {
-  const { data: pendingAXO } = usePendingAXO(farm.pid);
-  const { data: farmUserInfo } = useFarmUserInfo(farm.pid);
-  const tokens = useLiquidityInfo(farm.lpToken);
-  const token0Info = useTokenInfo(tokens?.token0);
-  const token1Info = useTokenInfo(tokens?.token1);
-  const { account } = useWeb3React();
-  const masterChefOwner = useMasterChefOwner();
-  const boxBg = useColorModeValue("gray.100", "gray.700");
+  const { data: pendingAXO } = usePendingAXO(farm.pid)
+  const { data: farmUserInfo } = useFarmUserInfo(farm.pid)
+  const tokens = useLiquidityInfo(farm.lpToken)
+  const token0Info = useTokenInfo(tokens?.token0)
+  const token1Info = useTokenInfo(tokens?.token1)
+  const { account } = useWeb3React()
+  const masterChefOwner = useMasterChefOwner()
+  const boxBg = useColorModeValue('gray.100', 'gray.700')
 
-  if (!token0Info || !token1Info) return null;
+  if (!token0Info || !token1Info) return null
 
   return (
     <Box bg={boxBg} w="full" borderRadius="lg">
@@ -91,11 +91,11 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           p={2}
           justify="space-between"
         >
-          <Stack direction={{ base: "column", md: "row" }} gap={5}>
+          <Stack direction={{ base: 'column', md: 'row' }} gap={5}>
             <Stat>
               <StatLabel>AXO Earned</StatLabel>
               <StatNumber>
-                {pendingAXO ? parseBalance(pendingAXO) : "0.00"}
+                {pendingAXO ? parseBalance(pendingAXO) : '0.00'}
               </StatNumber>
             </Stat>
 
@@ -104,10 +104,10 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
               <StatNumber>
                 {farmUserInfo
                   ? !farmUserInfo.amount.isZero() &&
-                    farmUserInfo.amount.lte(ethers.utils.parseEther("0.000001"))
+                    farmUserInfo.amount.lte(ethers.utils.parseEther('0.000001'))
                     ? parseBalance(farmUserInfo.amount, 18, 18)
                     : parseBalance(farmUserInfo.amount)
-                  : "0.00"}
+                  : '0.00'}
               </StatNumber>
             </Stat>
           </Stack>
@@ -116,7 +116,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
         </HStack>
       </VStack>
     </Box>
-  );
-};
+  )
+}
 
-export default FarmBox;
+export default FarmBox

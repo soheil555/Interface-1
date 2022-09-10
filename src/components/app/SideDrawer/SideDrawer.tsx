@@ -10,25 +10,25 @@ import {
   useBreakpointValue,
   VStack,
   Box,
-} from "@chakra-ui/react";
-import { HamburgerIcon } from "@chakra-ui/icons";
-import MetaMaskConnect from "../Web3/MetaMaskConnect";
-import { appRoutes } from "../../../routes";
-import SideDrawerItem from "./SideDrawerItem";
-import { useEffect } from "react";
+} from '@chakra-ui/react'
+import { HamburgerIcon } from '@chakra-ui/icons'
+import MetaMaskConnect from '../Web3/MetaMaskConnect'
+import { appRoutes } from '../../../routes'
+import SideDrawerItem from './SideDrawerItem'
+import { useEffect } from 'react'
 
 const SideDrawer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const isModalOpen = useBreakpointValue({ base: isOpen, lg: false }) || false;
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const isModalOpen = useBreakpointValue({ base: isOpen, lg: false }) || false
 
   useEffect(() => {
     if (!isModalOpen) {
-      onClose();
+      onClose()
     }
-  }, [isModalOpen]);
+  }, [isModalOpen])
 
   return (
-    <Box display={{ base: "block", lg: "none" }}>
+    <Box display={{ base: 'block', lg: 'none' }}>
       <IconButton
         onClick={onOpen}
         fontSize="2xl"
@@ -67,7 +67,7 @@ const SideDrawer = () => {
         </DrawerContent>
       </Drawer>
     </Box>
-  );
-};
+  )
+}
 
-export default SideDrawer;
+export default SideDrawer

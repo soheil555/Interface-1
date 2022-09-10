@@ -10,14 +10,14 @@ import {
   Collapse,
   VStack,
   Icon,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
-import ThemeToggler from "../common/ThemeToggler";
-import { Fade as Hamburger } from "hamburger-react";
-import { homeRoutes } from "../../routes";
+} from '@chakra-ui/react'
+import NextLink from 'next/link'
+import ThemeToggler from '../common/ThemeToggler'
+import { Fade as Hamburger } from 'hamburger-react'
+import { homeRoutes } from '../../routes'
 
 const Header = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure()
 
   return (
     <Box minH="20vh">
@@ -34,7 +34,7 @@ const Header = () => {
         <HStack
           justify="flex-end"
           w={650}
-          display={{ base: "none", lg: "flex" }}
+          display={{ base: 'none', lg: 'flex' }}
           fontSize={22}
           gap={16}
           mx={10}
@@ -51,19 +51,19 @@ const Header = () => {
               variant="brand-solid"
               rounded="full"
               px={10}
-              display={{ base: "none", lg: "block" }}
+              display={{ base: 'none', lg: 'block' }}
             >
               Launch App
             </Button>
           </NextLink>
 
-          <Box onClick={onToggle} display={{ lg: "none" }}>
+          <Box onClick={onToggle} display={{ lg: 'none' }}>
             <Hamburger color="white" direction="left" />
           </Box>
         </HStack>
       </Flex>
 
-      <Box display={{ lg: "none" }}>
+      <Box display={{ lg: 'none' }}>
         <Collapse in={isOpen}>
           <VStack fontSize={22} gap={3}>
             {getLinks()}
@@ -76,8 +76,8 @@ const Header = () => {
         </Collapse>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
 const getLinks = () => {
   return homeRoutes.map((route) => {
@@ -94,8 +94,8 @@ const getLinks = () => {
           )}
         </Link>
       </NextLink>
-    );
-  });
-};
+    )
+  })
+}
 
-export default Header;
+export default Header

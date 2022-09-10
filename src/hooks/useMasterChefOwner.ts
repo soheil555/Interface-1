@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import useMasterChefContract from "./useMasterChefContract";
+import { useEffect, useState } from 'react'
+import useMasterChefContract from './useMasterChefContract'
 
 export default function useMasterChefOwner() {
-  const [owner, setOwner] = useState<string>();
-  const masterChefContract = useMasterChefContract();
+  const [owner, setOwner] = useState<string>()
+  const masterChefContract = useMasterChefContract()
 
   useEffect(() => {
     if (masterChefContract) {
-      (async () => {
-        const owner = await masterChefContract.owner();
-        setOwner(owner);
-      })();
+      ;(async () => {
+        const owner = await masterChefContract.owner()
+        setOwner(owner)
+      })()
     }
-  }, [masterChefContract]);
+  }, [masterChefContract])
 
-  return owner;
+  return owner
 }

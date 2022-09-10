@@ -1,9 +1,7 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers } from 'ethers'
 
 export function shortenAddress(address: string): string {
-  return (
-    address.substring(0, 6) + "..." + address.substring(address.length - 4)
-  );
+  return address.substring(0, 6) + '...' + address.substring(address.length - 4)
 }
 
 export function parseBalance(
@@ -13,31 +11,31 @@ export function parseBalance(
 ) {
   return parseFloat(ethers.utils.formatUnits(balance, decimals)).toFixed(
     decimalToDisplay
-  );
+  )
 }
 
 export function parseBalanceToBigNumber(
   balance: string,
   decimals = 18
 ): BigNumber {
-  return ethers.utils.parseUnits(balance, decimals);
+  return ethers.utils.parseUnits(balance, decimals)
 }
 
 export function isNumberValid(value: string, decimals = 18) {
-  if (value === "") return true;
-  const pattern = `^\\d+\\.?\\d{0,${decimals}}$`;
-  const reg = new RegExp(pattern, "g");
+  if (value === '') return true
+  const pattern = `^\\d+\\.?\\d{0,${decimals}}$`
+  const reg = new RegExp(pattern, 'g')
 
-  return !!reg.exec(value);
+  return !!reg.exec(value)
 }
 
 export function amountWithSlippage(amount: BigNumber, slippage: string) {
-  const numerator = 100 - Number(slippage);
-  const decimalCounts = countDecimals(numerator);
+  const numerator = 100 - Number(slippage)
+  const decimalCounts = countDecimals(numerator)
 
   return amount
     .mul(numerator * 10 ** decimalCounts)
-    .div(100 * 10 ** decimalCounts);
+    .div(100 * 10 ** decimalCounts)
 }
 
 export function balanceWithSlippage(
@@ -48,12 +46,12 @@ export function balanceWithSlippage(
   return parseBalance(
     amountWithSlippage(parseBalanceToBigNumber(balance, decimals), slippage),
     decimals
-  );
+  )
 }
 
 export function countDecimals(value: number) {
-  if (Math.floor(value) === value) return 0;
-  return value.toString().split(".")[1].length;
+  if (Math.floor(value) === value) return 0
+  return value.toString().split('.')[1].length
 }
 
 export function calculatePrice(
@@ -62,18 +60,18 @@ export function calculatePrice(
   tokenInDecimals: number,
   tokenOutDecimals: number
 ) {
-  const amountInBigNumber = parseBalanceToBigNumber(amountIn, tokenInDecimals);
+  const amountInBigNumber = parseBalanceToBigNumber(amountIn, tokenInDecimals)
   const amountOutBigNumber = parseBalanceToBigNumber(
     amountOut,
     tokenOutDecimals
-  );
+  )
 
   return parseBalance(
     amountOutBigNumber
-      .mul(parseBalanceToBigNumber("1", tokenInDecimals))
+      .mul(parseBalanceToBigNumber('1', tokenInDecimals))
       .div(amountInBigNumber),
     tokenOutDecimals
-  );
+  )
 }
 
 export function XLtForAXO(
@@ -81,7 +79,7 @@ export function XLtForAXO(
   xltTotalSupply: BigNumber,
   axoBalance: BigNumber
 ) {
-  return xltAmount.mul(axoBalance).div(xltTotalSupply);
+  return xltAmount.mul(axoBalance).div(xltTotalSupply)
 }
 
 export function AXOForXLT(
@@ -90,6 +88,6 @@ export function AXOForXLT(
   xltBalance: BigNumber,
   axoBalance: BigNumber
 ) {
-  if (xltBalance.isZero() || axoBalance) return axoAmount;
-  return axoAmount.mul(xltTotalSupply).div(axoBalance);
+  if (xltBalance.isZero() || axoBalance) return axoAmount
+  return axoAmount.mul(xltTotalSupply).div(axoBalance)
 }

@@ -1,28 +1,21 @@
-import {
-  Stack,
-  VStack,
-  Button,
-  Text,
-  Heading,
-  Divider,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
-import Layout from "../../../components/app/Layout/Layout";
-import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
-import { useWeb3React } from "@web3-react/core";
-import LiquidityBox from "../../../components/app/Liquidity/LiquidityBox";
-import { NextPage } from "next";
+import { Stack, VStack, Button, Text, Heading, Divider } from '@chakra-ui/react'
+import NextLink from 'next/link'
+import Layout from '../../../components/app/Layout/Layout'
+import useAllPairsWithLiquidity from '../../../hooks/useAllPairsWithLiquidity'
+import { useWeb3React } from '@web3-react/core'
+import LiquidityBox from '../../../components/app/Liquidity/LiquidityBox'
+import { NextPage } from 'next'
 
 const Pool: NextPage = () => {
-  const { account } = useWeb3React();
-  const { data: liquidities } = useAllPairsWithLiquidity(account);
+  const { account } = useWeb3React()
+  const { data: liquidities } = useAllPairsWithLiquidity(account)
 
   return (
     <Layout>
       <VStack gap={22} w="full">
         <Stack
           align="center"
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: 'column', md: 'row' }}
           w="full"
         >
           <NextLink href="/app/liquid/add-liquidity">
@@ -54,7 +47,7 @@ const Pool: NextPage = () => {
             borderColor="gray.200"
             overflow="hidden"
           >
-            {!liquidities ? "Loading..." : "No liquidity found"}
+            {!liquidities ? 'Loading...' : 'No liquidity found'}
           </Text>
         ) : (
           liquidities.map((liquidity) => (
@@ -63,7 +56,7 @@ const Pool: NextPage = () => {
         )}
       </VStack>
     </Layout>
-  );
-};
+  )
+}
 
-export default Pool;
+export default Pool

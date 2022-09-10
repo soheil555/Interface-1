@@ -8,27 +8,27 @@ import {
   useDisclosure,
   HStack,
   Link,
-} from "@chakra-ui/react";
-import { IoSwapVertical } from "react-icons/io5";
-import useFactoryContract from "../../hooks/useFactoryContract";
-import Layout from "../../components/app/Layout/Layout";
-import useRouterContract from "../../hooks/useRouterContract";
-import { useWeb3React } from "@web3-react/core";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import { SwapFormValues } from "../../types";
-import { amountWithSlippage, parseBalanceToBigNumber } from "../../utils";
-import SwapSelectToken from "../../components/app/SelectToken/SwapSelectToken";
-import { useAtom } from "jotai";
-import useAddresses from "../../hooks/useAddresses";
-import { Contract } from "ethers";
-import WETH9ABI from "../../abis/WETH9.json";
-import { WETH9 } from "../../abis/types";
-import { settingsAtom } from "../../store";
-import SwapConfirmationModal from "../../components/app/Swap/SwapConfirmationModal";
-import NextLink from "next/link";
-import ApproveToken from "../../components/app/ApproveToken/ApproveToken";
-import { useState } from "react";
-import { NextPage } from "next";
+} from '@chakra-ui/react'
+import { IoSwapVertical } from 'react-icons/io5'
+import useFactoryContract from '../../hooks/useFactoryContract'
+import Layout from '../../components/app/Layout/Layout'
+import useRouterContract from '../../hooks/useRouterContract'
+import { useWeb3React } from '@web3-react/core'
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
+import { SwapFormValues } from '../../types'
+import { amountWithSlippage, parseBalanceToBigNumber } from '../../utils'
+import SwapSelectToken from '../../components/app/SelectToken/SwapSelectToken'
+import { useAtom } from 'jotai'
+import useAddresses from '../../hooks/useAddresses'
+import { Contract } from 'ethers'
+import WETH9ABI from '../../abis/WETH9.json'
+import { WETH9 } from '../../abis/types'
+import { settingsAtom } from '../../store'
+import SwapConfirmationModal from '../../components/app/Swap/SwapConfirmationModal'
+import NextLink from 'next/link'
+import ApproveToken from '../../components/app/ApproveToken/ApproveToken'
+import { useState } from 'react'
+import { NextPage } from 'next'
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -38,81 +38,81 @@ const initialValues: SwapFormValues = {
   tokenInBalance: undefined,
   tokenInReserve: undefined,
   tokenOutReserve: undefined,
-  wrapType: "invalid",
-};
+  wrapType: 'invalid',
+}
 
 const Swap: NextPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [settings] = useAtom(settingsAtom);
-  const toast = useToast();
-  const addresses = useAddresses();
-  const routerContract = useRouterContract();
-  const factoryContract = useFactoryContract();
-  const { account, provider } = useWeb3React();
-  const [isTokenInApproved, setIsTokenInApproved] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [settings] = useAtom(settingsAtom)
+  const toast = useToast()
+  const addresses = useAddresses()
+  const routerContract = useRouterContract()
+  const factoryContract = useFactoryContract()
+  const { account, provider } = useWeb3React()
+  const [isTokenInApproved, setIsTokenInApproved] = useState(false)
 
   const walletConnected =
     !!routerContract &&
     !!factoryContract &&
     !!account &&
     !!provider &&
-    !!addresses;
+    !!addresses
 
   const handleSwap = async (
     { tokenIn, tokenOut, amountIn, amountOut, wrapType }: SwapFormValues,
     { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
     if (!walletConnected || !tokenIn || !tokenOut || !amountIn || !amountOut)
-      return;
+      return
 
     const actionType =
-      wrapType === "invalid" ? "Swap" : wrapType === "wrap" ? "Wrap" : "Unwrap";
+      wrapType === 'invalid' ? 'Swap' : wrapType === 'wrap' ? 'Wrap' : 'Unwrap'
 
     try {
       const amountInBigNumber = parseBalanceToBigNumber(
         amountIn,
         tokenIn.decimals
-      );
+      )
 
       const amountOutBigNumber = parseBalanceToBigNumber(
         amountOut,
         tokenOut.decimals
-      );
+      )
 
-      const tokenInaddress = addresses.tokens[tokenIn.symbol];
-      const tokenOutaddress = addresses.tokens[tokenOut.symbol];
+      const tokenInaddress = addresses.tokens[tokenIn.symbol]
+      const tokenOutaddress = addresses.tokens[tokenOut.symbol]
 
       // Handle wrap
-      if (wrapType === "wrap") {
+      if (wrapType === 'wrap') {
         const wMaticContract = new Contract(
           tokenOutaddress,
           WETH9ABI,
           routerContract.signer
-        ) as WETH9;
+        ) as WETH9
 
         const tx = await wMaticContract.deposit({
           value: amountInBigNumber,
           gasLimit: 1000000,
-        });
-        await tx.wait();
+        })
+        await tx.wait()
       }
       // Handle unwrap
-      else if (wrapType === "unwrap") {
+      else if (wrapType === 'unwrap') {
         const wMaticContract = new Contract(
           tokenInaddress,
           WETH9ABI,
           routerContract.signer
-        ) as WETH9;
+        ) as WETH9
 
         const tx = await wMaticContract.withdraw(amountInBigNumber, {
           gasLimit: 1000000,
-        });
-        await tx.wait();
-      } else if (tokenIn.symbol === "MATIC") {
-        const path = [tokenInaddress, tokenOutaddress];
+        })
+        await tx.wait()
+      } else if (tokenIn.symbol === 'MATIC') {
+        const path = [tokenInaddress, tokenOutaddress]
 
-        const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Number(settings.deadline) * 60;
+        const timestamp = (await provider.getBlock('latest')).timestamp
+        const deadline = timestamp + Number(settings.deadline) * 60
 
         //TODO: set gasLimit
         const tx = await routerContract.swapExactETHForTokens(
@@ -124,15 +124,15 @@ const Swap: NextPage = () => {
             gasLimit: 1000000,
             value: amountInBigNumber,
           }
-        );
-        await tx.wait();
+        )
+        await tx.wait()
       } else {
-        const path = [tokenInaddress, tokenOutaddress];
+        const path = [tokenInaddress, tokenOutaddress]
 
-        const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Number(settings.deadline) * 60;
+        const timestamp = (await provider.getBlock('latest')).timestamp
+        const deadline = timestamp + Number(settings.deadline) * 60
 
-        if (tokenOut.symbol === "MATIC") {
+        if (tokenOut.symbol === 'MATIC') {
           //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForETH(
             amountInBigNumber,
@@ -143,9 +143,9 @@ const Swap: NextPage = () => {
             {
               gasLimit: 1000000,
             }
-          );
+          )
 
-          await tx.wait();
+          await tx.wait()
         } else {
           //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForTokens(
@@ -155,31 +155,31 @@ const Swap: NextPage = () => {
             account,
             deadline,
             { gasLimit: 1000000 }
-          );
-          await tx.wait();
+          )
+          await tx.wait()
         }
       }
 
       toast({
         title: actionType,
         description: `${actionType}ped successfully`,
-        status: "success",
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
 
-      resetForm();
+      resetForm()
     } catch (error: any) {
       toast({
         title: actionType,
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
+      })
     }
-    onClose();
-  };
+    onClose()
+  }
 
   const validator = ({
     tokenIn,
@@ -191,27 +191,27 @@ const Swap: NextPage = () => {
     tokenOutReserve,
     wrapType,
   }: SwapFormValues) => {
-    const errors: FormikErrors<SwapFormValues> = {};
+    const errors: FormikErrors<SwapFormValues> = {}
     if (!tokenIn || !tokenOut) {
-      errors.tokenIn = "Select a token";
-      return errors;
+      errors.tokenIn = 'Select a token'
+      return errors
     }
 
-    if (wrapType !== "invalid") {
+    if (wrapType !== 'invalid') {
       if (!amountIn || !amountOut) {
-        errors.amountIn = "Enter an amount";
-        return errors;
+        errors.amountIn = 'Enter an amount'
+        return errors
       }
 
       const amountInBigNumber = parseBalanceToBigNumber(
         amountIn,
         tokenIn.decimals
-      );
+      )
 
       if (!tokenInBalance || amountInBigNumber.gt(tokenInBalance)) {
-        errors.amountIn = `Insufficient ${tokenIn.symbol} balance`;
+        errors.amountIn = `Insufficient ${tokenIn.symbol} balance`
       }
-      return errors;
+      return errors
     }
 
     if (
@@ -220,38 +220,38 @@ const Swap: NextPage = () => {
       !tokenOutReserve ||
       tokenOutReserve.isZero()
     ) {
-      errors.tokenIn = "Token reserve is zero";
-      return errors;
+      errors.tokenIn = 'Token reserve is zero'
+      return errors
     }
 
     if (!amountIn || !amountOut) {
-      errors.amountIn = "Enter an amount";
-      return errors;
+      errors.amountIn = 'Enter an amount'
+      return errors
     }
 
     const amountInBigNumber = parseBalanceToBigNumber(
       amountIn,
       tokenIn.decimals
-    );
+    )
     const amountOutBigNumber = parseBalanceToBigNumber(
       amountOut,
       tokenOut.decimals
-    );
+    )
 
     if (
       amountInBigNumber.gt(tokenInReserve) ||
       amountOutBigNumber.gt(tokenOutReserve)
     ) {
-      errors.amountIn = "Insufficient liquidity for this trade.";
-      return errors;
+      errors.amountIn = 'Insufficient liquidity for this trade.'
+      return errors
     }
 
     if (!tokenInBalance || amountInBigNumber.gt(tokenInBalance)) {
-      errors.amountIn = `Insufficient ${tokenIn.symbol} balance`;
+      errors.amountIn = `Insufficient ${tokenIn.symbol} balance`
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <Layout>
@@ -279,7 +279,7 @@ const Swap: NextPage = () => {
                     fontWeight="bold"
                     fontSize="lg"
                     _hover={{
-                      textDecoration: "none",
+                      textDecoration: 'none',
                     }}
                   >
                     Swap
@@ -290,7 +290,7 @@ const Swap: NextPage = () => {
                     fontWeight="bold"
                     fontSize="lg"
                     _hover={{
-                      textDecoration: "none",
+                      textDecoration: 'none',
                     }}
                   >
                     Limit
@@ -312,8 +312,8 @@ const Swap: NextPage = () => {
                     tokenIn: values.tokenOut,
                     tokenOut: values.tokenIn,
                     amountIn: values.amountOut,
-                  };
-                  setValues({ ...values, ...newValues });
+                  }
+                  setValues({ ...values, ...newValues })
                 }}
                 aria-label="swap"
                 icon={<IoSwapVertical />}
@@ -342,24 +342,24 @@ const Swap: NextPage = () => {
                 isDisabled={!isValid || !walletConnected || !isTokenInApproved}
                 variant="brand-outline"
                 w="full"
-                fontSize={{ base: "sm", sm: "md" }}
+                fontSize={{ base: 'sm', sm: 'md' }}
                 onClick={
-                  values.wrapType !== "invalid"
+                  values.wrapType !== 'invalid'
                     ? () => {
-                        handleSubmit();
+                        handleSubmit()
                       }
                     : onOpen
                 }
               >
                 {walletConnected
                   ? isValid
-                    ? values.wrapType !== "invalid"
-                      ? values.wrapType === "wrap"
-                        ? "Wrap"
-                        : "Unwrap"
-                      : "Swap"
+                    ? values.wrapType !== 'invalid'
+                      ? values.wrapType === 'wrap'
+                        ? 'Wrap'
+                        : 'Unwrap'
+                      : 'Swap'
                     : errors.tokenIn || errors.amountIn
-                  : "Connect Wallet to Continue"}
+                  : 'Connect Wallet to Continue'}
               </Button>
 
               {values.tokenIn &&
@@ -385,7 +385,7 @@ const Swap: NextPage = () => {
         )}
       </Formik>
     </Layout>
-  );
-};
+  )
+}
 
-export default Swap;
+export default Swap

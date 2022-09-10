@@ -7,25 +7,25 @@ import {
   Button,
   Box,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { CHAINS } from "../../../chains";
+} from '@chakra-ui/react'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import { CHAINS } from '../../../chains'
 
 interface ChainSelectProps {
-  switchChain: (chainId: number) => void | undefined;
-  chainId: number;
+  switchChain: (chainId: number) => void | undefined
+  chainId: number
 }
 
 const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
-  const chainInfo = CHAINS[chainId];
+  const chainInfo = CHAINS[chainId]
 
   return (
     <Menu autoSelect={false}>
       <MenuButton
-        fontSize={{ base: "xs", sm: "md" }}
+        fontSize={{ base: 'xs', sm: 'md' }}
         as={Button}
         variant="outline"
-        color={useColorModeValue("gray.900", "white")}
+        color={useColorModeValue('gray.900', 'white')}
         rightIcon={<ChevronDownIcon />}
       >
         <>
@@ -47,7 +47,7 @@ const ChainSelect = ({ switchChain, chainId }: ChainSelectProps) => {
         </MenuGroup>
       </MenuList>
     </Menu>
-  );
-};
+  )
+}
 
-export default ChainSelect;
+export default ChainSelect
