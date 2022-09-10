@@ -25,7 +25,7 @@ const initialValues: UnstakeAXOFormValues = {
   amount: "",
 };
 
-const UnstakeAXO = () => {
+const UnstakeAXOPanel = () => {
   const toast = useToast();
   const axoContract = useAXOContract();
   const xolotlContract = useXolotlContract();
@@ -136,4 +136,4 @@ const UnstakeAXO = () => {
   );
 };
 
-export default UnstakeAXO;
+export default UnstakeAXOPanel;

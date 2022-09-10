@@ -9,10 +9,9 @@ export const globalStyles = {
       },
     }),
   },
-
   fonts: {
-    body: "Inter, sans-serif",
-    heading: "Inter, sans-serif",
+    body: "Inter, system-ui, sans-serif",
+    heading: "Work Sans, system-ui, sans-serif",
   },
   colors: {
     brand: {

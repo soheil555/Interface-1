@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './src/abis/types' './src/abis/*.json'",
-    "gen:theme-typings": "chakra-cli tokens ./src/theme.ts",
+    "gen:theme-typings": "chakra-cli tokens ./src/theme",
     "postinstall": "yarn compile-contract-types && yarn gen:theme-typings"
   },
   "dependencies": {
@@ -17,9 +17,8 @@
     "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@fontsource/dm-sans": "^4.5.7",
     "@fontsource/inter": "^4.5.12",
-    "@fontsource/lato": "^4.5.8",
+    "@fontsource/work-sans": "^4.5.12",
     "@uniswap/v2-core": "^1.0.1",
     "@web3-react/core": "8.0.32-beta.0",
     "@web3-react/metamask": "8.0.25-beta.0",

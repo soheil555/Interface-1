@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../../_app";
 import {
   Stack,
   VStack,
@@ -12,8 +11,9 @@ import Layout from "../../../components/app/Layout/Layout";
 import useAllPairsWithLiquidity from "../../../hooks/useAllPairsWithLiquidity";
 import { useWeb3React } from "@web3-react/core";
 import LiquidityBox from "../../../components/app/Liquidity/LiquidityBox";
+import { NextPage } from "next";
 
-const Pool: NextPageWithLayout = () => {
+const Pool: NextPage = () => {
   const { account } = useWeb3React();
   const { data: liquidities } = useAllPairsWithLiquidity(account);
 
@@ -37,7 +37,7 @@ const Pool: NextPageWithLayout = () => {
           </NextLink>
         </Stack>
 
-        <Heading alignSelf="flex-start" size="lg">
+        <Heading alignSelf="flex-start" size="xl" fontWeight="light">
           Your Liquidity
         </Heading>
         <Divider />

@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../_app";
 import {
   Heading,
   VStack,
@@ -18,8 +17,9 @@ import AddLPButton from "../../components/app/Farm/AddLPButton";
 import FarmBox from "../../components/app/Farm/FarmBox";
 import useFarms from "../../hooks/useFarms";
 import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
+import { NextPage } from "next";
 
-const Farm: NextPageWithLayout = () => {
+const Farm: NextPage = () => {
   const [stakedOnly, setStakedOnly] = useBoolean();
   const { account } = useWeb3React();
   const { data: farms } = useFarms(stakedOnly ? account : undefined);
@@ -29,17 +29,20 @@ const Farm: NextPageWithLayout = () => {
   return (
     <Layout>
       <VStack gap={14} w="full">
-        <Heading
-          size="3xl"
-          fontWeight="light"
-          textTransform="uppercase"
-          letterSpacing="widest"
-        >
-          Liquidity Pool
-        </Heading>
-        <Text variant="subtext" fontSize="m">
-          Stake your LPs here to earn AXO block reward.
-        </Text>
+        <VStack gap={3}>
+          <Heading
+            size="3xl"
+            fontWeight="light"
+            textTransform="uppercase"
+            letterSpacing="widest"
+          >
+            Liquidity Pool
+          </Heading>
+          <Text variant="subtext" fontSize="m">
+            Stake your LPs here to earn AXO block reward.
+          </Text>
+        </VStack>
+
         <Stack
           direction={{ base: "column", lg: "row" }}
           gap={2}
@@ -54,7 +57,7 @@ const Farm: NextPageWithLayout = () => {
 
         <VStack gap={5} w="full">
           <HStack align="stretch" w="full" gap={2}>
-            <Heading alignSelf="flex-start" size="lg" mb={2}>
+            <Heading alignSelf="flex-start" fontWeight="light" size="lg" mb={2}>
               Farms
             </Heading>
             <FormControl display="flex" alignItems="center" gap={2}>

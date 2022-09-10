@@ -66,7 +66,12 @@ const Settings = () => {
       initialValues={settings}
     >
       {({ errors, touched, values, handleSubmit, setFieldValue }) => (
-        <Popover isOpen={isOpen} onOpen={onOpen} onClose={handleSubmit}>
+        <Popover
+          placement="bottom-end"
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={handleSubmit}
+        >
           <PopoverTrigger>
             <IconButton
               aria-label="settings"
@@ -74,7 +79,7 @@ const Settings = () => {
               icon={<FiSettings />}
             />
           </PopoverTrigger>
-          <PopoverContent p={4}>
+          <PopoverContent w="270px" p={4}>
             <PopoverArrow />
 
             <Text fontWeight="bold" mb={2}>

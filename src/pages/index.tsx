@@ -1,11 +1,11 @@
-import type { NextPageWithLayout } from "./_app";
 import Header from "../components/home/Header";
 import HeroBanner from "../components/home/HeroBanner";
 import Protocol from "../components/home/Protocol";
 import Footer from "../components/common/Footer";
 import { Box, Container, useColorModeValue } from "@chakra-ui/react";
+import { NextPage } from "next";
 
-const Home: NextPageWithLayout = () => {
+const Home: NextPage = () => {
   return (
     <>
       <Container minH="95vh" maxW="container.xl">

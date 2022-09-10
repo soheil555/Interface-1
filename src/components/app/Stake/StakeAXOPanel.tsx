@@ -31,7 +31,7 @@ const initialValues: StakeAXOFormValues = {
   amount: "",
 };
 
-const StakeAXO = () => {
+const StakeAXOPanel = () => {
   const toast = useToast();
   const axoContract = useAXOContract();
   const xolotlContract = useXolotlContract();
@@ -190,4 +190,4 @@ const StakeAXO = () => {
   );
 };
 
-export default StakeAXO;
+export default StakeAXOPanel;

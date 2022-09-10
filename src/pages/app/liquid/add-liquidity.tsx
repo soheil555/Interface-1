@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../../_app";
 import {
   useToast,
   VStack,
@@ -13,13 +12,7 @@ import useFactoryContract from "../../../hooks/useFactoryContract";
 import Layout from "../../../components/app/Layout/Layout";
 import useRouterContract from "../../../hooks/useRouterContract";
 import { useWeb3React } from "@web3-react/core";
-import {
-  Formik,
-  Form,
-  FormikErrors,
-  FormikHelpers,
-  validateYupSchema,
-} from "formik";
+import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
 import { LiquidityFormValues } from "../../../types";
 import { amountWithSlippage, parseBalanceToBigNumber } from "../../../utils";
 import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
@@ -29,6 +22,7 @@ import { useAtom } from "jotai";
 import { settingsAtom } from "../../../store";
 import ApproveToken from "../../../components/app/ApproveToken/ApproveToken";
 import { useState } from "react";
+import { NextPage } from "next";
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -41,7 +35,7 @@ const initialValues: LiquidityFormValues = {
   token2Balance: undefined,
 };
 
-const AddLiquidity: NextPageWithLayout = () => {
+const AddLiquidity: NextPage = () => {
   const [settings] = useAtom(settingsAtom);
   const toast = useToast();
   const router = useRouter();

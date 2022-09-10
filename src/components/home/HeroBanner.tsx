@@ -46,10 +46,14 @@ const HeroBanner = () => {
             lineHeight="1"
           >
             AXOSWAP
+            <Box
+              fontWeight="light"
+              color="white"
+              fontSize={{ base: "1.1rem", md: "1.6rem" }}
+            >
+              DECENTRALIZED EXCHANGE
+            </Box>
           </Heading>
-          <Text color="white" fontSize={{ base: "1.1rem", md: "1.6rem" }}>
-            DECENTRALIZED EXCHANGE
-          </Text>
         </Box>
 
         <Counter />
