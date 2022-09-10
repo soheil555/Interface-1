@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prepare": "husky install",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './src/abis/types' './src/abis/*.json'",
     "gen:theme-typings": "chakra-cli tokens ./src/theme",
     "postinstall": "yarn compile-contract-types && yarn gen:theme-typings"
@@ -41,9 +42,13 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@web3-react/types": "8.0.18-beta.0",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1",
     "typechain": "^8.1.0",
     "typescript": "^4.7.4"
   }

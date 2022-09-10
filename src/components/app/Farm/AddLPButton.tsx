@@ -17,79 +17,79 @@ import {
   Checkbox,
   VStack,
   useToast,
-} from "@chakra-ui/react";
-import { ethers } from "ethers";
-import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
-import useMasterChefContract from "../../../hooks/useMasterChefContract";
-import { AddLPFormValues } from "../../../types";
-import LPTokenSelect from "./LPTokenSelect";
+} from '@chakra-ui/react'
+import { ethers } from 'ethers'
+import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
+import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import { AddLPFormValues } from '../../../types'
+import LPTokenSelect from './LPTokenSelect'
 
 const initialValues: AddLPFormValues = {
-  allocPoint: "",
-  lpToken: "",
+  allocPoint: '',
+  lpToken: '',
   update: false,
-};
+}
 
 const AddLPButton = () => {
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const masterChefContract = useMasterChefContract();
+  const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const masterChefContract = useMasterChefContract()
 
   const handleAddLP = async (
     { lpToken, allocPoint, update }: AddLPFormValues,
     { resetForm }: FormikHelpers<AddLPFormValues>
   ) => {
-    if (!masterChefContract) return;
+    if (!masterChefContract) return
 
     try {
-      let tx = await masterChefContract.add(allocPoint, lpToken, update, {
+      const tx = await masterChefContract.add(allocPoint, lpToken, update, {
         gasLimit: 1000000,
-      });
-      await tx.wait();
+      })
+      await tx.wait()
 
       toast({
-        title: "Add LP",
-        description: "LP added successfully",
-        status: "success",
+        title: 'Add LP',
+        description: 'LP added successfully',
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Add LP",
+        title: 'Add LP',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
+      })
     }
 
-    resetForm();
-    onClose();
-  };
+    resetForm()
+    onClose()
+  }
   const validator = (values: AddLPFormValues) => {
-    const errors: FormikErrors<AddLPFormValues> = {};
+    const errors: FormikErrors<AddLPFormValues> = {}
 
     if (values.lpToken.length === 0) {
-      errors.lpToken = "Required";
+      errors.lpToken = 'Required'
     }
 
     if (values.lpToken.length > 0 && !ethers.utils.isAddress(values.lpToken)) {
-      errors.lpToken = "Invalid address";
+      errors.lpToken = 'Invalid address'
     }
 
     if (values.allocPoint.length === 0) {
-      errors.allocPoint = "Required";
+      errors.allocPoint = 'Required'
     }
 
-    const allocPointNumber = Number(values.allocPoint);
+    const allocPointNumber = Number(values.allocPoint)
     if (isNaN(allocPointNumber) || allocPointNumber < 0) {
-      errors.allocPoint = "Invalid number";
+      errors.allocPoint = 'Invalid number'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <>
@@ -160,7 +160,7 @@ const AddLPButton = () => {
                       <Checkbox
                         isChecked={values.update}
                         onChange={() => {
-                          setFieldValue("update", !values.update);
+                          setFieldValue('update', !values.update)
                         }}
                       >
                         Update reward variables for all pools
@@ -181,12 +181,12 @@ const AddLPButton = () => {
                   </ModalFooter>
                 </ModalContent>
               </Form>
-            );
+            )
           }}
         </Formik>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default AddLPButton;
+export default AddLPButton

@@ -6,23 +6,23 @@ import {
   HStack,
   Icon,
   Text,
-} from "@chakra-ui/react";
-import { AiOutlinePlus } from "react-icons/ai";
-import useFactoryContract from "../../../hooks/useFactoryContract";
-import Layout from "../../../components/app/Layout/Layout";
-import useRouterContract from "../../../hooks/useRouterContract";
-import { useWeb3React } from "@web3-react/core";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import { LiquidityFormValues } from "../../../types";
-import { amountWithSlippage, parseBalanceToBigNumber } from "../../../utils";
-import LiquiditySelectToken from "../../../components/app/SelectToken/LiquiditySelectToken";
-import { BiArrowBack } from "react-icons/bi";
-import { useRouter } from "next/router";
-import { useAtom } from "jotai";
-import { settingsAtom } from "../../../store";
-import ApproveToken from "../../../components/app/ApproveToken/ApproveToken";
-import { useState } from "react";
-import { NextPage } from "next";
+} from '@chakra-ui/react'
+import { AiOutlinePlus } from 'react-icons/ai'
+import useFactoryContract from '../../../hooks/useFactoryContract'
+import Layout from '../../../components/app/Layout/Layout'
+import useRouterContract from '../../../hooks/useRouterContract'
+import { useWeb3React } from '@web3-react/core'
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
+import { LiquidityFormValues } from '../../../types'
+import { amountWithSlippage, parseBalanceToBigNumber } from '../../../utils'
+import LiquiditySelectToken from '../../../components/app/SelectToken/LiquiditySelectToken'
+import { BiArrowBack } from 'react-icons/bi'
+import { useRouter } from 'next/router'
+import { useAtom } from 'jotai'
+import { settingsAtom } from '../../../store'
+import ApproveToken from '../../../components/app/ApproveToken/ApproveToken'
+import { useState } from 'react'
+import { NextPage } from 'next'
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -33,19 +33,19 @@ const initialValues: LiquidityFormValues = {
   token2Amount: undefined,
   token1Balance: undefined,
   token2Balance: undefined,
-};
+}
 
 const AddLiquidity: NextPage = () => {
-  const [settings] = useAtom(settingsAtom);
-  const toast = useToast();
-  const router = useRouter();
+  const [settings] = useAtom(settingsAtom)
+  const toast = useToast()
+  const router = useRouter()
 
-  const routerContract = useRouterContract();
-  const factoryContract = useFactoryContract();
-  const { account, provider } = useWeb3React();
+  const routerContract = useRouterContract()
+  const factoryContract = useFactoryContract()
+  const { account, provider } = useWeb3React()
   const walletConnected =
-    !!routerContract && !!factoryContract && !!account && !!provider;
-  const [isAllTokensApproved, setIsAllTokensApproved] = useState(false);
+    !!routerContract && !!factoryContract && !!account && !!provider
+  const [isAllTokensApproved, setIsAllTokensApproved] = useState(false)
 
   const handleAddLiquidity = async (
     {
@@ -67,47 +67,22 @@ const AddLiquidity: NextPage = () => {
       !token1Contract ||
       !token2Contract
     )
-      return;
+      return
 
     try {
-      const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals);
-      const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals);
+      const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals)
+      const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals)
 
       if (token1.isCoin || token2.isCoin) {
-        const tokenContract = token1.isCoin ? token2Contract : token1Contract;
-        const tokenAmount = token1.isCoin ? amount2 : amount1;
-        const maticAmount = token1.isCoin ? amount1 : amount2;
+        const tokenContract = token1.isCoin ? token2Contract : token1Contract
+        const tokenAmount = token1.isCoin ? amount2 : amount1
+        const maticAmount = token1.isCoin ? amount1 : amount2
 
-        const tokenAllowance = await tokenContract.allowance(
-          account,
-          routerContract.address
-        );
-
-        if (tokenAllowance.lt(tokenAmount)) {
-          let tx = await tokenContract.approve(
-            routerContract.address,
-            tokenAmount
-          );
-          await tx.wait();
-        }
-
-        const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60);
-
-        let gasPrice = await routerContract.provider.getGasPrice();
-
-        let estimatedGas = await routerContract.estimateGas.addLiquidityETH(
-          tokenContract.address,
-          tokenAmount,
-          amountWithSlippage(tokenAmount, settings.slippage),
-          amountWithSlippage(maticAmount, settings.slippage),
-          account,
-          deadline,
-          { value: maticAmount }
-        );
+        const timestamp = (await provider.getBlock('latest')).timestamp
+        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        let tx = await routerContract.addLiquidityETH(
+        const tx = await routerContract.addLiquidityETH(
           tokenContract.address,
           tokenAmount,
           amountWithSlippage(tokenAmount, settings.slippage),
@@ -115,58 +90,18 @@ const AddLiquidity: NextPage = () => {
           account,
           deadline,
           {
-            gasLimit: estimatedGas.add(1000000),
-            gasPrice,
+            gasLimit: 1000000,
             value: maticAmount,
           }
-        );
+        )
 
-        await tx.wait();
+        await tx.wait()
       } else {
-        const token1Allowance = await token1Contract.allowance(
-          account,
-          routerContract.address
-        );
-
-        const token2Allowance = await token2Contract.allowance(
-          account,
-          routerContract.address
-        );
-
-        if (token1Allowance.lt(amount1)) {
-          let tx = await token1Contract.approve(
-            routerContract.address,
-            amount1
-          );
-          await tx.wait();
-        }
-
-        if (token2Allowance.lt(amount2)) {
-          let tx = await token2Contract.approve(
-            routerContract.address,
-            amount2
-          );
-          await tx.wait();
-        }
-
-        const timestamp = (await provider.getBlock("latest")).timestamp;
-        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60);
-
-        let gasPrice = await routerContract.provider.getGasPrice();
-
-        let estimatedGas = await routerContract.estimateGas.addLiquidity(
-          token1Contract.address,
-          token2Contract.address,
-          amount1,
-          amount2,
-          amountWithSlippage(amount1, settings.slippage),
-          amountWithSlippage(amount2, settings.slippage),
-          account,
-          deadline
-        );
+        const timestamp = (await provider.getBlock('latest')).timestamp
+        const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        let tx = await routerContract.addLiquidity(
+        const tx = await routerContract.addLiquidity(
           token1Contract.address,
           token2Contract.address,
           amount1,
@@ -175,31 +110,31 @@ const AddLiquidity: NextPage = () => {
           amountWithSlippage(amount2, settings.slippage),
           account,
           deadline,
-          { gasLimit: estimatedGas.add(1000000), gasPrice }
-        );
+          { gasLimit: 1000000 }
+        )
 
-        await tx.wait();
+        await tx.wait()
       }
 
       toast({
-        title: "Add liquidity",
-        description: "Liquidity added successfully",
-        status: "success",
+        title: 'Add liquidity',
+        description: 'Liquidity added successfully',
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
 
-      resetForm();
+      resetForm()
     } catch (error: any) {
       toast({
-        title: "Add liquidity",
+        title: 'Add liquidity',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   const validator = ({
     token1,
@@ -209,33 +144,33 @@ const AddLiquidity: NextPage = () => {
     token1Balance,
     token2Balance,
   }: LiquidityFormValues) => {
-    const errors: FormikErrors<LiquidityFormValues> = {};
+    const errors: FormikErrors<LiquidityFormValues> = {}
     if (!token1 || !token2) {
-      errors.token1 = "Invalid token pair";
-      return errors;
+      errors.token1 = 'Invalid token pair'
+      return errors
     }
 
     if (!token1Amount || !token2Amount) {
-      errors.token1Amount = "Enter an amount";
-      return errors;
+      errors.token1Amount = 'Enter an amount'
+      return errors
     }
 
     if (
       token1Balance &&
       parseBalanceToBigNumber(token1Amount, token1.decimals).gt(token1Balance)
     ) {
-      errors.token1Amount = `Insufficient ${token1.symbol} balance`;
+      errors.token1Amount = `Insufficient ${token1.symbol} balance`
     }
 
     if (
       token2Balance &&
       parseBalanceToBigNumber(token2Amount, token2.decimals).gt(token2Balance)
     ) {
-      errors.token2Amount = `Insufficient ${token2.symbol} balance`;
+      errors.token2Amount = `Insufficient ${token2.symbol} balance`
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <Layout>
@@ -252,7 +187,7 @@ const AddLiquidity: NextPage = () => {
               <HStack fontSize="lg" alignSelf="flex-start">
                 <IconButton
                   onClick={() => {
-                    router.back();
+                    router.back()
                   }}
                   aria-label="back"
                   icon={<BiArrowBack />}
@@ -288,15 +223,15 @@ const AddLiquidity: NextPage = () => {
                 }
                 variant="brand-outline"
                 w="full"
-                fontSize={{ base: "sm", sm: "md" }}
+                fontSize={{ base: 'sm', sm: 'md' }}
               >
                 {walletConnected
                   ? isValid
-                    ? "Add Liquidity"
+                    ? 'Add Liquidity'
                     : errors.token1 ||
                       errors.token1Amount ||
                       errors.token2Amount
-                  : "Connect Wallet to Continue"}
+                  : 'Connect Wallet to Continue'}
               </Button>
               <Text
                 textAlign="center"
@@ -311,7 +246,7 @@ const AddLiquidity: NextPage = () => {
         )}
       </Formik>
     </Layout>
-  );
-};
+  )
+}
 
-export default AddLiquidity;
+export default AddLiquidity

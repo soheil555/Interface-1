@@ -8,103 +8,90 @@ import {
   FormLabel,
   useToast,
   FormHelperText,
-} from "@chakra-ui/react";
-import { Formik, Form, FormikErrors, FormikHelpers } from "formik";
-import useUnstakedAXOBalance from "../../../hooks/useUnstakedAXOBalance";
-import useXolotlContract from "../../../hooks/useXolotlContract";
-import { StakeAXOFormValues } from "../../../types";
+} from '@chakra-ui/react'
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
+import useUnstakedAXOBalance from '../../../hooks/useUnstakedAXOBalance'
+import useXolotlContract from '../../../hooks/useXolotlContract'
+import { StakeAXOFormValues } from '../../../types'
 import {
   AXOForXLT,
   isNumberValid,
   parseBalance,
   parseBalanceToBigNumber,
-} from "../../../utils";
-import useAXOContract from "../../../hooks/useAXOContract";
-import { useWeb3React } from "@web3-react/core";
-import useXolotTotalSupply from "../../../hooks/useXolotTotalSupply";
-import useXltBalance from "../../../hooks/useXltBalance";
-import { useState } from "react";
-import ApproveToken from "../ApproveToken/ApproveToken";
-import useTokenInfo from "../../../hooks/useTokenInfo";
+} from '../../../utils'
+import useAXOContract from '../../../hooks/useAXOContract'
+import { useWeb3React } from '@web3-react/core'
+import useXolotTotalSupply from '../../../hooks/useXolotTotalSupply'
+import useXltBalance from '../../../hooks/useXltBalance'
+import { useState } from 'react'
+import ApproveToken from '../ApproveToken/ApproveToken'
+import useTokenInfo from '../../../hooks/useTokenInfo'
 
 const initialValues: StakeAXOFormValues = {
-  amount: "",
-};
+  amount: '',
+}
 
 const StakeAXOPanel = () => {
-  const toast = useToast();
-  const axoContract = useAXOContract();
-  const xolotlContract = useXolotlContract();
-  const { data: xolotlTotalSupply } = useXolotTotalSupply();
-  const { data: unstakedAXOBalance } = useUnstakedAXOBalance();
-  const { data: xltBalance } = useXltBalance();
-  const { account } = useWeb3React();
-  const walletConnected = !!axoContract && !!xolotlContract && !!account;
-  const axoTokenInfo = useTokenInfo(axoContract?.address);
-  const [isAXOTokenApproved, setIsAXOTokenApproved] = useState(false);
+  const toast = useToast()
+  const axoContract = useAXOContract()
+  const xolotlContract = useXolotlContract()
+  const { data: xolotlTotalSupply } = useXolotTotalSupply()
+  const { data: unstakedAXOBalance } = useUnstakedAXOBalance()
+  const { data: xltBalance } = useXltBalance()
+  const { account } = useWeb3React()
+  const walletConnected = !!axoContract && !!xolotlContract && !!account
+  const axoTokenInfo = useTokenInfo(axoContract?.address)
+  const [isAXOTokenApproved, setIsAXOTokenApproved] = useState(false)
 
   const handleStakeAXO = async (
     { amount }: StakeAXOFormValues,
     { resetForm }: FormikHelpers<StakeAXOFormValues>
   ) => {
-    if (!walletConnected) return;
+    if (!walletConnected) return
 
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount);
+      const amountBigNumber = parseBalanceToBigNumber(amount)
 
-      const axoAllowance = await axoContract.allowance(
-        account,
-        xolotlContract.address
-      );
-
-      if (axoAllowance.lt(amountBigNumber)) {
-        const tx = await axoContract.approve(
-          xolotlContract.address,
-          amountBigNumber
-        );
-        await tx.wait();
-      }
-
-      const tx = await xolotlContract.enter(amountBigNumber);
-      await tx.wait();
+      const tx = await xolotlContract.enter(amountBigNumber)
+      await tx.wait()
 
       toast({
-        title: "Stake AXO",
-        description: "AXO staked successfully",
-        status: "success",
+        title: 'Stake AXO',
+        description: 'AXO staked successfully',
+        status: 'success',
         isClosable: true,
         duration: 9000,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Stake AXO",
+        title: 'Stake AXO',
         description: error.message,
-        status: "error",
+        status: 'error',
         isClosable: true,
         duration: 9000,
-      });
+      })
     }
 
-    resetForm();
-  };
+    resetForm()
+  }
 
   const validator = ({ amount }: StakeAXOFormValues) => {
-    const errors: FormikErrors<StakeAXOFormValues> = {};
+    const errors: FormikErrors<StakeAXOFormValues> = {}
 
-    if (amount === "" || parseBalanceToBigNumber(amount).isZero()) {
-      errors.amount = "Enter an amount";
-      return errors;
+    if (amount === '' || parseBalanceToBigNumber(amount).isZero()) {
+      errors.amount = 'Enter an amount'
+      return errors
     }
 
     if (
       !unstakedAXOBalance ||
       parseBalanceToBigNumber(amount).gt(unstakedAXOBalance)
     ) {
-      errors.amount = "Unsufficient AXO balance";
-      return errors;
+      errors.amount = 'Unsufficient AXO balance'
+      return errors
     }
-  };
+  }
 
   return (
     <Formik
@@ -125,7 +112,7 @@ const StakeAXOPanel = () => {
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
-                      isNumberValid(value) && setFieldValue("amount", value);
+                      isNumberValid(value) && setFieldValue('amount', value)
                     }}
                   >
                     <NumberInputField placeholder="0 AXO" />
@@ -134,9 +121,9 @@ const StakeAXOPanel = () => {
                     onClick={() => {
                       unstakedAXOBalance &&
                         setFieldValue(
-                          "amount",
+                          'amount',
                           parseBalance(unstakedAXOBalance)
-                        );
+                        )
                     }}
                   >
                     MAX
@@ -148,7 +135,7 @@ const StakeAXOPanel = () => {
                   xltBalance &&
                   values.amount.length > 0 ? (
                     <>
-                      You will receive:{" "}
+                      You will receive:{' '}
                       {parseBalance(
                         AXOForXLT(
                           parseBalanceToBigNumber(values.amount),
@@ -156,14 +143,14 @@ const StakeAXOPanel = () => {
                           xltBalance,
                           unstakedAXOBalance
                         )
-                      )}{" "}
+                      )}{' '}
                       XLT
                     </>
                   ) : null}
                 </FormHelperText>
               </FormControl>
 
-              {!!axoTokenInfo && values.amount !== "" && !!xolotlContract ? (
+              {!!axoTokenInfo && values.amount !== '' && !!xolotlContract ? (
                 <ApproveToken
                   tokens={[axoTokenInfo]}
                   amounts={[values.amount]}
@@ -180,14 +167,14 @@ const StakeAXOPanel = () => {
                 type="submit"
                 variant="brand-outline"
               >
-                {errors.amount ? errors.amount : "Stake"}
+                {errors.amount ? errors.amount : 'Stake'}
               </Button>
             </VStack>
           </Form>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default StakeAXOPanel;
+export default StakeAXOPanel
