@@ -14,7 +14,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Token } from '../../../types'
-import { balanceWithSlippage, calculatePrice } from '../../../utils'
+import { balanceWithSlippage } from '../../../utils'
 import SwapInfo from './SwapInfo'
 
 interface SwapConfirmationModalProps {

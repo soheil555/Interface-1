@@ -1,4 +1,5 @@
 import { BigNumber, ethers } from 'ethers'
+import { Token } from './types'
 
 export function shortenAddress(address: string): string {
   return address.substring(0, 6) + '...' + address.substring(address.length - 4)
@@ -90,4 +91,35 @@ export function AXOForXLT(
 ) {
   if (xltBalance.isZero() || axoBalance) return axoAmount
   return axoAmount.mul(xltTotalSupply).div(axoBalance)
+}
+
+export function calculateLiquidityRate(
+  token1: Token,
+  token2: Token,
+  reserve1?: BigNumber,
+  reserve2?: BigNumber,
+  token1Amount?: string,
+  token2Amount?: string
+) {
+  if (!reserve1 || !reserve2) return undefined
+
+  if (!reserve1.isZero())
+    return reserve2
+      .mul(parseBalanceToBigNumber('1', token1.decimals))
+      .div(reserve1)
+
+  if (!token1Amount || !token2Amount) return undefined
+
+  const token1AmountBigNumber = parseBalanceToBigNumber(
+    token1Amount,
+    token1.decimals
+  )
+  const token2AmountBigNumber = parseBalanceToBigNumber(
+    token2Amount,
+    token2.decimals
+  )
+
+  return token2AmountBigNumber
+    .mul(parseBalanceToBigNumber('1', token1.decimals))
+    .div(token1AmountBigNumber)
 }
