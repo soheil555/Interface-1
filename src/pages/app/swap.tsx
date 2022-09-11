@@ -29,6 +29,7 @@ import NextLink from 'next/link'
 import ApproveToken from '../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
+import SwapInfo from '../../components/app/Swap/SwapInfo'
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -326,6 +327,19 @@ const Swap: NextPage = () => {
                 </Text>
                 <SwapSelectToken />
               </Box>
+
+              {values.tokenIn &&
+              values.tokenOut &&
+              values.amountIn &&
+              values.amountOut ? (
+                <SwapInfo
+                  tokenIn={values.tokenIn}
+                  tokenOut={values.tokenOut}
+                  amountIn={values.amountIn}
+                  amountOut={values.amountOut}
+                  slippage={settings.slippage}
+                />
+              ) : null}
 
               {values.tokenIn && values.amountIn && routerContract ? (
                 <ApproveToken

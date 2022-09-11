@@ -11,11 +11,11 @@ import {
   ModalBody,
   ModalCloseButton,
   HStack,
-  Divider,
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Token } from '../../../types'
 import { balanceWithSlippage, calculatePrice } from '../../../utils'
+import SwapInfo from './SwapInfo'
 
 interface SwapConfirmationModalProps {
   isOpen: boolean
@@ -50,15 +50,6 @@ const SwapConfirmationModal = ({
     tokenOut.decimals
   )
 
-  const tokenOutPrice = calculatePrice(
-    amountIn,
-    amountOut,
-    tokenIn.decimals,
-    tokenOut.decimals
-  )
-
-  const boxBg = useColorModeValue('gray.100', 'gray.600')
-
   return (
     <Modal
       blockScrollOnMount={false}
@@ -75,7 +66,7 @@ const SwapConfirmationModal = ({
           <VStack align="stretch" gap={2}>
             <VStack align="stretch" position="relative">
               <HStack
-                bg={boxBg}
+                bg={useColorModeValue('gray.100', 'gray.600')}
                 p={2}
                 borderRadius="lg"
                 justify="space-between"
@@ -91,7 +82,7 @@ const SwapConfirmationModal = ({
                 top="43%"
                 left="50%"
                 transform="translate(-50%, -50%)"
-                bg="black.400"
+                bg="gray.300"
                 borderRadius="full"
                 fontSize="2xl"
                 w="30px"
@@ -100,7 +91,7 @@ const SwapConfirmationModal = ({
               />
 
               <HStack
-                bg={boxBg}
+                bg={useColorModeValue('gray.100', 'gray.600')}
                 p={2}
                 borderRadius="lg"
                 justify="space-between"
@@ -112,31 +103,14 @@ const SwapConfirmationModal = ({
               </HStack>
             </VStack>
 
-            <Text fontSize={{ base: 'sm', sm: 'md' }}>
-              1 {tokenIn.symbol} = {tokenOutPrice} {tokenOut.symbol}
-            </Text>
+            <SwapInfo
+              tokenIn={tokenIn}
+              tokenOut={tokenOut}
+              amountIn={amountIn}
+              amountOut={amountOut}
+              slippage={slippage}
+            />
 
-            <VStack align="stretch" bg={boxBg} p={2} borderRadius="lg">
-              <HStack justify="space-between">
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>Expected Output</Text>
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>
-                  {amountOut} {tokenOut.symbol}
-                </Text>
-              </HStack>
-
-              <Divider />
-
-              <HStack justify="space-between">
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>
-                  Minimum received after slippage <br /> ({slippage}%)
-                </Text>
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>
-                  <>
-                    {amountOutWithSlippage} {tokenOut.symbol}
-                  </>
-                </Text>
-              </HStack>
-            </VStack>
             <Text fontSize={{ base: 'sm', sm: 'md' }}>
               Output is estimated. You will receive at least{' '}
               <span style={{ fontWeight: 'bold' }}>
