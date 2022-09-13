@@ -28,8 +28,7 @@ const AddLiquidityInfo = ({
 
   return (
     <Box
-      py={1}
-      px={2}
+      p={2}
       w="full"
       borderRadius="lg"
       border="solid"

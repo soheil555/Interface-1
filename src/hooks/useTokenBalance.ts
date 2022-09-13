@@ -16,10 +16,10 @@ export default function useTokenBalance(token: Token | string | undefined) {
   const contract = useTokenContract(token)
 
   const shouldFetch = !!contract && !!account && token
-  const tokenAddress = typeof token === 'string' ? token : token?.symbol
+  const tokenIdentifier = typeof token === 'string' ? token : token?.symbol
 
   const result = useSWR(
-    shouldFetch ? ['TokenBalance' + tokenAddress, token, account] : null,
+    shouldFetch ? ['TokenBalance' + tokenIdentifier, account] : null,
     getTokenBalance(contract!)
   )
 
