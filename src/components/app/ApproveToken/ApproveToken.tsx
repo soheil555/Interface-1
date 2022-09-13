@@ -71,7 +71,7 @@ const ApproveToken = ({
     } else {
       setIsAllTokensApproved(false)
     }
-  }, [notApprovedTokens, setIsAllTokensApproved])
+  }, [notApprovedTokens])
 
   if (isAllTokensApproved) return null
 

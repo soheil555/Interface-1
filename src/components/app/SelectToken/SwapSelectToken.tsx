@@ -20,7 +20,7 @@ import {
 } from '../../../utils'
 import { useFormikContext } from 'formik'
 import { SwapFormValues } from '../../../types'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import usePairReserves from '../../../hooks/useLiquidityPairReserves'
 import useMaticBalance from '../../../hooks/useMaticBalance'
 import useWrapType from '../../../hooks/useWrapType'
@@ -56,89 +56,93 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance)
   const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance)
 
-  //TODO: useCallback
-  const getAmountOut = (value: string) => {
-    const amounts: Record<string, string> = {
-      amountIn: value,
-      amountOut: '',
-    }
-
-    if (wrapType !== 'invalid') {
-      amounts['amountOut'] = value
-      return amounts
-    }
-
-    if (
-      reserves &&
-      tokenIn &&
-      tokenOut &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length > 0
-    ) {
-      const amountIn = parseCurrencyAmount(value, tokenIn.decimals)
-      if (amountIn.gt(0)) {
-        const amountInWithFee = amountIn.mul(998)
-        const numerator = amountInWithFee.mul(reserves.reserve2)
-        const denominator = reserves.reserve1.mul(1000).add(amountInWithFee)
-        const amountOut = numerator.div(denominator)
-        amounts['amountOut'] = formatCurrencyAmount(
-          amountOut,
-          tokenOut.decimals
-        )
+  const getAmountOut = useCallback(
+    (value: string) => {
+      const amounts: Record<string, string> = {
+        amountIn: value,
+        amountOut: '',
       }
-    }
 
-    return amounts
-  }
-
-  //TODO: useCallback
-  const getAmountIn = (value: string) => {
-    const amounts: Record<string, string> = {
-      amountIn: '',
-      amountOut: value,
-    }
-
-    if (wrapType !== 'invalid') {
-      amounts['amountIn'] = value
-      return amounts
-    }
-
-    if (
-      reserves &&
-      tokenIn &&
-      tokenOut &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length > 0
-    ) {
-      const amountOut = parseCurrencyAmount(value, tokenIn.decimals)
-      if (amountOut.gt(0)) {
-        const numerator = reserves.reserve1.mul(amountOut).mul(1000)
-        const denominator = reserves.reserve2.sub(amountOut).mul(998)
-        const amountIn = numerator.div(denominator).add(1)
-        amounts['amountIn'] = formatCurrencyAmount(amountIn, tokenIn.decimals)
+      if (wrapType !== 'invalid') {
+        amounts['amountOut'] = value
+        return amounts
       }
-    }
 
-    return amounts
-  }
+      if (
+        reserves &&
+        tokenIn &&
+        tokenOut &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length > 0
+      ) {
+        const amountIn = parseCurrencyAmount(value, tokenIn.decimals)
+        if (amountIn.gt(0)) {
+          const amountInWithFee = amountIn.mul(998)
+          const numerator = amountInWithFee.mul(reserves.reserve2)
+          const denominator = reserves.reserve1.mul(1000).add(amountInWithFee)
+          const amountOut = numerator.div(denominator)
+          amounts['amountOut'] = formatCurrencyAmount(
+            amountOut,
+            tokenOut.decimals
+          )
+        }
+      }
+
+      return amounts
+    },
+    [reserves, tokenIn, tokenOut, wrapType]
+  )
+
+  const getAmountIn = useCallback(
+    (value: string) => {
+      const amounts: Record<string, string> = {
+        amountIn: '',
+        amountOut: value,
+      }
+
+      if (wrapType !== 'invalid') {
+        amounts['amountIn'] = value
+        return amounts
+      }
+
+      if (
+        reserves &&
+        tokenIn &&
+        tokenOut &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length > 0
+      ) {
+        const amountOut = parseCurrencyAmount(value, tokenIn.decimals)
+        if (amountOut.gt(0)) {
+          const numerator = reserves.reserve1.mul(amountOut).mul(1000)
+          const denominator = reserves.reserve2.sub(amountOut).mul(998)
+          const amountIn = numerator.div(denominator).add(1)
+          amounts['amountIn'] = formatCurrencyAmount(amountIn, tokenIn.decimals)
+        }
+      }
+
+      return amounts
+    },
+    [reserves, tokenIn, tokenOut, wrapType]
+  )
 
   useEffect(() => {
     if (tokenFieldName === 'tokenIn') {
       if (token?.isCoin) {
-        setFieldValue(tokenFieldName + 'Balance', maticBalance)
+        setFieldValue(`${tokenFieldName}Balance`, maticBalance)
       } else {
-        setFieldValue(tokenFieldName + 'Balance', tokenBalance)
+        setFieldValue(`${tokenFieldName}Balance`, tokenBalance)
       }
     }
-  }, [tokenBalance, maticBalance, setFieldValue, token, tokenFieldName])
+  }, [tokenBalance, maticBalance, token, tokenFieldName])
 
   useEffect(() => {
     if (tokenFieldName === 'tokenIn') {
       setFieldValue('wrapType', wrapType)
     }
-  }, [wrapType, tokenFieldName, setFieldValue])
+  }, [wrapType, tokenFieldName])
 
   useEffect(() => {
     if (isTokenIn) {
@@ -150,23 +154,14 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         amounts = getAmountIn(amountOut)
       }
 
-      setValues({
+      setValues((values) => ({
         ...values,
         ...amounts,
         tokenInReserve: reserves?.reserve1,
         tokenOutReserve: reserves?.reserve2,
-      })
+      }))
     }
-  }, [
-    reserves,
-    isTokenIn,
-    amountIn,
-    amountOut,
-    getAmountIn,
-    getAmountOut,
-    setValues,
-    values,
-  ])
+  }, [reserves, isTokenIn, amountIn, amountOut, getAmountIn, getAmountOut])
 
   return (
     <Box w="full">
@@ -236,7 +231,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
                     const amounts = isTokenIn
                       ? getAmountOut(value)
                       : getAmountIn(value)
-                    setValues({ ...values, ...amounts })
+                    setValues((values) => ({ ...values, ...amounts }))
                   }
                 }}
               >
@@ -255,12 +250,12 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
                       const amounts = getAmountOut(
                         formatCurrencyAmount(tokenBalance, token.decimals)
                       )
-                      setValues({ ...values, ...amounts })
+                      setValues((values) => ({ ...values, ...amounts }))
                     } else if (token.isCoin && maticBalance) {
                       const amounts = getAmountOut(
                         formatCurrencyAmount(maticBalance, token.decimals)
                       )
-                      setValues({ ...values, ...amounts })
+                      setValues((values) => ({ ...values, ...amounts }))
                     }
                   }}
                   fontSize="sm"

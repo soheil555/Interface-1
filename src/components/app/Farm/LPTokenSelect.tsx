@@ -1,7 +1,7 @@
 import { Select } from '@chakra-ui/react'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
-import useAllPairs from '../../../hooks/useLiquidityPairs'
+import useLiquidityPairs from '../../../hooks/useLiquidityPairs'
 import useFarms from '../../../hooks/useFarms'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Pair } from '../../../types'
@@ -24,7 +24,7 @@ const LPTokenOption = ({ pair }: LPTokenOptionProps) => {
 const LPTokenSelect = () => {
   const [validPairs, setValidPairs] = useState<Pair[]>()
   const { data: farms } = useFarms()
-  const { data: pairs } = useAllPairs()
+  const { data: pairs } = useLiquidityPairs()
   const { setFieldValue, setFieldTouched } = useFormikContext()
 
   useEffect(() => {

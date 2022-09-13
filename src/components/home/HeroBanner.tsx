@@ -29,7 +29,7 @@ const HeroBanner = () => {
         h={{ base: '450px', md: '600px', lg: '720px' }}
       >
         <Image
-          alt="hero image"
+          alt="top hero image"
           w="full"
           h="full"
           objectFit="cover"
@@ -47,11 +47,7 @@ const HeroBanner = () => {
             lineHeight="1"
           >
             AXOSWAP
-            <Box
-              fontWeight="light"
-              color="white"
-              fontSize={{ base: '1.1rem', md: '1.6rem' }}
-            >
+            <Box fontWeight="light" fontSize={{ base: '1.1rem', md: '1.6rem' }}>
               DECENTRALIZED EXCHANGE
             </Box>
           </Heading>
@@ -70,7 +66,7 @@ const HeroBanner = () => {
       </VStack>
 
       <Center flex={1} w={{ base: '80%', md: 'full' }}>
-        <Image src="/images/hero-img.png" />
+        <Image alt="hero image" src="/images/hero-img.png" />
       </Center>
     </Stack>
   )

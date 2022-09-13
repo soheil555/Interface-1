@@ -12,7 +12,7 @@ export default function useLiquidityInfo(address: string) {
         liquidity && { token0: liquidity.token0, token1: liquidity.token1 }
       )
     }
-  }, [liquidityPairs])
+  }, [liquidityPairs, address])
 
   return info
 }

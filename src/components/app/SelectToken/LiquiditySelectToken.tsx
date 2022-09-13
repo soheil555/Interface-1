@@ -20,7 +20,7 @@ import {
 } from '../../../utils'
 import { useFormikContext } from 'formik'
 import { LiquidityFormValues } from '../../../types'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import useTokenContract from '../../../hooks/contracts/useTokenContract'
 import usePairReserves from '../../../hooks/useLiquidityPairReserves'
 import useMaticBalance from '../../../hooks/useMaticBalance'
@@ -63,72 +63,74 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
   const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance)
   const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance)
 
-  //TODO: useCallback
-  const getQuote = (value: string, reverse = false) => {
-    const amounts: Record<string, string> = {}
+  const getQuote = useCallback(
+    (value: string, reverse = false) => {
+      const amounts: Record<string, string> = {}
 
-    amounts[reverse ? otherAmountFieldName : amountFieldName] = value
+      amounts[reverse ? otherAmountFieldName : amountFieldName] = value
 
-    if (
-      reserves &&
-      (reserves.reserve1.isZero() || reserves.reserve2.isZero())
-    ) {
-      return amounts
-    }
-
-    if (
-      reserves &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length === 0
-    ) {
-      amounts[reverse ? amountFieldName : otherAmountFieldName] = ''
-    }
-
-    if (
-      reserves &&
-      token &&
-      otherToken &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length > 0
-    ) {
-      const amountA = parseCurrencyAmount(value, token.decimals)
-      if (amountA.gt(0)) {
-        const amountB = amountA
-          .mul(reverse ? reserves.reserve1 : reserves.reserve2)
-          .div(reverse ? reserves.reserve2 : reserves.reserve1)
-
-        amounts[reverse ? amountFieldName : otherAmountFieldName] =
-          formatCurrencyAmount(amountB, otherToken.decimals)
+      if (
+        reserves &&
+        (reserves.reserve1.isZero() || reserves.reserve2.isZero())
+      ) {
+        return amounts
       }
-    }
-    return amounts
-  }
+
+      if (
+        reserves &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length === 0
+      ) {
+        amounts[reverse ? amountFieldName : otherAmountFieldName] = ''
+      }
+
+      if (
+        reserves &&
+        token &&
+        otherToken &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length > 0
+      ) {
+        const amountA = parseCurrencyAmount(value, token.decimals)
+        if (amountA.gt(0)) {
+          const amountB = amountA
+            .mul(reverse ? reserves.reserve1 : reserves.reserve2)
+            .div(reverse ? reserves.reserve2 : reserves.reserve1)
+
+          amounts[reverse ? amountFieldName : otherAmountFieldName] =
+            formatCurrencyAmount(amountB, otherToken.decimals)
+        }
+      }
+      return amounts
+    },
+    [amountFieldName, otherAmountFieldName, otherToken, reserves, token]
+  )
 
   useEffect(() => {
-    setFieldValue(tokenFieldName + 'Contract', tokenContract)
-  }, [tokenContract, setFieldValue, tokenFieldName])
+    setFieldValue(`${tokenFieldName}Contract`, tokenContract)
+  }, [tokenContract, tokenFieldName])
 
   useEffect(() => {
     if (token?.isCoin) {
-      setFieldValue(tokenFieldName + 'Balance', maticBalance)
+      setFieldValue(`${tokenFieldName}Balance`, maticBalance)
     } else {
-      setFieldValue(tokenFieldName + 'Balance', tokenBalance)
+      setFieldValue(`${tokenFieldName}Balance`, tokenBalance)
     }
-  }, [tokenBalance, token, maticBalance, setFieldValue, tokenFieldName])
+  }, [tokenBalance, token, maticBalance, tokenFieldName])
 
   useEffect(() => {
     if (isToken1) {
       if (amount) {
         const amounts = getQuote(amount)
-        setValues({ ...values, ...amounts })
+        setValues((values) => ({ ...values, ...amounts }))
       } else if (otherAmount) {
         const amounts = getQuote(otherAmount, true)
-        setValues({ ...values, ...amounts })
+        setValues((values) => ({ ...values, ...amounts }))
       }
     }
-  }, [reserves, amount, getQuote, isToken1, otherAmount, setValues, values])
+  }, [reserves, amount, getQuote, isToken1, otherAmount])
 
   return (
     <Box w="full">
@@ -196,7 +198,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
                   const isValueValid = isNumeric(value, token.decimals)
                   if (isValueValid) {
                     const amounts = getQuote(value)
-                    setValues({ ...values, ...amounts })
+                    setValues((values) => ({ ...values, ...amounts }))
                   }
                 }}
               >
@@ -214,12 +216,12 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
                     const amounts = getQuote(
                       formatCurrencyAmount(tokenBalance, token.decimals)
                     )
-                    setValues({ ...values, ...amounts })
+                    setValues((values) => ({ ...values, ...amounts }))
                   } else if (token.isCoin && maticBalance) {
                     const amounts = getQuote(
                       formatCurrencyAmount(maticBalance, token.decimals)
                     )
-                    setValues({ ...values, ...amounts })
+                    setValues((values) => ({ ...values, ...amounts }))
                   }
                 }}
                 fontSize="sm"
