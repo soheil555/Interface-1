@@ -9,13 +9,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { AiOutlinePlus } from 'react-icons/ai'
-import useFactoryContract from '../../../hooks/useFactoryContract'
+import useFactoryContract from '../../../hooks/contracts/useFactoryContract'
 import Layout from '../../../components/app/Layout/Layout'
-import useRouterContract from '../../../hooks/useRouterContract'
+import useRouterContract from '../../../hooks/contracts/useRouterContract'
 import { useWeb3React } from '@web3-react/core'
-import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
+import { Formik, FormikErrors, FormikHelpers } from 'formik'
 import { LiquidityFormValues } from '../../../types'
-import { amountWithSlippage, parseBalanceToBigNumber } from '../../../utils'
+import { currencyAmountWithSlippage, parseCurrencyAmount } from '../../../utils'
 import LiquiditySelectToken from '../../../components/app/SelectToken/LiquiditySelectToken'
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/router'
@@ -72,8 +72,8 @@ const AddLiquidity: NextPage = () => {
       return
 
     try {
-      const amount1 = parseBalanceToBigNumber(token1Amount, token1.decimals)
-      const amount2 = parseBalanceToBigNumber(token2Amount, token2.decimals)
+      const amount1 = parseCurrencyAmount(token1Amount, token1.decimals)
+      const amount2 = parseCurrencyAmount(token2Amount, token2.decimals)
 
       if (token1.isCoin || token2.isCoin) {
         const tokenContract = token1.isCoin ? token2Contract : token1Contract
@@ -87,8 +87,8 @@ const AddLiquidity: NextPage = () => {
         const tx = await routerContract.addLiquidityETH(
           tokenContract.address,
           tokenAmount,
-          amountWithSlippage(tokenAmount, settings.slippage),
-          amountWithSlippage(maticAmount, settings.slippage),
+          currencyAmountWithSlippage(tokenAmount, settings.slippage),
+          currencyAmountWithSlippage(maticAmount, settings.slippage),
           account,
           deadline,
           {
@@ -108,8 +108,8 @@ const AddLiquidity: NextPage = () => {
           token2Contract.address,
           amount1,
           amount2,
-          amountWithSlippage(amount1, settings.slippage),
-          amountWithSlippage(amount2, settings.slippage),
+          currencyAmountWithSlippage(amount1, settings.slippage),
+          currencyAmountWithSlippage(amount2, settings.slippage),
           account,
           deadline,
           { gasLimit: 1000000 }
@@ -159,14 +159,14 @@ const AddLiquidity: NextPage = () => {
 
     if (
       token1Balance &&
-      parseBalanceToBigNumber(token1Amount, token1.decimals).gt(token1Balance)
+      parseCurrencyAmount(token1Amount, token1.decimals).gt(token1Balance)
     ) {
       errors.token1Amount = `Insufficient ${token1.symbol} balance`
     }
 
     if (
       token2Balance &&
-      parseBalanceToBigNumber(token2Amount, token2.decimals).gt(token2Balance)
+      parseCurrencyAmount(token2Amount, token2.decimals).gt(token2Balance)
     ) {
       errors.token2Amount = `Insufficient ${token2.symbol} balance`
     }

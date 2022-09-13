@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import useSWR from 'swr'
 import { MasterChef } from '../abis/types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
-import useMasterChefContract from './useMasterChefContract'
+import useMasterChefContract from './contracts/useMasterChefContract'
 
 function getFarmUserInfo(masterChefContract: MasterChef) {
   return async (_: string, pid: number, account: string) => {
@@ -17,9 +17,8 @@ export default function useFarmUserInfo(pid: number) {
   const shouldFetch = !!account && !!masterChefContract
 
   const result = useSWR(
-    shouldFetch ? ['FarmUserInfo' + account, pid, account] : null,
-    getFarmUserInfo(masterChefContract!),
-    {}
+    shouldFetch ? ['FarmUserInfo', pid, account] : null,
+    getFarmUserInfo(masterChefContract!)
   )
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate)

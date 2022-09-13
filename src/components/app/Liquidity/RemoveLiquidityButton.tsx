@@ -22,11 +22,14 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
-import useERC20Contract from '../../../hooks/useERC20Contract'
-import useRouterContract from '../../../hooks/useRouterContract'
+import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
+import useRouterContract from '../../../hooks/contracts/useRouterContract'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Liquidity, RemoveLiquidityFormValues } from '../../../types'
-import { amountWithSlippage, parseBalance } from '../../../utils'
+import {
+  currencyAmountWithSlippage,
+  formatCurrencyAmount,
+} from '../../../utils'
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik'
 import { useAtom } from 'jotai'
 import { settingsAtom } from '../../../store'
@@ -84,8 +87,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
         const tx = await routerContract.removeLiquidityETH(
           tokenAddress,
           amountToRemove,
-          amountWithSlippage(tokenAmount, settings.slippage),
-          amountWithSlippage(maticAmount, settings.slippage),
+          currencyAmountWithSlippage(tokenAmount, settings.slippage),
+          currencyAmountWithSlippage(maticAmount, settings.slippage),
           account,
           deadline
         )
@@ -95,8 +98,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
           liquidity.token0,
           liquidity.token1,
           amountToRemove,
-          amountWithSlippage(token0Amount, settings.slippage),
-          amountWithSlippage(token1Amount, settings.slippage),
+          currencyAmountWithSlippage(token0Amount, settings.slippage),
+          currencyAmountWithSlippage(token1Amount, settings.slippage),
           account,
           deadline,
           { gasLimit: 1000000 }
@@ -203,7 +206,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     </Text>
                     <HStack justify="space-between">
                       <Text>
-                        {parseBalance(
+                        {formatCurrencyAmount(
                           liquidity.amount0.mul(values.percent).div(100),
                           token0Info.decimals
                         )}
@@ -217,7 +220,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
 
                     <HStack justify="space-between">
                       <Text>
-                        {parseBalance(
+                        {formatCurrencyAmount(
                           liquidity.amount1.mul(values.percent).div(100),
                           token1Info.decimals
                         )}

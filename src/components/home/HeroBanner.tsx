@@ -29,6 +29,7 @@ const HeroBanner = () => {
         h={{ base: '450px', md: '600px', lg: '720px' }}
       >
         <Image
+          alt="hero image"
           w="full"
           h="full"
           objectFit="cover"

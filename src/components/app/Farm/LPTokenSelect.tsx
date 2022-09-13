@@ -1,7 +1,7 @@
 import { Select } from '@chakra-ui/react'
 import { useFormikContext } from 'formik'
 import { useEffect, useState } from 'react'
-import useAllPairs from '../../../hooks/useAllPairs'
+import useAllPairs from '../../../hooks/useLiquidityPairs'
 import useFarms from '../../../hooks/useFarms'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Pair } from '../../../types'

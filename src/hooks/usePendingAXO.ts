@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import useSWR from 'swr'
 import { MasterChef } from '../abis/types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
-import useMasterChefContract from './useMasterChefContract'
+import useMasterChefContract from './contracts/useMasterChefContract'
 
 function getPendingAXO(masterChefContract: MasterChef) {
   return async (_: string, pid: number, account: string) => {

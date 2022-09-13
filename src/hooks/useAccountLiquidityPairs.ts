@@ -2,7 +2,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'ethers'
 import useSWR from 'swr'
-import useAllPairs from './useAllPairs'
+import useLiquidityPairs from './useLiquidityPairs'
 import PairABI from '../abis/Pair.json'
 import ERC20ABI from '../abis/ERC20.json'
 import { Pair } from '../abis/types/Pair'
@@ -11,11 +11,11 @@ import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksAr
 import { Liquidity } from '../types'
 import { Pair as PairType } from '../types'
 
-function getAllPairsWithLiquidity(provider: Web3Provider) {
-  return async (_: string, allPairs: PairType[], account: string) => {
+function getAccountLiquidityPairs(provider: Web3Provider) {
+  return async (_: string, liquidityPairs: PairType[], account: string) => {
     const pairsWithLiquidity: Liquidity[] = []
 
-    for (const pair of allPairs) {
+    for (const pair of liquidityPairs) {
       const pairContract = new Contract(pair.address, PairABI, provider) as Pair
       const token0Contract = new Contract(
         pair.token0,
@@ -59,16 +59,15 @@ function getAllPairsWithLiquidity(provider: Web3Provider) {
   }
 }
 
-export default function useAllPairsWithLiquidity(account?: string) {
-  const { data: allPairs } = useAllPairs()
+export default function useAccountLiquidityPairs(account?: string) {
+  const { data: liquidityPairs } = useLiquidityPairs()
   const { provider } = useWeb3React()
 
-  const shouldFetch = !!account && !!allPairs && !!provider
+  const shouldFetch = !!account && !!liquidityPairs && !!provider
 
   const result = useSWR(
-    shouldFetch ? ['AllPairsWithLiquidity', allPairs, account] : null,
-    getAllPairsWithLiquidity(provider!),
-    {}
+    shouldFetch ? ['AllPairsWithLiquidity', liquidityPairs, account] : null,
+    getAccountLiquidityPairs(provider!)
   )
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate)

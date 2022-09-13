@@ -37,7 +37,7 @@ const Header = () => {
           w={{ base: '2rem', md: '3rem' }}
           h={{ base: '2rem', md: '3rem' }}
         >
-          <Image src="/images/logo@2x.png" />
+          <Image alt="logo" src="/images/logo@2x.png" />
         </Center>
         <HStack
           display={{ base: 'none', lg: 'flex' }}

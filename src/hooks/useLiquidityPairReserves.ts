@@ -2,10 +2,10 @@ import useSWR from 'swr'
 import { Pair } from '../abis/types'
 import { Token } from '../types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
-import usePairContract from './usePairContract'
+import usePairContract from './contracts/usePairContract'
 import useTokenPairAddresses from './useTokenPairAddresses'
 
-function getPairReserves(pairContract: Pair) {
+function getLiquidityPairReserves(pairContract: Pair) {
   return async (_: string, token1Address: string, token2Address: string) => {
     const reserves = await pairContract.getReserves()
 
@@ -22,7 +22,10 @@ function getPairReserves(pairContract: Pair) {
   }
 }
 
-export default function usePairReserves(token1?: Token, token2?: Token) {
+export default function useLiquidityPairReserves(
+  token1?: Token,
+  token2?: Token
+) {
   const { token1Address, token2Address } = useTokenPairAddresses(token1, token2)
   const pairContract = usePairContract(token1, token2)
 
@@ -32,7 +35,7 @@ export default function usePairReserves(token1?: Token, token2?: Token) {
     shouldFetch
       ? ['PairReserves' + pairContract.address, token1Address, token2Address]
       : null,
-    getPairReserves(pairContract!),
+    getLiquidityPairReserves(pairContract!),
     {}
   )
 

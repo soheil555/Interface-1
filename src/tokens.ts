@@ -8,7 +8,7 @@ import {
   Chain,
 } from '@chakra-icons/cryptocurrency-icons'
 import { Token } from './types'
-import { AXOToken } from './icons'
+import AXOToken from './icons/AXOToken'
 
 export const tokens: Array<Token> = [
   {

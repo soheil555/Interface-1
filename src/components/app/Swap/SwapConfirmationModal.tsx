@@ -14,7 +14,11 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Token } from '../../../types'
-import { balanceWithSlippage } from '../../../utils'
+import {
+  currencyAmountWithSlippage,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+} from '../../../utils'
 import SwapInfo from './SwapInfo'
 
 interface SwapConfirmationModalProps {
@@ -44,10 +48,9 @@ const SwapConfirmationModal = ({
   isWalletConnected,
   handleFormSubmit,
 }: SwapConfirmationModalProps) => {
-  const amountOutWithSlippage = balanceWithSlippage(
-    amountOut,
-    slippage,
-    tokenOut.decimals
+  const amountOutWithSlippage = currencyAmountWithSlippage(
+    parseCurrencyAmount(amountOut, tokenOut.decimals),
+    slippage
   )
 
   return (
@@ -114,7 +117,8 @@ const SwapConfirmationModal = ({
             <Text fontSize={{ base: 'sm', sm: 'md' }}>
               Output is estimated. You will receive at least{' '}
               <span style={{ fontWeight: 'bold' }}>
-                {amountOutWithSlippage} {tokenOut.symbol}{' '}
+                {formatCurrencyAmount(amountOutWithSlippage, tokenOut.decimals)}{' '}
+                {tokenOut.symbol}{' '}
               </span>
               or the transaction will revert.
             </Text>

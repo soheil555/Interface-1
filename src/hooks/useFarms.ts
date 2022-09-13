@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import { MasterChef } from '../abis/types'
 import { Farm } from '../types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
-import useMasterChefContract from './useMasterChefContract'
+import useMasterChefContract from './contracts/useMasterChefContract'
 
 function getFarms(masterChefContract: MasterChef) {
   return async (_: string, account: string) => {

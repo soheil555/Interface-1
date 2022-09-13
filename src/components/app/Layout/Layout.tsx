@@ -25,6 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
         width="full"
         height="full"
         zIndex={-100}
+        alt="background image"
       />
       <Header />
       <Container

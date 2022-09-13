@@ -20,14 +20,14 @@ import {
 import useFarmUserInfo from '../../../hooks/useFarmUserInfo'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import {
-  isNumberValid,
-  parseBalance,
-  parseBalanceToBigNumber,
+  isNumeric,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
 } from '../../../utils'
 import { UnstakeFormValues } from '../../../types'
 import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
 import useTokenInfo from '../../../hooks/useTokenInfo'
-import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 import usePendingAXO from '../../../hooks/usePendingAXO'
 import { ethers } from 'ethers'
 
@@ -55,7 +55,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
   const masterChefContract = useMasterChefContract()
 
   const isAmountZero = (amount: string) => {
-    return amount.length === 0 || parseBalanceToBigNumber(amount).isZero()
+    return amount.length === 0 || parseCurrencyAmount(amount).isZero()
   }
 
   const handleUnstake = async (
@@ -65,7 +65,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
     if (!masterChefContract) return
     try {
       const amountBigNumber =
-        amount.length === 0 ? 0 : parseBalanceToBigNumber(amount)
+        amount.length === 0 ? 0 : parseCurrencyAmount(amount)
 
       const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
         gasLimit: '1000000',
@@ -99,7 +99,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
     if (
       userInfo &&
       amount.length !== 0 &&
-      parseBalanceToBigNumber(amount).gt(userInfo.amount)
+      parseCurrencyAmount(amount).gt(userInfo.amount)
     ) {
       errors.amount = `Insufficient LP balance`
     }
@@ -154,8 +154,12 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                                 ? userInfo.amount.lte(
                                     ethers.utils.parseEther('0.000001')
                                   )
-                                  ? parseBalance(userInfo.amount, 18, 18)
-                                  : parseBalance(userInfo.amount)
+                                  ? formatCurrencyAmount(
+                                      userInfo.amount,
+                                      18,
+                                      18
+                                    )
+                                  : formatCurrencyAmount(userInfo.amount)
                                 : '0.00'}
                             </Text>
                           </HStack>
@@ -165,8 +169,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                             w="full"
                             value={values.amount}
                             onChange={(value) => {
-                              isNumberValid(value) &&
-                                setFieldValue('amount', value)
+                              isNumeric(value) && setFieldValue('amount', value)
                             }}
                           >
                             <NumberInputField />
@@ -180,8 +183,12 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
                                   userInfo.amount.lte(
                                     ethers.utils.parseEther('0.000001')
                                   )
-                                    ? parseBalance(userInfo.amount, 18, 18)
-                                    : parseBalance(userInfo.amount)
+                                    ? formatCurrencyAmount(
+                                        userInfo.amount,
+                                        18,
+                                        18
+                                      )
+                                    : formatCurrencyAmount(userInfo.amount)
                                 )
                             }}
                           >

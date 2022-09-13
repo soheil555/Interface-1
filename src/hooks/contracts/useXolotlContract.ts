@@ -1,7 +1,7 @@
-import useAddresses from './useAddresses'
+import useAddresses from '../useAddresses'
 import useContract from './useContract'
-import ABI from '../abis/Xolotl.json'
-import { Xolotl } from '../abis/types/Xolotl'
+import ABI from '../../abis/Xolotl.json'
+import { Xolotl } from '../../abis/types/Xolotl'
 
 export default function useXolotlContract() {
   const addresses = useAddresses()

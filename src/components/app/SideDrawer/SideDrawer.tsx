@@ -25,7 +25,7 @@ const SideDrawer = () => {
     if (!isModalOpen) {
       onClose()
     }
-  }, [isModalOpen])
+  }, [isModalOpen, onClose])
 
   return (
     <Box display={{ base: 'block', lg: 'none' }}>

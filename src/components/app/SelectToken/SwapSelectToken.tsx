@@ -14,14 +14,14 @@ import { GiToken } from 'react-icons/gi'
 import TokensList from './TokensList'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import {
-  parseBalance,
-  parseBalanceToBigNumber,
-  isNumberValid,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+  isNumeric,
 } from '../../../utils'
 import { useFormikContext } from 'formik'
 import { SwapFormValues } from '../../../types'
 import { useEffect } from 'react'
-import usePairReserves from '../../../hooks/usePairReserves'
+import usePairReserves from '../../../hooks/useLiquidityPairReserves'
 import useMaticBalance from '../../../hooks/useMaticBalance'
 import useWrapType from '../../../hooks/useWrapType'
 import useTokenNormalizedValueUSD from '../../../hooks/useTokenNormalizedValueUSD'
@@ -56,6 +56,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
   const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance)
   const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance)
 
+  //TODO: useCallback
   const getAmountOut = (value: string) => {
     const amounts: Record<string, string> = {
       amountIn: value,
@@ -75,19 +76,23 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       reserves.reserve2.gt(0) &&
       value.length > 0
     ) {
-      const amountIn = parseBalanceToBigNumber(value, tokenIn.decimals)
+      const amountIn = parseCurrencyAmount(value, tokenIn.decimals)
       if (amountIn.gt(0)) {
         const amountInWithFee = amountIn.mul(998)
         const numerator = amountInWithFee.mul(reserves.reserve2)
         const denominator = reserves.reserve1.mul(1000).add(amountInWithFee)
         const amountOut = numerator.div(denominator)
-        amounts['amountOut'] = parseBalance(amountOut, tokenOut.decimals)
+        amounts['amountOut'] = formatCurrencyAmount(
+          amountOut,
+          tokenOut.decimals
+        )
       }
     }
 
     return amounts
   }
 
+  //TODO: useCallback
   const getAmountIn = (value: string) => {
     const amounts: Record<string, string> = {
       amountIn: '',
@@ -107,12 +112,12 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
       reserves.reserve2.gt(0) &&
       value.length > 0
     ) {
-      const amountOut = parseBalanceToBigNumber(value, tokenIn.decimals)
+      const amountOut = parseCurrencyAmount(value, tokenIn.decimals)
       if (amountOut.gt(0)) {
         const numerator = reserves.reserve1.mul(amountOut).mul(1000)
         const denominator = reserves.reserve2.sub(amountOut).mul(998)
         const amountIn = numerator.div(denominator).add(1)
-        amounts['amountIn'] = parseBalance(amountIn, tokenIn.decimals)
+        amounts['amountIn'] = formatCurrencyAmount(amountIn, tokenIn.decimals)
       }
     }
 
@@ -127,13 +132,13 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         setFieldValue(tokenFieldName + 'Balance', tokenBalance)
       }
     }
-  }, [tokenBalance])
+  }, [tokenBalance, maticBalance, setFieldValue, token, tokenFieldName])
 
   useEffect(() => {
     if (tokenFieldName === 'tokenIn') {
       setFieldValue('wrapType', wrapType)
     }
-  }, [wrapType])
+  }, [wrapType, tokenFieldName, setFieldValue])
 
   useEffect(() => {
     if (isTokenIn) {
@@ -152,7 +157,16 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         tokenOutReserve: reserves?.reserve2,
       })
     }
-  }, [reserves])
+  }, [
+    reserves,
+    isTokenIn,
+    amountIn,
+    amountOut,
+    getAmountIn,
+    getAmountOut,
+    setValues,
+    values,
+  ])
 
   return (
     <Box w="full">
@@ -185,23 +199,23 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
                 <>
                   Balance{' '}
                   {!token.isCoin && !!tokenBalance
-                    ? parseBalance(tokenBalance, token.decimals)
+                    ? formatCurrencyAmount(tokenBalance, token.decimals)
                     : null}
                   {token.isCoin && !!maticBalance
-                    ? parseBalance(maticBalance, token.decimals)
+                    ? formatCurrencyAmount(maticBalance, token.decimals)
                     : null}
                   {!tokenBalance || (!maticBalance && 0)}
                 </>
               </Text>
               {token.isCoin && coinBalanceValueUSD ? (
                 <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${parseBalance(coinBalanceValueUSD, 6, 2)}
+                  ≈ ${formatCurrencyAmount(coinBalanceValueUSD, 6, 2)}
                 </Text>
               ) : null}
 
               {!token.isCoin && tokenBalanceValueUSD ? (
                 <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${parseBalance(tokenBalanceValueUSD, 6, 2)}
+                  ≈ ${formatCurrencyAmount(tokenBalanceValueUSD, 6, 2)}
                 </Text>
               ) : null}
             </Box>
@@ -217,7 +231,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
                 p={0}
                 value={amount}
                 onChange={(value) => {
-                  const isValueValid = isNumberValid(value, token.decimals)
+                  const isValueValid = isNumeric(value, token.decimals)
                   if (isValueValid) {
                     const amounts = isTokenIn
                       ? getAmountOut(value)
@@ -239,12 +253,12 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
                   onClick={() => {
                     if (!token.isCoin && tokenBalance) {
                       const amounts = getAmountOut(
-                        parseBalance(tokenBalance, token.decimals)
+                        formatCurrencyAmount(tokenBalance, token.decimals)
                       )
                       setValues({ ...values, ...amounts })
                     } else if (token.isCoin && maticBalance) {
                       const amounts = getAmountOut(
-                        parseBalance(maticBalance, token.decimals)
+                        formatCurrencyAmount(maticBalance, token.decimals)
                       )
                       setValues({ ...values, ...amounts })
                     }
@@ -257,7 +271,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
             </HStack>
             {amountValueUSD && (
               <Text pt={1} pl={2} variant="subtext">
-                ≈ ${parseBalance(amountValueUSD, 6, 2)}
+                ≈ ${formatCurrencyAmount(amountValueUSD, 6, 2)}
               </Text>
             )}
           </Box>

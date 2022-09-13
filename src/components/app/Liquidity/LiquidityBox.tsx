@@ -15,7 +15,7 @@ import {
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Liquidity } from '../../../types'
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
-import { parseBalance } from '../../../utils'
+import { formatCurrencyAmount } from '../../../utils'
 import RemoveLiquidityButton from './RemoveLiquidityButton'
 import { ethers } from 'ethers'
 import useTokenNormalizedValueUSD from '../../../hooks/useTokenNormalizedValueUSD'
@@ -84,24 +84,32 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
               {liquidity.liquidityBalance.lte(
                 ethers.utils.parseEther('0.000001')
               )
-                ? parseBalance(liquidity.liquidityBalance, 18, 18)
-                : parseBalance(liquidity.liquidityBalance)}
+                ? formatCurrencyAmount(liquidity.liquidityBalance, 18, 18)
+                : formatCurrencyAmount(liquidity.liquidityBalance)}
             </Text>
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Pooled {token0Info.symbol}:</Text>
-            <Text>{parseBalance(liquidity.amount0, token0Info.decimals)}</Text>
+            <Text>
+              {formatCurrencyAmount(liquidity.amount0, token0Info.decimals)}
+            </Text>
           </HStack>
           <HStack justify="space-between">
             <Text fontWeight="bold">Pooled {token1Info.symbol}:</Text>
-            <Text>{parseBalance(liquidity.amount1, token1Info.decimals)}</Text>
+            <Text>
+              {formatCurrencyAmount(liquidity.amount1, token1Info.decimals)}
+            </Text>
           </HStack>
 
           <HStack justify="space-between">
             <Text fontWeight="bold">TVL:</Text>
             <Text>
               {token0ValueUSD && token1ValueUSD
-                ? `$${parseBalance(token0ValueUSD.add(token1ValueUSD), 6, 2)}`
+                ? `$${formatCurrencyAmount(
+                    token0ValueUSD.add(token1ValueUSD),
+                    6,
+                    2
+                  )}`
                 : null}
             </Text>
           </HStack>

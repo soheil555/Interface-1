@@ -10,14 +10,14 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
-import useXolotlContract from '../../../hooks/useXolotlContract'
+import useXolotlContract from '../../../hooks/contracts/useXolotlContract'
 import { UnstakeAXOFormValues } from '../../../types'
 import {
-  isNumberValid,
-  parseBalance,
-  parseBalanceToBigNumber,
+  isNumeric,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
 } from '../../../utils'
-import useAXOContract from '../../../hooks/useAXOContract'
+import useAXOContract from '../../../hooks/contracts/useAXOContract'
 import { useWeb3React } from '@web3-react/core'
 import useXltBalance from '../../../hooks/useXltBalance'
 
@@ -40,7 +40,7 @@ const UnstakeAXOPanel = () => {
     if (!walletConnected) return
 
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount)
+      const amountBigNumber = parseCurrencyAmount(amount)
 
       const tx = await xolotlContract.leave(amountBigNumber)
       await tx.wait()
@@ -69,12 +69,12 @@ const UnstakeAXOPanel = () => {
   const validator = ({ amount }: UnstakeAXOFormValues) => {
     const errors: FormikErrors<UnstakeAXOFormValues> = {}
 
-    if (amount === '' || parseBalanceToBigNumber(amount).isZero()) {
+    if (amount === '' || parseCurrencyAmount(amount).isZero()) {
       errors.amount = 'Enter an amount'
       return errors
     }
 
-    if (!xltBalance || parseBalanceToBigNumber(amount).gt(xltBalance)) {
+    if (!xltBalance || parseCurrencyAmount(amount).gt(xltBalance)) {
       errors.amount = 'Unsufficient XLT balance'
       return errors
     }
@@ -104,7 +104,7 @@ const UnstakeAXOPanel = () => {
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
-                      isNumberValid(value) && setFieldValue('amount', value)
+                      isNumeric(value) && setFieldValue('amount', value)
                     }}
                   >
                     <NumberInputField placeholder="0 XLT" />
@@ -112,7 +112,10 @@ const UnstakeAXOPanel = () => {
                   <Button
                     onClick={() => {
                       xltBalance &&
-                        setFieldValue('amount', parseBalance(xltBalance))
+                        setFieldValue(
+                          'amount',
+                          formatCurrencyAmount(xltBalance)
+                        )
                     }}
                   >
                     MAX

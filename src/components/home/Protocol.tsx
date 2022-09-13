@@ -12,6 +12,7 @@ export default function Protocol() {
         display={{ base: 'none', lg: 'block' }}
       >
         <Image
+          alt="protocol image"
           w="full"
           h="full"
           objectFit="contain"

@@ -20,16 +20,16 @@ import {
 import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import NextLink from 'next/link'
-import useTokenBalanceByAddress from '../../../hooks/useTokenBalanceByAddress'
+import useTokenBalance from '../../../hooks/useTokenBalance'
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik'
 import { StakeFormValues } from '../../../types'
 import {
-  parseBalance,
-  parseBalanceToBigNumber,
-  isNumberValid,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+  isNumeric,
 } from '../../../utils'
-import useMasterChefContract from '../../../hooks/useMasterChefContract'
-import useERC20Contract from '../../../hooks/useERC20Contract'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import ApproveToken from '../ApproveToken/ApproveToken'
@@ -46,7 +46,7 @@ const initialValues: StakeFormValues = {
 
 const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   const toast = useToast()
-  const { data: lpTokenBalance } = useTokenBalanceByAddress(lpToken)
+  const { data: lpTokenBalance } = useTokenBalance(lpToken)
   const lpTokenContract = useERC20Contract(lpToken)
   const { isOpen, onClose, onOpen } = useDisclosure()
   const tokens = useLiquidityInfo(lpToken)
@@ -64,7 +64,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   ) => {
     if (!walletConnected) return
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount)
+      const amountBigNumber = parseCurrencyAmount(amount)
 
       const tx = await masterChefContract.deposit(pid, amountBigNumber, {
         gasLimit: '1000000',
@@ -95,12 +95,12 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   const validator = ({ amount }: StakeFormValues) => {
     const errors: FormikErrors<StakeFormValues> = {}
 
-    if (amount.length === 0 || parseBalanceToBigNumber(amount).isZero()) {
+    if (amount.length === 0 || parseCurrencyAmount(amount).isZero()) {
       errors.amount = 'Enter an amount'
       return errors
     }
 
-    if (lpTokenBalance && parseBalanceToBigNumber(amount).gt(lpTokenBalance)) {
+    if (lpTokenBalance && parseCurrencyAmount(amount).gt(lpTokenBalance)) {
       errors.amount = `Insufficient LP balance`
     }
 
@@ -152,8 +152,8 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                                 {lpTokenBalance.lte(
                                   ethers.utils.parseEther('0.000001')
                                 )
-                                  ? parseBalance(lpTokenBalance, 18, 18)
-                                  : parseBalance(lpTokenBalance)}
+                                  ? formatCurrencyAmount(lpTokenBalance, 18, 18)
+                                  : formatCurrencyAmount(lpTokenBalance)}
                               </Text>
                             </HStack>
                           </FormLabel>
@@ -162,7 +162,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                               w="full"
                               value={values.amount}
                               onChange={(value) => {
-                                isNumberValid(value) &&
+                                isNumeric(value) &&
                                   setFieldValue('amount', value)
                               }}
                             >
@@ -176,8 +176,12 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                                   lpTokenBalance.lte(
                                     ethers.utils.parseEther('0.000001')
                                   )
-                                    ? parseBalance(lpTokenBalance, 18, 18)
-                                    : parseBalance(lpTokenBalance)
+                                    ? formatCurrencyAmount(
+                                        lpTokenBalance,
+                                        18,
+                                        18
+                                      )
+                                    : formatCurrencyAmount(lpTokenBalance)
                                 )
                               }}
                             >

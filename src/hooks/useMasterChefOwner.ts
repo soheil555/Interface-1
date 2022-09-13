@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import useMasterChefContract from './useMasterChefContract'
+import useMasterChefContract from './contracts/useMasterChefContract'
 
 export default function useMasterChefOwner() {
   const [owner, setOwner] = useState<string>()

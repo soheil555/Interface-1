@@ -1,12 +1,12 @@
 import { ethers } from 'ethers'
 import useSWR from 'swr'
 import { Factory } from '../abis/types'
-import useAllTokenPairs from './useAllTokenPairs'
-import useFactoryContract from './useFactoryContract'
+import useTokenPairs from './useTokenPairs'
+import useFactoryContract from './contracts/useFactoryContract'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
 import { Pair } from '../types'
 
-function getAllPairs(factory: Factory) {
+function getLiquidityPairs(factory: Factory) {
   return async (_: string, tokenPairs: [string, string][]) => {
     const allPairs: Pair[] = []
 
@@ -21,16 +21,15 @@ function getAllPairs(factory: Factory) {
   }
 }
 
-export default function useAllPairs() {
-  const allTokenPairs = useAllTokenPairs()
+export default function useLiquidityPairs() {
+  const tokenPairs = useTokenPairs()
   const factory = useFactoryContract()
 
-  const shouldFetch = !!allTokenPairs && !!factory
+  const shouldFetch = !!tokenPairs && !!factory
 
   const result = useSWR(
-    shouldFetch ? ['AllPairs', allTokenPairs] : null,
-    getAllPairs(factory!),
-    {}
+    shouldFetch ? ['AllPairs', tokenPairs] : null,
+    getLiquidityPairs(factory!)
   )
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate)

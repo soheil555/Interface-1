@@ -19,7 +19,7 @@ import useMasterChefOwner from '../../../hooks/useMasterChefOwner'
 import usePendingAXO from '../../../hooks/usePendingAXO'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Farm } from '../../../types'
-import { parseBalance } from '../../../utils'
+import { formatCurrencyAmount } from '../../../utils'
 import EditAllocPointButton from './EditAllocPointButton'
 import HarvestButton from './HarvestButton'
 import StakeButton from './StakeButton'
@@ -95,7 +95,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
             <Stat>
               <StatLabel>AXO Earned</StatLabel>
               <StatNumber>
-                {pendingAXO ? parseBalance(pendingAXO) : '0.00'}
+                {pendingAXO ? formatCurrencyAmount(pendingAXO) : '0.00'}
               </StatNumber>
             </Stat>
 
@@ -105,8 +105,8 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
                 {farmUserInfo
                   ? !farmUserInfo.amount.isZero() &&
                     farmUserInfo.amount.lte(ethers.utils.parseEther('0.000001'))
-                    ? parseBalance(farmUserInfo.amount, 18, 18)
-                    : parseBalance(farmUserInfo.amount)
+                    ? formatCurrencyAmount(farmUserInfo.amount, 18, 18)
+                    : formatCurrencyAmount(farmUserInfo.amount)
                   : '0.00'}
               </StatNumber>
             </Stat>

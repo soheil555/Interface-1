@@ -1,7 +1,7 @@
-import { Factory } from '../abis/types/Factory'
-import ABI from '../abis/Factory.json'
+import { Factory } from '../../abis/types/Factory'
+import ABI from '../../abis/Factory.json'
 import useContract from './useContract'
-import useAddresses from './useAddresses'
+import useAddresses from '../useAddresses'
 
 export default function useFactoryContract() {
   const addresses = useAddresses()

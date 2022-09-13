@@ -21,7 +21,7 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
-import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 import { EditAllocPointFormValues } from '../../../types'
 
 interface EditAllocPointButtonProps {

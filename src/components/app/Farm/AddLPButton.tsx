@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
-import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 import { AddLPFormValues } from '../../../types'
 import LPTokenSelect from './LPTokenSelect'
 

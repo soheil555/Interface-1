@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import { AxOracle } from '../abis/types'
 import { Token } from '../types'
 import useAddresses from './useAddresses'
-import useAxOracleContract from './useAxOracleContract'
+import useAxOracleContract from './contracts/useAxOracleContract'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
 
 function getTokenPrice(axOracleContract: AxOracle) {

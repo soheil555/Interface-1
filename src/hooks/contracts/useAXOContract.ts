@@ -1,4 +1,4 @@
-import useAddresses from './useAddresses'
+import useAddresses from '../useAddresses'
 import useERC20Contract from './useERC20Contract'
 
 export default function useAXOContract() {

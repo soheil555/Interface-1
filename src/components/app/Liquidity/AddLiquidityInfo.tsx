@@ -1,7 +1,7 @@
 import { Box, HStack, Text } from '@chakra-ui/react'
-import usePairReserves from '../../../hooks/usePairReserves'
+import usePairReserves from '../../../hooks/useLiquidityPairReserves'
 import { Token } from '../../../types'
-import { calculateLiquidityRate, parseBalance } from '../../../utils'
+import { computeLiquidityRate, formatCurrencyAmount } from '../../../utils'
 
 interface AddLiquidityInfoProps {
   token1: Token
@@ -17,7 +17,7 @@ const AddLiquidityInfo = ({
   token2Amount,
 }: AddLiquidityInfoProps) => {
   const { data: reserves } = usePairReserves(token1, token2)
-  const rate = calculateLiquidityRate(
+  const rate = computeLiquidityRate(
     token1,
     token2,
     reserves?.reserve1,
@@ -42,8 +42,8 @@ const AddLiquidityInfo = ({
           {rate && (
             <Text fontSize={{ base: 'sm', md: 'md' }}>
               <>
-                1 {token1.symbol} = {parseBalance(rate, token2.decimals)}{' '}
-                {token2.symbol}
+                1 {token1.symbol} ={' '}
+                {formatCurrencyAmount(rate, token2.decimals)} {token2.symbol}
               </>
             </Text>
           )}

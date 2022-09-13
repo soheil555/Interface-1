@@ -10,13 +10,13 @@ import {
   Link,
 } from '@chakra-ui/react'
 import { IoSwapVertical } from 'react-icons/io5'
-import useFactoryContract from '../../hooks/useFactoryContract'
+import useFactoryContract from '../../hooks/contracts/useFactoryContract'
 import Layout from '../../components/app/Layout/Layout'
-import useRouterContract from '../../hooks/useRouterContract'
+import useRouterContract from '../../hooks/contracts/useRouterContract'
 import { useWeb3React } from '@web3-react/core'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import { SwapFormValues } from '../../types'
-import { amountWithSlippage, parseBalanceToBigNumber } from '../../utils'
+import { currencyAmountWithSlippage, parseCurrencyAmount } from '../../utils'
 import SwapSelectToken from '../../components/app/SelectToken/SwapSelectToken'
 import { useAtom } from 'jotai'
 import useAddresses from '../../hooks/useAddresses'
@@ -70,12 +70,9 @@ const Swap: NextPage = () => {
       wrapType === 'invalid' ? 'Swap' : wrapType === 'wrap' ? 'Wrap' : 'Unwrap'
 
     try {
-      const amountInBigNumber = parseBalanceToBigNumber(
-        amountIn,
-        tokenIn.decimals
-      )
+      const amountInBigNumber = parseCurrencyAmount(amountIn, tokenIn.decimals)
 
-      const amountOutBigNumber = parseBalanceToBigNumber(
+      const amountOutBigNumber = parseCurrencyAmount(
         amountOut,
         tokenOut.decimals
       )
@@ -117,7 +114,7 @@ const Swap: NextPage = () => {
 
         //TODO: set gasLimit
         const tx = await routerContract.swapExactETHForTokens(
-          amountWithSlippage(amountOutBigNumber, settings.slippage),
+          currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
           path,
           account,
           deadline,
@@ -137,7 +134,7 @@ const Swap: NextPage = () => {
           //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForETH(
             amountInBigNumber,
-            amountWithSlippage(amountOutBigNumber, settings.slippage),
+            currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
@@ -151,7 +148,7 @@ const Swap: NextPage = () => {
           //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForTokens(
             amountInBigNumber,
-            amountWithSlippage(amountOutBigNumber, settings.slippage),
+            currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
             account,
             deadline,
@@ -204,10 +201,7 @@ const Swap: NextPage = () => {
         return errors
       }
 
-      const amountInBigNumber = parseBalanceToBigNumber(
-        amountIn,
-        tokenIn.decimals
-      )
+      const amountInBigNumber = parseCurrencyAmount(amountIn, tokenIn.decimals)
 
       if (!tokenInBalance || amountInBigNumber.gt(tokenInBalance)) {
         errors.amountIn = `Insufficient ${tokenIn.symbol} balance`
@@ -230,14 +224,8 @@ const Swap: NextPage = () => {
       return errors
     }
 
-    const amountInBigNumber = parseBalanceToBigNumber(
-      amountIn,
-      tokenIn.decimals
-    )
-    const amountOutBigNumber = parseBalanceToBigNumber(
-      amountOut,
-      tokenOut.decimals
-    )
+    const amountInBigNumber = parseCurrencyAmount(amountIn, tokenIn.decimals)
+    const amountOutBigNumber = parseCurrencyAmount(amountOut, tokenOut.decimals)
 
     if (
       amountInBigNumber.gt(tokenInReserve) ||

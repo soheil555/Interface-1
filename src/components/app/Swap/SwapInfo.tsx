@@ -10,7 +10,12 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { Token } from '../../../types'
-import { balanceWithSlippage, calculatePrice } from '../../../utils'
+import {
+  currencyAmountWithSlippage,
+  computeSwapRate,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+} from '../../../utils'
 
 interface SwapInfoProps {
   tokenIn: Token
@@ -30,20 +35,19 @@ const SwapInfo = ({
   const { isOpen, onToggle } = useDisclosure()
   const [priceFlag, setPriceFlag] = useBoolean()
 
-  const amountOutWithSlippage = balanceWithSlippage(
-    amountOut,
-    slippage,
-    tokenOut.decimals
+  const amountOutWithSlippage = currencyAmountWithSlippage(
+    parseCurrencyAmount(amountOut, tokenOut.decimals),
+    slippage
   )
 
-  const tokenOutPrice = calculatePrice(
+  const tokenOutPrice = computeSwapRate(
     amountIn,
     amountOut,
     tokenIn.decimals,
     tokenOut.decimals
   )
 
-  const tokenInPrice = calculatePrice(
+  const tokenInPrice = computeSwapRate(
     amountOut,
     amountIn,
     tokenIn.decimals,
@@ -64,11 +68,15 @@ const SwapInfo = ({
         <Box cursor="pointer" onClick={setPriceFlag.toggle}>
           {priceFlag ? (
             <Text fontSize={{ base: 'sm', md: 'md' }}>
-              1 {tokenIn.symbol} = {tokenOutPrice} {tokenOut.symbol}
+              1 {tokenIn.symbol} ={' '}
+              {formatCurrencyAmount(tokenOutPrice, tokenOut.decimals)}{' '}
+              {tokenOut.symbol}
             </Text>
           ) : (
             <Text fontSize={{ base: 'sm', md: 'md' }}>
-              1 {tokenOut.symbol} = {tokenInPrice} {tokenIn.symbol}
+              1 {tokenOut.symbol} ={' '}
+              {formatCurrencyAmount(tokenInPrice, tokenIn.decimals)}{' '}
+              {tokenIn.symbol}
             </Text>
           )}
         </Box>
@@ -97,7 +105,8 @@ const SwapInfo = ({
             </Text>
             <Text fontSize={{ base: 'sm', md: 'md' }}>
               <>
-                {amountOutWithSlippage} {tokenOut.symbol}
+                {formatCurrencyAmount(amountOutWithSlippage, tokenOut.decimals)}{' '}
+                {tokenOut.symbol}
               </>
             </Text>
           </HStack>

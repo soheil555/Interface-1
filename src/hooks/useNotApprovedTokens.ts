@@ -3,7 +3,7 @@ import { BigNumber, Contract } from 'ethers'
 import useSWR from 'swr'
 import { Address } from '../addresses'
 import { Token } from '../types'
-import { parseBalanceToBigNumber } from '../utils'
+import { parseCurrencyAmount } from '../utils'
 import useAddresses from './useAddresses'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
 import { ERC20 } from '../abis/types'
@@ -42,7 +42,7 @@ async function getNotApprovedTokens(
     const amountBigNumber =
       amount instanceof BigNumber
         ? amount
-        : parseBalanceToBigNumber(amount, token.decimals)
+        : parseCurrencyAmount(amount, token.decimals)
 
     const tokenAddress = token.address
       ? token.address

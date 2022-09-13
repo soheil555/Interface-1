@@ -12,12 +12,11 @@ export default function useCountDown(targetDate: Date) {
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [targetDate])
 
   return calculateTimeLeft(timeLeft)
 }
 
-// Calculate time left
 function calculateTimeLeft(timeLeft: number) {
   const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
   const hours = Math.floor(

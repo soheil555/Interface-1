@@ -1,6 +1,6 @@
 import { Button, Tooltip, useToast } from '@chakra-ui/react'
 import { useState } from 'react'
-import useMasterChefContract from '../../../hooks/useMasterChefContract'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 
 interface UpdatePoolButtonProps {
   pid: number

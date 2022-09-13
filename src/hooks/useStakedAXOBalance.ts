@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import useSWR from 'swr'
 import { Xolotl } from '../abis/types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
-import useXolotlContract from './useXolotlContract'
+import useXolotlContract from './contracts/useXolotlContract'
 
 function getStakedAXOBalance(xolotlContract: Xolotl) {
   return async (_: string, account: string) => {

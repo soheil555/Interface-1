@@ -63,7 +63,7 @@ const Footer = () => {
               isExternal
             >
               <Box w={30} h={30} rounded="md" overflow="hidden">
-                <Image src="/images/nftcalendar-logo.png" />
+                <Image alt="nft calendar" src="/images/nftcalendar-logo.png" />
               </Box>
             </Link>
           </HStack>

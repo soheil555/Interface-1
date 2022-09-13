@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import useAllPairs from './useAllPairs'
+import useLiquidityPairs from './useLiquidityPairs'
 
 export default function useLiquidityInfo(address: string) {
   const [info, setInfo] = useState<{ token0: string; token1: string }>()
-  const { data: liquidityPairs } = useAllPairs()
+  const { data: liquidityPairs } = useLiquidityPairs()
 
   useEffect(() => {
     if (liquidityPairs) {

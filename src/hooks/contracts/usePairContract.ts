@@ -1,9 +1,9 @@
 import useContract from './useContract'
-import ABI from '../abis/Pair.json'
-import { Pair } from '../abis/types/Pair'
-import { Token } from '../types'
+import ABI from '../../abis/Pair.json'
+import { Pair } from '../../abis/types/Pair'
+import { Token } from '../../types'
 import useFactoryContract from './useFactoryContract'
-import useAddresses from './useAddresses'
+import useAddresses from '../useAddresses'
 import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 

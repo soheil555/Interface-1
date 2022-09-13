@@ -23,10 +23,6 @@ interface AddLiquidityConfirmationModalProps {
 const AddLiquidityConfirmationModal = ({
   isOpen,
   onClose,
-  token1,
-  token2,
-  token1Amount,
-  token2Amount,
   handleFormSubmit,
 }: AddLiquidityConfirmationModalProps) => {
   return (

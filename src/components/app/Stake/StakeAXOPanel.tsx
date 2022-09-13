@@ -11,24 +11,34 @@ import {
 } from '@chakra-ui/react'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import useUnstakedAXOBalance from '../../../hooks/useUnstakedAXOBalance'
-import useXolotlContract from '../../../hooks/useXolotlContract'
+import useXolotlContract from '../../../hooks/contracts/useXolotlContract'
 import { StakeAXOFormValues } from '../../../types'
 import {
-  AXOForXLT,
-  isNumberValid,
-  parseBalance,
-  parseBalanceToBigNumber,
+  isNumeric,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
 } from '../../../utils'
-import useAXOContract from '../../../hooks/useAXOContract'
+import useAXOContract from '../../../hooks/contracts/useAXOContract'
 import { useWeb3React } from '@web3-react/core'
 import useXolotTotalSupply from '../../../hooks/useXolotTotalSupply'
 import useXltBalance from '../../../hooks/useXltBalance'
 import { useState } from 'react'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import useTokenInfo from '../../../hooks/useTokenInfo'
+import { BigNumber } from 'ethers'
 
 const initialValues: StakeAXOFormValues = {
   amount: '',
+}
+
+const AXOForXLT = (
+  axoAmount: BigNumber,
+  xltTotalSupply: BigNumber,
+  xltBalance: BigNumber,
+  axoBalance: BigNumber
+) => {
+  if (xltBalance.isZero() || axoBalance) return axoAmount
+  return axoAmount.mul(xltTotalSupply).div(axoBalance)
 }
 
 const StakeAXOPanel = () => {
@@ -50,7 +60,7 @@ const StakeAXOPanel = () => {
     if (!walletConnected) return
 
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount)
+      const amountBigNumber = parseCurrencyAmount(amount)
 
       const tx = await xolotlContract.enter(amountBigNumber)
       await tx.wait()
@@ -79,14 +89,14 @@ const StakeAXOPanel = () => {
   const validator = ({ amount }: StakeAXOFormValues) => {
     const errors: FormikErrors<StakeAXOFormValues> = {}
 
-    if (amount === '' || parseBalanceToBigNumber(amount).isZero()) {
+    if (amount === '' || parseCurrencyAmount(amount).isZero()) {
       errors.amount = 'Enter an amount'
       return errors
     }
 
     if (
       !unstakedAXOBalance ||
-      parseBalanceToBigNumber(amount).gt(unstakedAXOBalance)
+      parseCurrencyAmount(amount).gt(unstakedAXOBalance)
     ) {
       errors.amount = 'Unsufficient AXO balance'
       return errors
@@ -112,7 +122,7 @@ const StakeAXOPanel = () => {
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
-                      isNumberValid(value) && setFieldValue('amount', value)
+                      isNumeric(value) && setFieldValue('amount', value)
                     }}
                   >
                     <NumberInputField placeholder="0 AXO" />
@@ -122,7 +132,7 @@ const StakeAXOPanel = () => {
                       unstakedAXOBalance &&
                         setFieldValue(
                           'amount',
-                          parseBalance(unstakedAXOBalance)
+                          formatCurrencyAmount(unstakedAXOBalance)
                         )
                     }}
                   >
@@ -136,9 +146,9 @@ const StakeAXOPanel = () => {
                   values.amount.length > 0 ? (
                     <>
                       You will receive:{' '}
-                      {parseBalance(
+                      {formatCurrencyAmount(
                         AXOForXLT(
-                          parseBalanceToBigNumber(values.amount),
+                          parseCurrencyAmount(values.amount),
                           xolotlTotalSupply,
                           xltBalance,
                           unstakedAXOBalance

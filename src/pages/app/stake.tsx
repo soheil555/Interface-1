@@ -18,8 +18,9 @@ import StakeAXOPanel from '../../components/app/Stake/StakeAXOPanel'
 import UnstakeAXOPanel from '../../components/app/Stake/UnstakeAXOPanel'
 import useUnstakedAXOBalance from '../../hooks/useUnstakedAXOBalance'
 import useXltBalance from '../../hooks/useXltBalance'
-import { AXOToken, XolotlToken } from '../../icons'
-import { parseBalance } from '../../utils'
+import AXOToken from '../../icons/AXOToken'
+import XolotlToken from '../../icons/XolotlToken'
+import { formatCurrencyAmount } from '../../utils'
 import Layout from '../../components/app/Layout/Layout'
 import { NextPage } from 'next'
 
@@ -47,7 +48,9 @@ const Stake: NextPage = () => {
             <XolotlToken fontSize="4rem" />
             <Stat>
               <StatLabel> Wallet Balance</StatLabel>
-              <StatNumber>{xltBalance && parseBalance(xltBalance)}</StatNumber>
+              <StatNumber>
+                {xltBalance && formatCurrencyAmount(xltBalance)}
+              </StatNumber>
               <StatHelpText>XLT</StatHelpText>
             </Stat>
           </HStack>
@@ -57,7 +60,7 @@ const Stake: NextPage = () => {
             <Stat>
               <StatLabel>Wallet Balance</StatLabel>
               <StatNumber>
-                {unstakedAXOBalance && parseBalance(unstakedAXOBalance)}
+                {unstakedAXOBalance && formatCurrencyAmount(unstakedAXOBalance)}
               </StatNumber>
               <StatHelpText>AXO</StatHelpText>
             </Stat>

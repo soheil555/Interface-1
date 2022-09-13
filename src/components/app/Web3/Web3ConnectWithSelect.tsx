@@ -47,7 +47,7 @@ const Web3ConnectWithSelect = ({
         void connector.deactivate()
       }
     }
-  }, [chainId])
+  }, [chainId, setDesiredChainId, chainIds, connector])
 
   useEffect(() => {
     if (error) {
@@ -59,7 +59,7 @@ const Web3ConnectWithSelect = ({
         isClosable: true,
       })
     }
-  }, [error])
+  }, [error, toast])
 
   const switchChain = useCallback(
     (desiredChainId: number) => {

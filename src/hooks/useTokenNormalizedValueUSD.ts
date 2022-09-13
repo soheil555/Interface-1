@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import { Token } from '../types'
-import { parseBalanceToBigNumber } from '../utils'
+import { parseCurrencyAmount } from '../utils'
 import useTokenPriceUSD from './useTokenPriceUSD'
 
 function getNormalizedValueUSD(
@@ -11,7 +11,7 @@ function getNormalizedValueUSD(
   amount =
     amount instanceof BigNumber
       ? amount
-      : parseBalanceToBigNumber(amount, token.decimals)
+      : parseCurrencyAmount(amount, token.decimals)
 
   const usdDecimals = 6
   const decimalsAdjustment = Math.abs(token.decimals - usdDecimals)

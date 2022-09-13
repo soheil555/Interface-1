@@ -1,12 +1,12 @@
 import useAddresses from './useAddresses'
 
-export default function useAllTokenPairs() {
+export default function useTokenPairs() {
   const addresses = useAddresses()
   if (!addresses) return undefined
 
   let tokens = Object.values(addresses.tokens)
 
-  // Remove duplicates. Cause matic and wMatic have the same address.
+  // Remove duplicate addresses.
   tokens = tokens.filter((item, pos) => {
     return tokens.indexOf(item) === pos
   })
