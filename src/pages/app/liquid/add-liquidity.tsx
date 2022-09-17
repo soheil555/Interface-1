@@ -25,6 +25,7 @@ import ApproveToken from '../../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
 import AddLiquidityInfo from '../../../components/app/Liquidity/AddLiquidityInfo'
+import AddLiquidityConfirmationModal from '../../../components/app/Liquidity/AddLiquidityConfirmationModal'
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -136,6 +137,8 @@ const AddLiquidity: NextPage = () => {
         isClosable: true,
       })
     }
+
+    onClose()
   }
 
   const validator = ({
@@ -222,6 +225,25 @@ const AddLiquidity: NextPage = () => {
                 isAllTokensApproved={isAllTokensApproved}
                 setIsAllTokensApproved={setIsAllTokensApproved}
                 spender={routerContract.address}
+              />
+            ) : null}
+
+            {values.token1 &&
+            values.token2 &&
+            values.token1Amount &&
+            values.token2Amount ? (
+              <AddLiquidityConfirmationModal
+                isOpen={isOpen}
+                onClose={onClose}
+                token1={values.token1}
+                token2={values.token2}
+                token1Amount={values.token1Amount}
+                token2Amount={values.token2Amount}
+                slippage={settings.slippage}
+                isFormSubmitting={isSubmitting}
+                isFormValid={isValid}
+                isWalletConnected={walletConnected}
+                handleFormSubmit={handleSubmit}
               />
             ) : null}
 

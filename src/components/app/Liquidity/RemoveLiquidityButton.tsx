@@ -30,11 +30,12 @@ import {
   currencyAmountWithSlippage,
   formatCurrencyAmount,
 } from '../../../utils'
-import { Formik, Form, FormikHelpers, FormikErrors } from 'formik'
+import { Formik, FormikHelpers, FormikErrors } from 'formik'
 import { useAtom } from 'jotai'
 import { settingsAtom } from '../../../store'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
+import RemoveLiquidityConfirmationModal from './RemoveLiquidityConfirmationModal'
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity
@@ -48,6 +49,11 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const [settings] = useAtom(settingsAtom)
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isConfirmOpen,
+    onOpen: onConfirmOpen,
+    onClose: onConfirmClose,
+  } = useDisclosure()
   const token0Info = useTokenInfo(liquidity.token0)
   const token1Info = useTokenInfo(liquidity.token1)
   const { account } = useWeb3React()
@@ -116,6 +122,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
       })
 
       onClose()
+      onConfirmClose()
       actions.resetForm()
     } catch (error: any) {
       console.log(error)
@@ -127,6 +134,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
         isClosable: true,
       })
       onClose()
+      onConfirmClose()
     }
   }
 
@@ -167,7 +175,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
               values,
               setFieldValue,
             }) => (
-              <Form onSubmit={handleSubmit}>
+              <>
                 <ModalHeader>Remove Liquidity</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody py={5} px={10}>
@@ -246,6 +254,21 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   </VStack>
                 </ModalBody>
                 <ModalFooter flexDirection="column" gap={2}>
+                  <RemoveLiquidityConfirmationModal
+                    isOpen={isConfirmOpen}
+                    onClose={onConfirmClose}
+                    token1={token0Info}
+                    token2={token1Info}
+                    liquidityToken1Amount={liquidity.amount0}
+                    liquidityToken2Amount={liquidity.amount1}
+                    percent={values.percent}
+                    slippage={settings.slippage}
+                    isFormSubmitting={isSubmitting}
+                    isFormValid={isValid}
+                    isWalletConnected={walletConnected}
+                    handleFormSubmit={handleSubmit}
+                  />
+
                   {values.percent > 0 && !!routerContract ? (
                     <ApproveToken
                       tokens={[
@@ -264,8 +287,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   ) : null}
 
                   <Button
+                    onClick={onConfirmOpen}
                     w="full"
-                    type="submit"
                     isDisabled={
                       !isValid || !walletConnected || !isLPTokenApproved
                     }
@@ -274,7 +297,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     Remove
                   </Button>
                 </ModalFooter>
-              </Form>
+              </>
             )}
           </Formik>
         </ModalContent>
