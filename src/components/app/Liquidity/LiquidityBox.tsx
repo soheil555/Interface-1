@@ -11,6 +11,7 @@ import {
   useColorModeValue,
   Tooltip,
   useClipboard,
+  Stack,
 } from '@chakra-ui/react'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Liquidity } from '../../../types'
@@ -44,28 +45,36 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
 
   return (
     <Box bg={boxBg} w="full" p={4} borderRadius="lg">
-      <HStack justifyContent="space-between">
-        <HStack gap={2}>
-          <Flex fontSize="2xl">
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        justifyContent="space-between"
+      >
+        <HStack justify="space-between" gap={2}>
+          <Flex fontSize={{ base: 'lg', sm: '2xl' }}>
             {token0Info.logo && <token0Info.logo mr={1} />}
             {token1Info.logo && <token1Info.logo />}
           </Flex>
 
-          <Text fontSize="xl">
+          <Text fontSize={{ base: 'lg', sm: 'xl' }}>
             {token0Info.symbol}/{token1Info.symbol}
           </Text>
         </HStack>
         <Button
+          size={{ base: 'sm', sm: 'md' }}
           onClick={onToggle}
           rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
           variant="ghost"
         >
           Manage
         </Button>
-      </HStack>
+      </Stack>
       <Collapse in={isOpen}>
         <VStack pt={5} gap={2} align="stretch">
-          <HStack justify="space-between">
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="space-between"
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             <Text fontWeight="bold">Pool token:</Text>
             <Tooltip
               textAlign="center"
@@ -77,8 +86,12 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
                 {liquidity.address}
               </Text>
             </Tooltip>
-          </HStack>
-          <HStack justify="space-between">
+          </Stack>
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="space-between"
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             <Text fontWeight="bold">Your total pool token:</Text>
             <Text>
               {liquidity.liquidityBalance.lte(
@@ -87,21 +100,33 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
                 ? formatCurrencyAmount(liquidity.liquidityBalance, 18, 18)
                 : formatCurrencyAmount(liquidity.liquidityBalance)}
             </Text>
-          </HStack>
-          <HStack justify="space-between">
+          </Stack>
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="space-between"
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             <Text fontWeight="bold">Pooled {token0Info.symbol}:</Text>
             <Text>
               {formatCurrencyAmount(liquidity.amount0, token0Info.decimals)}
             </Text>
-          </HStack>
-          <HStack justify="space-between">
+          </Stack>
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="space-between"
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             <Text fontWeight="bold">Pooled {token1Info.symbol}:</Text>
             <Text>
               {formatCurrencyAmount(liquidity.amount1, token1Info.decimals)}
             </Text>
-          </HStack>
+          </Stack>
 
-          <HStack justify="space-between">
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="space-between"
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             <Text fontWeight="bold">TVL:</Text>
             <Text>
               {token0ValueUSD && token1ValueUSD
@@ -112,7 +137,7 @@ const LiquidityBox = ({ liquidity }: LiquidityBoxProps) => {
                   )}`
                 : null}
             </Text>
-          </HStack>
+          </Stack>
         </VStack>
 
         <Divider bgColor={dividerBg} my={2} />

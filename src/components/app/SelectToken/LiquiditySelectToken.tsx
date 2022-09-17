@@ -9,6 +9,8 @@ import {
   NumberInput,
   NumberInputField,
   useColorModeValue,
+  Stack,
+  VStack,
 } from '@chakra-ui/react'
 import { GiToken } from 'react-icons/gi'
 import TokensList from './TokensList'
@@ -143,7 +145,8 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
           overflow="hidden"
           w="full"
         >
-          <HStack
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
             _hover={{ bgColor: 'gray.100', color: 'gray.800' }}
             onClick={onOpen}
             cursor="pointer"
@@ -159,10 +162,14 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
               </Box>
             </HStack>
 
-            <Box>
-              <Text fontSize="sm">
+            <HStack
+              justify={{ base: 'space-between', sm: 'flex-start' }}
+              align="flex-start"
+            >
+              <Text fontSize="sm">Balance</Text>
+
+              <VStack>
                 <>
-                  Balance{' '}
                   {!token.isCoin && !!tokenBalance
                     ? formatCurrencyAmount(tokenBalance, token.decimals)
                     : null}
@@ -170,20 +177,32 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
                     ? formatCurrencyAmount(maticBalance, token.decimals)
                     : null}
                 </>
-              </Text>
-              {token.isCoin && coinBalanceValueUSD ? (
-                <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${formatCurrencyAmount(coinBalanceValueUSD, 6, 2)}
-                </Text>
-              ) : null}
 
-              {!token.isCoin && tokenBalanceValueUSD ? (
-                <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${formatCurrencyAmount(tokenBalanceValueUSD, 6, 2)}
-                </Text>
-              ) : null}
-            </Box>
-          </HStack>
+                <>
+                  {!tokenBalance || (!maticBalance && 0)}
+                  {token.isCoin && coinBalanceValueUSD ? (
+                    <Text
+                      alignSelf="flex-start"
+                      fontSize="sm"
+                      variant="subtext"
+                    >
+                      ≈ ${formatCurrencyAmount(coinBalanceValueUSD, 6, 2)}
+                    </Text>
+                  ) : null}
+
+                  {!token.isCoin && tokenBalanceValueUSD ? (
+                    <Text
+                      alignSelf="flex-start"
+                      fontSize="sm"
+                      variant="subtext"
+                    >
+                      ≈ ${formatCurrencyAmount(tokenBalanceValueUSD, 6, 2)}
+                    </Text>
+                  ) : null}
+                </>
+              </VStack>
+            </HStack>
+          </Stack>
 
           <Divider />
 

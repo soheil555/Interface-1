@@ -152,7 +152,9 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
 
   return (
     <>
-      <Button onClick={onOpen}>Remove</Button>
+      <Button size={{ base: 'sm', sm: 'md' }} onClick={onOpen}>
+        Remove
+      </Button>
       <Modal
         blockScrollOnMount={false}
         isCentered

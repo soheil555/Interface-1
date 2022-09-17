@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import usePairReserves from '../../../hooks/useLiquidityPairReserves'
 import { Token } from '../../../types'
 import { computeLiquidityRate, formatCurrencyAmount } from '../../../utils'
@@ -45,8 +45,13 @@ const AddLiquidityInfo = ({
       borderColor="gray.200"
     >
       {reserves && (
-        <HStack mb={5} justify="space-between">
-          <Text alignSelf="flex-start" fontSize={{ base: 'sm', md: 'md' }}>
+        <Stack
+          direction={{ base: 'column', sm: 'row' }}
+          mb={7}
+          justify="space-between"
+          align="flex-start"
+        >
+          <Text variant="subtext" alignSelf="flex-start">
             Rates
           </Text>
           <VStack>
@@ -70,11 +75,11 @@ const AddLiquidityInfo = ({
               </Text>
             )}
           </VStack>
-        </HStack>
+        </Stack>
       )}
 
       <HStack justify="space-between">
-        <Text>Share of Pool</Text>
+        <Text variant="subtext">Share of Pool</Text>
         <Text>0.00%</Text>
       </HStack>
     </Box>

@@ -26,7 +26,9 @@ const Footer = () => {
         <VStack flex={1} align="stretch">
           <Box>
             <Text fontSize="xl">Axoswap</Text>
-            <Text variant="subtext">Decentralized exchange</Text>
+            <Text fontSize="sm" variant="subtext">
+              Decentralized exchange
+            </Text>
           </Box>
           <HStack>
             <Link href="https://twitter.com/axoswap" isExternal>

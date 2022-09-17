@@ -67,13 +67,13 @@ const SwapInfo = ({
       <HStack justify="space-between">
         <Box cursor="pointer" onClick={setPriceFlag.toggle}>
           {priceFlag ? (
-            <Text fontSize={{ base: 'sm', md: 'md' }}>
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
               1 {tokenIn.symbol} ={' '}
               {formatCurrencyAmount(tokenOutPrice, tokenOut.decimals)}{' '}
               {tokenOut.symbol}
             </Text>
           ) : (
-            <Text fontSize={{ base: 'sm', md: 'md' }}>
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
               1 {tokenOut.symbol} ={' '}
               {formatCurrencyAmount(tokenInPrice, tokenIn.decimals)}{' '}
               {tokenIn.symbol}
@@ -92,18 +92,20 @@ const SwapInfo = ({
 
       <Collapse in={isOpen}>
         <VStack pt={4} align="stretch">
-          <HStack justify="space-between">
-            <Text fontSize={{ base: 'sm', md: 'md' }}>Expected Output</Text>
-            <Text fontSize={{ base: 'sm', md: 'md' }}>
+          <HStack justify="space-between" align="flex-start">
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
+              Expected Output
+            </Text>
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
               {amountOut} {tokenOut.symbol}
             </Text>
           </HStack>
 
-          <HStack justify="space-between">
-            <Text fontSize={{ base: 'sm', md: 'md' }}>
+          <HStack justify="space-between" align="flex-start">
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
               Minimum received after slippage <br /> ({slippage}%)
             </Text>
-            <Text fontSize={{ base: 'sm', md: 'md' }}>
+            <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
               <>
                 {formatCurrencyAmount(amountOutWithSlippage, tokenOut.decimals)}{' '}
                 {tokenOut.symbol}

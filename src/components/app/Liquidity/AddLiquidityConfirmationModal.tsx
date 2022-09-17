@@ -83,7 +83,7 @@ const AddLiquidityConfirmationModal = ({
             token2Amount={token2Amount}
           />
 
-          <VStack mt={5} align="stretch">
+          <VStack fontSize={{ base: 'xs', sm: 'md' }} mt={5} align="stretch">
             <HStack justify="space-between">
               <Text variant="subtext">{token1.symbol} Deposited</Text>
               <Text>

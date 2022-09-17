@@ -31,7 +31,7 @@ const Farm: NextPage = () => {
       <VStack gap={14} w="full">
         <VStack gap={3}>
           <Heading
-            size="3xl"
+            size={{ base: 'md', sm: 'xl', md: '3xl' }}
             fontWeight="light"
             textTransform="uppercase"
             letterSpacing="widest"
@@ -56,20 +56,22 @@ const Farm: NextPage = () => {
         </Stack>
 
         <VStack gap={5} w="full">
-          <HStack align="stretch" w="full" gap={2}>
-            <Heading alignSelf="flex-start" fontWeight="light" size="lg" mb={2}>
+          <HStack
+            w="full"
+            gap={3}
+            justify={{ base: 'space-between', sm: 'flex-start' }}
+          >
+            <Heading fontWeight="light" size={{ base: 'sm', sm: 'lg' }}>
               Farms
             </Heading>
-            <FormControl display="flex" alignItems="center" gap={2}>
+            <HStack>
               <Switch
-                size="lg"
+                size={{ base: 'md', sm: 'lg' }}
                 isChecked={stakedOnly}
                 onChange={setStakedOnly.toggle}
               />
-              <FormLabel fontSize="lg" mb="0">
-                Staked only
-              </FormLabel>
-            </FormControl>
+              <FormLabel size={{ base: 'sm', sm: 'lg' }}>Staked only</FormLabel>
+            </HStack>
           </HStack>
 
           <Divider />
