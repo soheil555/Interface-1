@@ -1,4 +1,3 @@
-import type { NextPageWithLayout } from "../_app";
 import {
   Heading,
   VStack,
@@ -6,42 +5,44 @@ import {
   Stack,
   Divider,
   HStack,
-  FormControl,
-  FormLabel,
   Switch,
   useBoolean,
-} from "@chakra-ui/react";
-import Layout from "../../components/app/Layout/Layout";
-import useMasterChefOwner from "../../hooks/useMasterChefOwner";
-import { useWeb3React } from "@web3-react/core";
-import AddLPButton from "../../components/app/Farm/AddLPButton";
-import FarmBox from "../../components/app/Farm/FarmBox";
-import useFarms from "../../hooks/useFarms";
-import UpdatePoolsButton from "../../components/app/Farm/UpdatePoolsButton";
+} from '@chakra-ui/react'
+import Layout from '../../components/app/Layout/Layout'
+import useMasterChefOwner from '../../hooks/useMasterChefOwner'
+import { useWeb3React } from '@web3-react/core'
+import AddLPButton from '../../components/app/Farm/AddLPButton'
+import FarmBox from '../../components/app/Farm/FarmBox'
+import useFarms from '../../hooks/useFarms'
+import UpdatePoolsButton from '../../components/app/Farm/UpdatePoolsButton'
+import { NextPage } from 'next'
 
-const Farm: NextPageWithLayout = () => {
-  const [stakedOnly, setStakedOnly] = useBoolean();
-  const { account } = useWeb3React();
-  const { data: farms } = useFarms(stakedOnly ? account : undefined);
+const Farm: NextPage = () => {
+  const [stakedOnly, setStakedOnly] = useBoolean()
+  const { account } = useWeb3React()
+  const { data: farms } = useFarms(stakedOnly ? account : undefined)
 
-  const masterChefOwner = useMasterChefOwner();
+  const masterChefOwner = useMasterChefOwner()
 
   return (
     <Layout>
       <VStack gap={14} w="full">
-        <Heading
-          size="3xl"
-          fontWeight="light"
-          textTransform="uppercase"
-          letterSpacing="widest"
-        >
-          Liquidity Pool
-        </Heading>
-        <Text variant="subtext" fontSize="m">
-          Stake your LPs here to earn AXO block reward.
-        </Text>
+        <VStack gap={3}>
+          <Heading
+            size={{ base: 'md', sm: 'xl', md: '3xl' }}
+            fontWeight="light"
+            textTransform="uppercase"
+            letterSpacing="widest"
+          >
+            Liquidity Pool
+          </Heading>
+          <Text variant="subtext" fontSize="m">
+            Stake your LPs here to earn AXO block reward.
+          </Text>
+        </VStack>
+
         <Stack
-          direction={{ base: "column", lg: "row" }}
+          direction={{ base: 'column', lg: 'row' }}
           gap={2}
           align="stretch"
           w="full"
@@ -53,20 +54,22 @@ const Farm: NextPageWithLayout = () => {
         </Stack>
 
         <VStack gap={5} w="full">
-          <HStack align="stretch" w="full" gap={2}>
-            <Heading alignSelf="flex-start" size="lg" mb={2}>
+          <HStack
+            w="full"
+            gap={5}
+            justify={{ base: 'space-between', sm: 'flex-start' }}
+          >
+            <Heading fontWeight="light" size={{ base: 'sm', sm: 'lg' }}>
               Farms
             </Heading>
-            <FormControl display="flex" alignItems="center" gap={2}>
+            <HStack>
               <Switch
-                size="lg"
+                size={{ base: 'md', sm: 'lg' }}
                 isChecked={stakedOnly}
                 onChange={setStakedOnly.toggle}
               />
-              <FormLabel fontSize="lg" mb="0">
-                Staked only
-              </FormLabel>
-            </FormControl>
+              <Text size={{ base: 'sm', sm: 'lg' }}>Staked only</Text>
+            </HStack>
           </HStack>
 
           <Divider />
@@ -83,7 +86,7 @@ const Farm: NextPageWithLayout = () => {
               borderColor="gray.200"
               overflow="hidden"
             >
-              {!farms ? "Loading..." : "No Farm found"}
+              {!farms ? 'Loading...' : 'No Farm found'}
             </Text>
           ) : (
             farms.map((farm) => <FarmBox key={farm.lpToken} farm={farm} />)
@@ -91,7 +94,7 @@ const Farm: NextPageWithLayout = () => {
         </VStack>
       </VStack>
     </Layout>
-  );
-};
+  )
+}
 
-export default Farm;
+export default Farm

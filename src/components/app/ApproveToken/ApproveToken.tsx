@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import useNotApprovedTokens, {
   NotApprovedToken,
   TokenInfo,
-} from "../../../hooks/useNotApprovedTokens";
-import { Button, useToast } from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import { BigNumber } from "ethers";
+} from '../../../hooks/useNotApprovedTokens'
+import { Button, useToast } from '@chakra-ui/react'
+import { useWeb3React } from '@web3-react/core'
+import { BigNumber } from 'ethers'
 
 interface ApproveTokenProps {
-  tokens: TokenInfo[];
-  amounts: (string | BigNumber)[];
-  isAllTokensApproved: boolean;
-  setIsAllTokensApproved: (isAllTokensApproved: boolean) => void;
-  spender: string;
+  tokens: TokenInfo[]
+  amounts: (string | BigNumber)[]
+  isAllTokensApproved: boolean
+  setIsAllTokensApproved: (isAllTokensApproved: boolean) => void
+  spender: string
 }
 
 const ApproveToken = ({
@@ -22,14 +22,14 @@ const ApproveToken = ({
   setIsAllTokensApproved,
   spender,
 }: ApproveTokenProps) => {
-  const toast = useToast();
+  const toast = useToast()
   const { data: notApprovedTokens } = useNotApprovedTokens(
     tokens,
     amounts,
     spender
-  );
-  const [isLoading, setIsLoading] = useState(false);
-  const { provider } = useWeb3React();
+  )
+  const [isLoading, setIsLoading] = useState(false)
+  const { provider } = useWeb3React()
 
   const handleApproveToken = async ({
     tokenContract,
@@ -37,46 +37,46 @@ const ApproveToken = ({
     spender,
     amount,
   }: NotApprovedToken) => {
-    if (!provider) return;
-    setIsLoading(true);
+    if (!provider) return
+    setIsLoading(true)
     try {
-      const signer = provider.getSigner(owner);
-      const tx = await tokenContract.connect(signer).approve(spender, amount);
-      await tx.wait();
+      const signer = provider.getSigner(owner)
+      const tx = await tokenContract.connect(signer).approve(spender, amount)
+      await tx.wait()
 
       toast({
-        title: "Approve Token",
+        title: 'Approve Token',
         description: `Token approved successfully`,
-        status: "success",
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
     } catch (err: any) {
-      console.log(err);
+      console.log(err)
 
       toast({
-        title: "Approve Token",
+        title: 'Approve Token',
         description: err.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
+      })
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   useEffect(() => {
     if (notApprovedTokens && notApprovedTokens.length === 0) {
-      setIsAllTokensApproved(true);
+      setIsAllTokensApproved(true)
     } else {
-      setIsAllTokensApproved(false);
+      setIsAllTokensApproved(false)
     }
-  }, [notApprovedTokens]);
+  }, [notApprovedTokens])
 
-  if (isAllTokensApproved) return null;
+  if (isAllTokensApproved) return null
 
   if (!notApprovedTokens || notApprovedTokens.length === 0)
-    return <Button w="full" variant="brand-outline" isLoading={true} />;
+    return <Button w="full" variant="brand-outline" isLoading={true} />
 
   return (
     <Button
@@ -88,7 +88,7 @@ const ApproveToken = ({
     >
       Approve {notApprovedTokens[0].tokenInfo.symbol}
     </Button>
-  );
-};
+  )
+}
 
-export default ApproveToken;
+export default ApproveToken

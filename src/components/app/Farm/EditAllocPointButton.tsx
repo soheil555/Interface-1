@@ -1,4 +1,4 @@
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from '@chakra-ui/icons'
 import {
   Modal,
   ModalOverlay,
@@ -19,15 +19,14 @@ import {
   VStack,
   useToast,
   IconButton,
-} from "@chakra-ui/react";
-import { Formik, Form, Field, FormikErrors, FormikHelpers } from "formik";
-import useMasterChefContract from "../../../hooks/useMasterChefContract";
-import { EditAllocPointFormValues } from "../../../types";
-import { parseBalanceToBigNumber } from "../../../utils";
+} from '@chakra-ui/react'
+import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import { EditAllocPointFormValues } from '../../../types'
 
 interface EditAllocPointButtonProps {
-  pid: number;
-  currentAllocPoint: string;
+  pid: number
+  currentAllocPoint: string
 }
 
 const EditAllocPointButton = ({
@@ -37,70 +36,75 @@ const EditAllocPointButton = ({
   const initialValues: EditAllocPointFormValues = {
     allocPoint: currentAllocPoint,
     update: false,
-  };
+  }
 
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const masterChefContract = useMasterChefContract();
+  const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const masterChefContract = useMasterChefContract()
 
   const handleEditAllocPoint = async (
     { allocPoint, update }: EditAllocPointFormValues,
     { resetForm }: FormikHelpers<EditAllocPointFormValues>
   ) => {
-    if (!masterChefContract) return;
+    if (!masterChefContract) return
 
     try {
-      let tx = await masterChefContract.set(pid, allocPoint, update, {
+      const tx = await masterChefContract.set(pid, allocPoint, update, {
         gasLimit: 1000000,
-      });
-      await tx.wait();
+      })
+      await tx.wait()
 
       toast({
-        title: "Edit AllocPoint",
-        description: "Edited successfully",
-        status: "success",
+        title: 'Edit AllocPoint',
+        description: 'Edited successfully',
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Edit AllocPoint",
+        title: 'Edit AllocPoint',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
+      })
     }
 
-    resetForm();
-    onClose();
-  };
+    resetForm()
+    onClose()
+  }
   const validator = (values: EditAllocPointFormValues) => {
-    const errors: FormikErrors<EditAllocPointFormValues> = {};
+    const errors: FormikErrors<EditAllocPointFormValues> = {}
 
     if (values.allocPoint.length === 0) {
-      errors.allocPoint = "Required";
+      errors.allocPoint = 'Required'
     }
 
-    const allocPointNumber = Number(values.allocPoint);
+    const allocPointNumber = Number(values.allocPoint)
     if (isNaN(allocPointNumber) || allocPointNumber < 0) {
-      errors.allocPoint = "Invalid number";
+      errors.allocPoint = 'Invalid number'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <>
       <IconButton
         aria-label="edit alloc point"
-        size="sm"
+        size="xs"
         icon={<EditIcon />}
         onClick={onOpen}
       />
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <Formik
           initialValues={initialValues}
@@ -144,7 +148,7 @@ const EditAllocPointButton = ({
                       <Checkbox
                         isChecked={values.update}
                         onChange={() => {
-                          setFieldValue("update", !values.update);
+                          setFieldValue('update', !values.update)
                         }}
                       >
                         Update reward variables for all pools
@@ -169,12 +173,12 @@ const EditAllocPointButton = ({
                   </ModalFooter>
                 </ModalContent>
               </Form>
-            );
+            )
           }}
         </Formik>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default EditAllocPointButton;
+export default EditAllocPointButton

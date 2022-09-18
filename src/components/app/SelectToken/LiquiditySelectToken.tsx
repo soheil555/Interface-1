@@ -9,125 +9,130 @@ import {
   NumberInput,
   NumberInputField,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { GiToken } from "react-icons/gi";
-import TokensList from "./TokensList";
-import useTokenBalance from "../../../hooks/useTokenBalance";
+  Stack,
+  VStack,
+} from '@chakra-ui/react'
+import { GiToken } from 'react-icons/gi'
+import TokensList from './TokensList'
+import useTokenBalance from '../../../hooks/useTokenBalance'
 import {
-  parseBalance,
-  parseBalanceToBigNumber,
-  isNumberValid,
-} from "../../../utils";
-import { useFormikContext } from "formik";
-import { LiquidityFormValues } from "../../../types";
-import { useEffect } from "react";
-import useTokenContract from "../../../hooks/useTokenContract";
-import usePairReserves from "../../../hooks/usePairReserves";
-import useMaticBalance from "../../../hooks/useMaticBalance";
-import useTokenNormalizedValueUSD from "../../../hooks/useTokenNormalizedValueUSD";
-import { tokens } from "../../../tokens";
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+  isNumeric,
+} from '../../../utils'
+import { useFormikContext } from 'formik'
+import { LiquidityFormValues } from '../../../types'
+import { useCallback, useEffect } from 'react'
+import useTokenContract from '../../../hooks/contracts/useTokenContract'
+import usePairReserves from '../../../hooks/useLiquidityPairReserves'
+import useMaticBalance from '../../../hooks/useMaticBalance'
+import useTokenNormalizedValueUSD from '../../../hooks/useTokenNormalizedValueUSD'
+import { tokens } from '../../../tokens'
 
 interface LiquiditySelectTokenProps {
-  isToken1?: boolean;
+  isToken1?: boolean
 }
 
 const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { values, setFieldValue, setValues } =
-    useFormikContext<LiquidityFormValues>();
+    useFormikContext<LiquidityFormValues>()
 
   const [token, otherToken] = isToken1
     ? [values.token1, values.token2]
-    : [values.token2, values.token1];
+    : [values.token2, values.token1]
 
   const [amount, otherAmount] = isToken1
     ? [values.token1Amount, values.token2Amount]
-    : [values.token2Amount, values.token1Amount];
+    : [values.token2Amount, values.token1Amount]
 
-  const [tokenFieldName, otherTokenFieldName] = isToken1
-    ? ["token1", "token2"]
-    : ["token2", "token1"];
+  const [tokenFieldName] = isToken1
+    ? ['token1', 'token2']
+    : ['token2', 'token1']
 
   const [amountFieldName, otherAmountFieldName] = isToken1
-    ? ["token1Amount", "token2Amount"]
-    : ["token2Amount", "token1Amount"];
+    ? ['token1Amount', 'token2Amount']
+    : ['token2Amount', 'token1Amount']
 
-  const tokenContract = useTokenContract(token);
-  const { data: maticBalance } = useMaticBalance();
-  const { data: tokenBalance } = useTokenBalance(token);
-  const { data: reserves } = usePairReserves(token, otherToken);
-  const hstackBg = useColorModeValue("gray.50", "gray.600");
-  const coin = tokens.find((token) => token.isCoin === true);
+  const tokenContract = useTokenContract(token)
+  const { data: maticBalance } = useMaticBalance()
+  const { data: tokenBalance } = useTokenBalance(token)
+  const { data: reserves } = usePairReserves(token, otherToken)
+  const hstackBg = useColorModeValue('gray.50', 'gray.600')
+  const coin = tokens.find((token) => token.isCoin === true)
 
-  const amountValueUSD = useTokenNormalizedValueUSD(token, amount);
-  const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance);
-  const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance);
+  const amountValueUSD = useTokenNormalizedValueUSD(token, amount)
+  const coinBalanceValueUSD = useTokenNormalizedValueUSD(coin, maticBalance)
+  const tokenBalanceValueUSD = useTokenNormalizedValueUSD(token, tokenBalance)
 
-  const getQuote = (value: string, reverse = false) => {
-    const amounts: Record<string, string> = {};
+  const getQuote = useCallback(
+    (value: string, reverse = false) => {
+      const amounts: Record<string, string> = {}
 
-    amounts[reverse ? otherAmountFieldName : amountFieldName] = value;
+      amounts[reverse ? otherAmountFieldName : amountFieldName] = value
 
-    if (
-      reserves &&
-      (reserves.reserve1.isZero() || reserves.reserve2.isZero())
-    ) {
-      return amounts;
-    }
-
-    if (
-      reserves &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length === 0
-    ) {
-      amounts[reverse ? amountFieldName : otherAmountFieldName] = "";
-    }
-
-    if (
-      reserves &&
-      token &&
-      otherToken &&
-      reserves.reserve1.gt(0) &&
-      reserves.reserve2.gt(0) &&
-      value.length > 0
-    ) {
-      const amountA = parseBalanceToBigNumber(value, token.decimals);
-      if (amountA.gt(0)) {
-        const amountB = amountA
-          .mul(reverse ? reserves.reserve1 : reserves.reserve2)
-          .div(reverse ? reserves.reserve2 : reserves.reserve1);
-
-        amounts[reverse ? amountFieldName : otherAmountFieldName] =
-          parseBalance(amountB, otherToken.decimals);
+      if (
+        reserves &&
+        (reserves.reserve1.isZero() || reserves.reserve2.isZero())
+      ) {
+        return amounts
       }
-    }
-    return amounts;
-  };
+
+      if (
+        reserves &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length === 0
+      ) {
+        amounts[reverse ? amountFieldName : otherAmountFieldName] = ''
+      }
+
+      if (
+        reserves &&
+        token &&
+        otherToken &&
+        reserves.reserve1.gt(0) &&
+        reserves.reserve2.gt(0) &&
+        value.length > 0
+      ) {
+        const amountA = parseCurrencyAmount(value, token.decimals)
+        if (amountA.gt(0)) {
+          const amountB = amountA
+            .mul(reverse ? reserves.reserve1 : reserves.reserve2)
+            .div(reverse ? reserves.reserve2 : reserves.reserve1)
+
+          amounts[reverse ? amountFieldName : otherAmountFieldName] =
+            formatCurrencyAmount(amountB, otherToken.decimals)
+        }
+      }
+      return amounts
+    },
+    [amountFieldName, otherAmountFieldName, otherToken, reserves, token]
+  )
 
   useEffect(() => {
-    setFieldValue(tokenFieldName + "Contract", tokenContract);
-  }, [tokenContract]);
+    setFieldValue(`${tokenFieldName}Contract`, tokenContract)
+  }, [tokenContract, tokenFieldName])
 
   useEffect(() => {
     if (token?.isCoin) {
-      setFieldValue(tokenFieldName + "Balance", maticBalance);
+      setFieldValue(`${tokenFieldName}Balance`, maticBalance)
     } else {
-      setFieldValue(tokenFieldName + "Balance", tokenBalance);
+      setFieldValue(`${tokenFieldName}Balance`, tokenBalance)
     }
-  }, [tokenBalance]);
+  }, [tokenBalance, token, maticBalance, tokenFieldName])
 
   useEffect(() => {
     if (isToken1) {
       if (amount) {
-        const amounts = getQuote(amount);
-        setValues({ ...values, ...amounts });
+        const amounts = getQuote(amount)
+        setValues((values) => ({ ...values, ...amounts }))
       } else if (otherAmount) {
-        const amounts = getQuote(otherAmount, true);
-        setValues({ ...values, ...amounts });
+        const amounts = getQuote(otherAmount, true)
+        setValues((values) => ({ ...values, ...amounts }))
       }
     }
-  }, [reserves]);
+  }, [reserves, amount, getQuote, isToken1, otherAmount])
 
   return (
     <Box w="full">
@@ -140,8 +145,9 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
           overflow="hidden"
           w="full"
         >
-          <HStack
-            _hover={{ bgColor: "gray.100", color: "gray.800" }}
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            _hover={{ bgColor: 'gray.100', color: 'gray.800' }}
             onClick={onOpen}
             cursor="pointer"
             justify="space-between"
@@ -156,31 +162,47 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
               </Box>
             </HStack>
 
-            <Box>
-              <Text fontSize="sm">
+            <HStack
+              justify={{ base: 'space-between', sm: 'flex-start' }}
+              align="flex-start"
+            >
+              <Text fontSize="sm">Balance</Text>
+
+              <VStack>
                 <>
-                  Balance{" "}
                   {!token.isCoin && !!tokenBalance
-                    ? parseBalance(tokenBalance, token.decimals)
+                    ? formatCurrencyAmount(tokenBalance, token.decimals)
                     : null}
                   {token.isCoin && !!maticBalance
-                    ? parseBalance(maticBalance, token.decimals)
+                    ? formatCurrencyAmount(maticBalance, token.decimals)
                     : null}
                 </>
-              </Text>
-              {token.isCoin && coinBalanceValueUSD ? (
-                <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${parseBalance(coinBalanceValueUSD, 6, 2)}
-                </Text>
-              ) : null}
 
-              {!token.isCoin && tokenBalanceValueUSD ? (
-                <Text fontSize="sm" textAlign="end" variant="subtext">
-                  ≈ ${parseBalance(tokenBalanceValueUSD, 6, 2)}
-                </Text>
-              ) : null}
-            </Box>
-          </HStack>
+                <>
+                  {!tokenBalance || (!maticBalance && 0)}
+                  {token.isCoin && coinBalanceValueUSD ? (
+                    <Text
+                      alignSelf="flex-start"
+                      fontSize="sm"
+                      variant="subtext"
+                    >
+                      ≈ ${formatCurrencyAmount(coinBalanceValueUSD, 6, 2)}
+                    </Text>
+                  ) : null}
+
+                  {!token.isCoin && tokenBalanceValueUSD ? (
+                    <Text
+                      alignSelf="flex-start"
+                      fontSize="sm"
+                      variant="subtext"
+                    >
+                      ≈ ${formatCurrencyAmount(tokenBalanceValueUSD, 6, 2)}
+                    </Text>
+                  ) : null}
+                </>
+              </VStack>
+            </HStack>
+          </Stack>
 
           <Divider />
 
@@ -192,10 +214,10 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
                 p={0}
                 value={amount}
                 onChange={(value) => {
-                  const isValueValid = isNumberValid(value, token.decimals);
+                  const isValueValid = isNumeric(value, token.decimals)
                   if (isValueValid) {
-                    const amounts = getQuote(value);
-                    setValues({ ...values, ...amounts });
+                    const amounts = getQuote(value)
+                    setValues((values) => ({ ...values, ...amounts }))
                   }
                 }}
               >
@@ -211,14 +233,14 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
                 onClick={() => {
                   if (!token.isCoin && tokenBalance) {
                     const amounts = getQuote(
-                      parseBalance(tokenBalance, token.decimals)
-                    );
-                    setValues({ ...values, ...amounts });
+                      formatCurrencyAmount(tokenBalance, token.decimals)
+                    )
+                    setValues((values) => ({ ...values, ...amounts }))
                   } else if (token.isCoin && maticBalance) {
                     const amounts = getQuote(
-                      parseBalance(maticBalance, token.decimals)
-                    );
-                    setValues({ ...values, ...amounts });
+                      formatCurrencyAmount(maticBalance, token.decimals)
+                    )
+                    setValues((values) => ({ ...values, ...amounts }))
                   }
                 }}
                 fontSize="sm"
@@ -228,7 +250,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
             </HStack>
             {amountValueUSD && (
               <Text pt={1} pl={2} variant="subtext">
-                ≈ ${parseBalance(amountValueUSD, 6, 2)}
+                ≈ ${formatCurrencyAmount(amountValueUSD, 6, 2)}
               </Text>
             )}
           </Box>
@@ -250,13 +272,13 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
 
       <TokensList
         setSelectedToken={(token) => {
-          if (otherToken !== token) setFieldValue(tokenFieldName, token);
+          if (otherToken !== token) setFieldValue(tokenFieldName, token)
         }}
         isOpen={isOpen}
         onClose={onClose}
       />
     </Box>
-  );
-};
+  )
+}
 
-export default LiquiditySelectToken;
+export default LiquiditySelectToken

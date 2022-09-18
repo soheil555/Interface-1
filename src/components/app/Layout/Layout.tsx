@@ -1,17 +1,16 @@
-import { type ReactElement } from "react";
 import {
   Container,
   Divider,
   Image,
   useColorModeValue,
   VStack,
-} from "@chakra-ui/react";
-import Header from "../Header/Header";
-import React from "react";
-import Footer from "../../common/Footer";
+} from '@chakra-ui/react'
+import Header from '../Header/Header'
+import React from 'react'
+import Footer from '../../common/Footer'
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutProps) => {
@@ -26,6 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
         width="full"
         height="full"
         zIndex={-100}
+        alt="background image"
       />
       <Header />
       <Container
@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
         pb={40}
       >
         <VStack
-          bg={useColorModeValue("white", "gray.900")}
+          bg={useColorModeValue('white', 'gray.900')}
           boxShadow="lg"
           borderRadius="lg"
           align="stretch"
@@ -50,7 +50,7 @@ const Layout = ({ children }: LayoutProps) => {
         </VStack>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

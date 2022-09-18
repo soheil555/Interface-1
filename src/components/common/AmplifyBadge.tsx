@@ -1,20 +1,20 @@
-import { Link, Image } from "@chakra-ui/react";
+import { Link, Image } from '@chakra-ui/react'
 
-let ALCHEMY_URL = `https://alchemyapi.io/?r=badge:${process.env.NEXT_PUBLIC_BADGE_ID}`;
-const ALCHEMY_ANALYTICS_URL = `https://analytics.alchemyapi.io/analytics`;
+const ALCHEMY_URL = `https://alchemyapi.io/?r=badge:${process.env.NEXT_PUBLIC_BADGE_ID}`
+const ALCHEMY_ANALYTICS_URL = `https://analytics.alchemyapi.io/analytics`
 
 function logBadgeClick() {
   fetch(`${ALCHEMY_ANALYTICS_URL}/badge-click`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       badge_id: process.env.NEXT_PUBLIC_BADGE_ID,
     }),
   }).catch((err) => {
-    console.log(err);
-  });
+    console.log(err)
+  })
 }
 
 const AmplifyBadge = () => {
@@ -30,7 +30,7 @@ const AmplifyBadge = () => {
         objectFit="contain"
       />
     </Link>
-  );
-};
+  )
+}
 
-export default AmplifyBadge;
+export default AmplifyBadge

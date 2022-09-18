@@ -20,142 +20,147 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-} from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import useERC20Contract from "../../../hooks/useERC20Contract";
-import useRouterContract from "../../../hooks/useRouterContract";
-import useTokenInfo from "../../../hooks/useTokenInfo";
-import { Liquidity, RemoveLiquidityFormValues } from "../../../types";
-import { amountWithSlippage, parseBalance } from "../../../utils";
-import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
-import { useAtom } from "jotai";
-import { settingsAtom } from "../../../store";
-import ApproveToken from "../ApproveToken/ApproveToken";
-import { useEffect, useState } from "react";
-import { BigNumber } from "ethers";
+} from '@chakra-ui/react'
+import { useWeb3React } from '@web3-react/core'
+import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
+import useRouterContract from '../../../hooks/contracts/useRouterContract'
+import useTokenInfo from '../../../hooks/useTokenInfo'
+import { Liquidity, RemoveLiquidityFormValues } from '../../../types'
+import {
+  currencyAmountWithSlippage,
+  formatCurrencyAmount,
+} from '../../../utils'
+import { Formik, FormikHelpers, FormikErrors } from 'formik'
+import { useAtom } from 'jotai'
+import { settingsAtom } from '../../../store'
+import ApproveToken from '../ApproveToken/ApproveToken'
+import { useState } from 'react'
+import RemoveLiquidityConfirmationModal from './RemoveLiquidityConfirmationModal'
 
 interface RemoveLiquidityButtonProps {
-  liquidity: Liquidity;
+  liquidity: Liquidity
 }
 
 const initialValues: RemoveLiquidityFormValues = {
   percent: 50,
-};
+}
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
-  const [settings] = useAtom(settingsAtom);
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const token0Info = useTokenInfo(liquidity.token0);
-  const token1Info = useTokenInfo(liquidity.token1);
-  const { account } = useWeb3React();
-  const routerContract = useRouterContract();
-  const liquidityERC20Contract = useERC20Contract(liquidity.address);
+  const [settings] = useAtom(settingsAtom)
+  const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isConfirmOpen,
+    onOpen: onConfirmOpen,
+    onClose: onConfirmClose,
+  } = useDisclosure()
+  const token0Info = useTokenInfo(liquidity.token0)
+  const token1Info = useTokenInfo(liquidity.token1)
+  const { account } = useWeb3React()
+  const routerContract = useRouterContract()
+  const liquidityERC20Contract = useERC20Contract(liquidity.address)
   const walletConnected =
     !!routerContract &&
     !!liquidityERC20Contract &&
     !!account &&
     !!token0Info &&
-    !!token1Info;
+    !!token1Info
   const isOneOfTokenswMatic =
-    token0Info?.symbol === "wMATIC" || token1Info?.symbol === "wMATIC";
-  const [isLPTokenApproved, setIsLPTokenApproved] = useState(false);
+    token0Info?.symbol === 'wMATIC' || token1Info?.symbol === 'wMATIC'
+  const [isLPTokenApproved, setIsLPTokenApproved] = useState(false)
 
   const handleRemoveLiquidity = async (
     { percent, receiveMatic }: RemoveLiquidityFormValues,
     actions: FormikHelpers<RemoveLiquidityFormValues>
   ) => {
-    if (!walletConnected) return;
+    if (!walletConnected) return
 
     try {
-      const amountToRemove = liquidity.liquidityBalance.mul(percent).div(100);
-      const token0Amount = liquidity.amount0.mul(percent).div(100);
-      const token1Amount = liquidity.amount1.mul(percent).div(100);
+      const amountToRemove = liquidity.liquidityBalance.mul(percent).div(100)
+      const token0Amount = liquidity.amount0.mul(percent).div(100)
+      const token1Amount = liquidity.amount1.mul(percent).div(100)
 
-      const tokenAllowance = await liquidityERC20Contract.allowance(
-        account,
-        routerContract.address
-      );
-      if (tokenAllowance.lt(amountToRemove)) {
-        let tx = await liquidityERC20Contract.approve(
-          routerContract.address,
-          amountToRemove
-        );
-        await tx.wait();
-      }
-
-      const timestamp = (await routerContract.provider.getBlock("latest"))
-        .timestamp;
-      const deadline = timestamp + Number(settings.deadline) * 60;
+      const timestamp = (await routerContract.provider.getBlock('latest'))
+        .timestamp
+      const deadline = timestamp + Number(settings.deadline) * 60
 
       if (isOneOfTokenswMatic && receiveMatic) {
         const [tokenAddress, tokenAmount, maticAmount] =
-          token0Info.symbol === "wMATIC"
+          token0Info.symbol === 'wMATIC'
             ? [liquidity.token1, token1Amount, token0Amount]
-            : [liquidity.token0, token0Amount, token1Amount];
+            : [liquidity.token0, token0Amount, token1Amount]
 
-        let tx = await routerContract.removeLiquidityETH(
+        const tx = await routerContract.removeLiquidityETH(
           tokenAddress,
           amountToRemove,
-          amountWithSlippage(tokenAmount, settings.slippage),
-          amountWithSlippage(maticAmount, settings.slippage),
+          currencyAmountWithSlippage(tokenAmount, settings.slippage),
+          currencyAmountWithSlippage(maticAmount, settings.slippage),
           account,
           deadline
-        );
-        await tx.wait();
+        )
+        await tx.wait()
       } else {
-        let tx = await routerContract.removeLiquidity(
+        const tx = await routerContract.removeLiquidity(
           liquidity.token0,
           liquidity.token1,
           amountToRemove,
-          amountWithSlippage(token0Amount, settings.slippage),
-          amountWithSlippage(token1Amount, settings.slippage),
+          currencyAmountWithSlippage(token0Amount, settings.slippage),
+          currencyAmountWithSlippage(token1Amount, settings.slippage),
           account,
           deadline,
           { gasLimit: 1000000 }
-        );
-        await tx.wait();
+        )
+        await tx.wait()
       }
 
       toast({
-        title: "Removed liquidity",
-        description: "Liquidity removed successfully",
-        status: "success",
+        title: 'Removed liquidity',
+        description: 'Liquidity removed successfully',
+        status: 'success',
         duration: 9000,
         isClosable: true,
-      });
+      })
 
-      onClose();
-      actions.resetForm();
+      onClose()
+      onConfirmClose()
+      actions.resetForm()
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Removed liquidity",
+        title: 'Removed liquidity',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-      });
-      onClose();
+      })
+      onClose()
+      onConfirmClose()
     }
-  };
+  }
 
   const validator = ({ percent }: RemoveLiquidityFormValues) => {
-    const errors: FormikErrors<RemoveLiquidityFormValues> = {};
+    const errors: FormikErrors<RemoveLiquidityFormValues> = {}
 
     if (percent === 0) {
-      errors.percent = "Percentage must be greater than 0";
+      errors.percent = 'Percentage must be greater than 0'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
-  if (!token0Info || !token1Info) return null;
+  if (!token0Info || !token1Info) return null
 
   return (
     <>
-      <Button onClick={onOpen}>Remove</Button>
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Button size={{ base: 'sm', sm: 'md' }} onClick={onOpen}>
+        Remove
+      </Button>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <Formik
@@ -172,7 +177,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
               values,
               setFieldValue,
             }) => (
-              <Form onSubmit={handleSubmit}>
+              <>
                 <ModalHeader>Remove Liquidity</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody py={5} px={10}>
@@ -184,10 +189,10 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                       defaultValue={0}
                       value={values.percent}
                       onChange={(valueString, value) => {
-                        if (valueString === "") value = 0;
-                        if (value > 100) value = 100;
+                        if (valueString === '') value = 0
+                        if (value > 100) value = 100
 
-                        setFieldValue("percent", value);
+                        setFieldValue('percent', value)
                       }}
                     >
                       <NumberInputField />
@@ -207,11 +212,11 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     rounded="lg"
                   >
                     <Text fontSize="sm" mb={2}>
-                      You'll receive
+                      You&apos;ll receive
                     </Text>
                     <HStack justify="space-between">
                       <Text>
-                        {parseBalance(
+                        {formatCurrencyAmount(
                           liquidity.amount0.mul(values.percent).div(100),
                           token0Info.decimals
                         )}
@@ -225,7 +230,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
 
                     <HStack justify="space-between">
                       <Text>
-                        {parseBalance(
+                        {formatCurrencyAmount(
                           liquidity.amount1.mul(values.percent).div(100),
                           token1Info.decimals
                         )}
@@ -242,7 +247,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                         size="lg"
                         isChecked={values.receiveMatic}
                         onChange={() => {
-                          setFieldValue("receiveMatic", !values.receiveMatic);
+                          setFieldValue('receiveMatic', !values.receiveMatic)
                         }}
                       >
                         Receive MATIC
@@ -251,12 +256,27 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   </VStack>
                 </ModalBody>
                 <ModalFooter flexDirection="column" gap={2}>
+                  <RemoveLiquidityConfirmationModal
+                    isOpen={isConfirmOpen}
+                    onClose={onConfirmClose}
+                    token1={token0Info}
+                    token2={token1Info}
+                    liquidityToken1Amount={liquidity.amount0}
+                    liquidityToken2Amount={liquidity.amount1}
+                    percent={values.percent}
+                    slippage={settings.slippage}
+                    isFormSubmitting={isSubmitting}
+                    isFormValid={isValid}
+                    isWalletConnected={walletConnected}
+                    handleFormSubmit={handleSubmit}
+                  />
+
                   {values.percent > 0 && !!routerContract ? (
                     <ApproveToken
                       tokens={[
                         {
-                          name: "LP token",
-                          symbol: "LP token",
+                          name: 'LP token',
+                          symbol: 'LP token',
                           decimals: 18,
                           address: liquidity.address,
                         },
@@ -269,8 +289,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   ) : null}
 
                   <Button
+                    onClick={onConfirmOpen}
                     w="full"
-                    type="submit"
                     isDisabled={
                       !isValid || !walletConnected || !isLPTokenApproved
                     }
@@ -279,13 +299,13 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                     Remove
                   </Button>
                 </ModalFooter>
-              </Form>
+              </>
             )}
           </Formik>
         </ModalContent>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default RemoveLiquidityButton;
+export default RemoveLiquidityButton

@@ -1,11 +1,11 @@
-import { ComponentStyleConfig } from "@chakra-ui/react";
+import { ComponentStyleConfig } from '@chakra-ui/react'
 
 const Menu: ComponentStyleConfig = {
   baseStyle: ({ colorMode }) => ({
     list: {
-      bg: colorMode === "light" ? "white" : "gray.800",
+      bg: colorMode === 'light' ? 'white' : 'gray.800',
     },
   }),
-};
+}
 
-export default Menu;
+export default Menu

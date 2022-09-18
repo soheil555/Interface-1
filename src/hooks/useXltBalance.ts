@@ -1,9 +1,9 @@
-import useAddresses from "./useAddresses";
-import useTokenBalanceByAddress from "./useTokenBalanceByAddress";
+import useAddresses from './useAddresses'
+import useTokenBalance from './useTokenBalance'
 
 export default function useXltBalance() {
-  const addresses = useAddresses();
-  const xltAddress = addresses?.tokens["Xolotl"];
+  const addresses = useAddresses()
+  const xltAddress = addresses?.tokens['Xolotl']
 
-  return useTokenBalanceByAddress(xltAddress);
+  return useTokenBalance(xltAddress)
 }

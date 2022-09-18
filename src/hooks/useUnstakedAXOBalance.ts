@@ -1,10 +1,9 @@
-import { useWeb3React } from "@web3-react/core";
-import useAddresses from "./useAddresses";
-import useTokenBalanceByAddress from "./useTokenBalanceByAddress";
+import useAddresses from './useAddresses'
+import useTokenBalance from './useTokenBalance'
 
 export default function useUnstakedAXOBalance() {
-  const addresses = useAddresses();
-  const address = addresses?.tokens.AXO;
+  const addresses = useAddresses()
+  const address = addresses?.tokens.AXO
 
-  return useTokenBalanceByAddress(address);
+  return useTokenBalance(address)
 }

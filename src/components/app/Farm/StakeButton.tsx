@@ -16,113 +16,107 @@ import {
   NumberInputField,
   HStack,
   useToast,
-} from "@chakra-ui/react";
-import useLiquidityInfo from "../../../hooks/useLiquidityInfo";
-import useTokenInfo from "../../../hooks/useTokenInfo";
-import NextLink from "next/link";
-import useTokenBalanceByAddress from "../../../hooks/useTokenBalanceByAddress";
-import { Formik, Form, FormikHelpers, FormikErrors, Field } from "formik";
-import { StakeFormValues } from "../../../types";
+} from '@chakra-ui/react'
+import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
+import useTokenInfo from '../../../hooks/useTokenInfo'
+import NextLink from 'next/link'
+import useTokenBalance from '../../../hooks/useTokenBalance'
+import { Formik, Form, FormikHelpers, FormikErrors } from 'formik'
+import { StakeFormValues } from '../../../types'
 import {
-  parseBalance,
-  parseBalanceToBigNumber,
-  isNumberValid,
-} from "../../../utils";
-import useMasterChefContract from "../../../hooks/useMasterChefContract";
-import useERC20Contract from "../../../hooks/useERC20Contract";
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+  isNumeric,
+} from '../../../utils'
+import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
+import { useWeb3React } from '@web3-react/core'
+import { ethers } from 'ethers'
+import ApproveToken from '../ApproveToken/ApproveToken'
+import { useState } from 'react'
 
 interface StakeButtonProps {
-  pid: number;
-  lpToken: string;
+  pid: number
+  lpToken: string
 }
 
 const initialValues: StakeFormValues = {
-  amount: "",
-};
+  amount: '',
+}
 
 const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
-  const toast = useToast();
-  const { data: lpTokenBalance } = useTokenBalanceByAddress(lpToken);
-  const lpTokenContract = useERC20Contract(lpToken);
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const tokens = useLiquidityInfo(lpToken);
-  const token0Info = useTokenInfo(tokens?.token0);
-  const token1Info = useTokenInfo(tokens?.token1);
-  const masterChefContract = useMasterChefContract();
-  const { account } = useWeb3React();
+  const toast = useToast()
+  const { data: lpTokenBalance } = useTokenBalance(lpToken)
+  const lpTokenContract = useERC20Contract(lpToken)
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const tokens = useLiquidityInfo(lpToken)
+  const token0Info = useTokenInfo(tokens?.token0)
+  const token1Info = useTokenInfo(tokens?.token1)
+  const masterChefContract = useMasterChefContract()
+  const { account } = useWeb3React()
+  const [isLPTokenApproved, setIsLPTokenApproved] = useState(false)
 
-  const walletConnected =
-    !!masterChefContract && !!lpTokenContract && !!account;
+  const walletConnected = !!masterChefContract && !!lpTokenContract && !!account
 
   const handleStake = async (
     { amount }: StakeFormValues,
     { resetForm }: FormikHelpers<StakeFormValues>
   ) => {
-    if (!walletConnected) return;
+    if (!walletConnected) return
     try {
-      const amountBigNumber = parseBalanceToBigNumber(amount);
-
-      const lpTokenAllowance = await lpTokenContract.allowance(
-        account,
-        masterChefContract.address
-      );
-
-      if (lpTokenAllowance.lt(amountBigNumber)) {
-        const tx = await lpTokenContract.approve(
-          masterChefContract.address,
-          amountBigNumber
-        );
-        await tx.wait();
-      }
+      const amountBigNumber = parseCurrencyAmount(amount)
 
       const tx = await masterChefContract.deposit(pid, amountBigNumber, {
-        gasLimit: "1000000",
-      });
-      await tx.wait();
+        gasLimit: '1000000',
+      })
+      await tx.wait()
 
       toast({
-        title: "Stake liquidity",
-        description: "Staked successfully",
-        status: "success",
+        title: 'Stake liquidity',
+        description: 'Staked successfully',
+        status: 'success',
         isClosable: true,
         duration: 9000,
-      });
+      })
     } catch (error: any) {
-      console.log(error);
+      console.log(error)
       toast({
-        title: "Stake liquidity",
+        title: 'Stake liquidity',
         description: error.message,
-        status: "error",
+        status: 'error',
         isClosable: true,
         duration: 9000,
-      });
+      })
     }
 
-    resetForm();
-    onClose();
-  };
+    resetForm()
+    onClose()
+  }
   const validator = ({ amount }: StakeFormValues) => {
-    const errors: FormikErrors<StakeFormValues> = {};
+    const errors: FormikErrors<StakeFormValues> = {}
 
-    if (amount.length === 0 || parseBalanceToBigNumber(amount).isZero()) {
-      errors.amount = "Enter an amount";
-      return errors;
+    if (amount.length === 0 || parseCurrencyAmount(amount).isZero()) {
+      errors.amount = 'Enter an amount'
+      return errors
     }
 
-    if (lpTokenBalance && parseBalanceToBigNumber(amount).gt(lpTokenBalance)) {
-      errors.amount = `Insufficient LP balance`;
+    if (lpTokenBalance && parseCurrencyAmount(amount).gt(lpTokenBalance)) {
+      errors.amount = `Insufficient LP balance`
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <>
       <Button onClick={onOpen}>Stake</Button>
 
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        blockScrollOnMount={false}
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Stake liquidity</ModalHeader>
@@ -154,12 +148,12 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                             <HStack justify="space-between">
                               <Text>LP Token Amount</Text>
                               <Text variant="subtext" fontSize="sm">
-                                Balance{" "}
+                                Balance{' '}
                                 {lpTokenBalance.lte(
-                                  ethers.utils.parseEther("0.000001")
+                                  ethers.utils.parseEther('0.000001')
                                 )
-                                  ? parseBalance(lpTokenBalance, 18, 18)
-                                  : parseBalance(lpTokenBalance)}
+                                  ? formatCurrencyAmount(lpTokenBalance, 18, 18)
+                                  : formatCurrencyAmount(lpTokenBalance)}
                               </Text>
                             </HStack>
                           </FormLabel>
@@ -168,8 +162,8 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                               w="full"
                               value={values.amount}
                               onChange={(value) => {
-                                isNumberValid(value) &&
-                                  setFieldValue("amount", value);
+                                isNumeric(value) &&
+                                  setFieldValue('amount', value)
                               }}
                             >
                               <NumberInputField />
@@ -178,13 +172,17 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                             <Button
                               onClick={() => {
                                 setFieldValue(
-                                  "amount",
+                                  'amount',
                                   lpTokenBalance.lte(
-                                    ethers.utils.parseEther("0.000001")
+                                    ethers.utils.parseEther('0.000001')
                                   )
-                                    ? parseBalance(lpTokenBalance, 18, 18)
-                                    : parseBalance(lpTokenBalance)
-                                );
+                                    ? formatCurrencyAmount(
+                                        lpTokenBalance,
+                                        18,
+                                        18
+                                      )
+                                    : formatCurrencyAmount(lpTokenBalance)
+                                )
                               }}
                             >
                               MAX
@@ -192,33 +190,49 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
                           </HStack>
 
                           <FormHelperText>
-                            Stake your {token0Info?.symbol} /{" "}
+                            Stake your {token0Info?.symbol} /{' '}
                             {token1Info?.symbol} pool tokens
                           </FormHelperText>
                         </FormControl>
 
-                        <HStack gap={3} flexDir="row-reverse">
+                        <VStack align="stretch">
+                          {masterChefContract && values.amount !== '' ? (
+                            <ApproveToken
+                              tokens={[
+                                {
+                                  name: 'LP token',
+                                  symbol: 'LP token',
+                                  decimals: 18,
+                                  address: lpToken,
+                                },
+                              ]}
+                              amounts={[values.amount]}
+                              isAllTokensApproved={isLPTokenApproved}
+                              setIsAllTokensApproved={setIsLPTokenApproved}
+                              spender={masterChefContract.address}
+                            />
+                          ) : null}
+
                           <Button
-                            isDisabled={!isValid || !walletConnected}
+                            isDisabled={
+                              !isValid || !walletConnected || !isLPTokenApproved
+                            }
                             isLoading={isSubmitting}
                             type="submit"
                           >
-                            {errors.amount ? errors.amount : "Stake"}
+                            {errors.amount ? errors.amount : 'Stake'}
                           </Button>
-                          <Button onClick={onClose} variant="outline">
-                            Cancel
-                          </Button>
-                        </HStack>
+                        </VStack>
                       </VStack>
                     </Form>
-                  );
+                  )
                 }}
               </Formik>
             ) : (
               <VStack p={5} gap={10}>
                 <Text fontSize="lg" textAlign="center">
-                  You can stake your {token0Info?.symbol} / {token1Info?.symbol}{" "}
-                  pool tokens in this area. However, you do not have enough{" "}
+                  You can stake your {token0Info?.symbol} / {token1Info?.symbol}{' '}
+                  pool tokens in this area. However, you do not have enough{' '}
                   {token0Info?.symbol} / {token1Info?.symbol} pool tokens yet.
                 </Text>
                 <NextLink href="/app/liquid/add-liquidity">
@@ -232,7 +246,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
         </ModalContent>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default StakeButton;
+export default StakeButton

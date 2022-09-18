@@ -1,4 +1,4 @@
-import { ArrowDownIcon } from "@chakra-ui/icons";
+import { ArrowDownIcon } from '@chakra-ui/icons'
 import {
   VStack,
   Button,
@@ -11,24 +11,28 @@ import {
   ModalBody,
   ModalCloseButton,
   HStack,
-  Divider,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { Token } from "../../../types";
-import { balanceWithSlippage, calculatePrice } from "../../../utils";
+} from '@chakra-ui/react'
+import { Token } from '../../../types'
+import {
+  currencyAmountWithSlippage,
+  formatCurrencyAmount,
+  parseCurrencyAmount,
+} from '../../../utils'
+import SwapInfo from './SwapInfo'
 
 interface SwapConfirmationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  tokenIn: Token;
-  tokenOut: Token;
-  amountIn: string;
-  amountOut: string;
-  slippage: string;
-  isFormValid: boolean;
-  isFormSubmitting: boolean;
-  isWalletConnected: boolean;
-  handleFormSubmit: () => void;
+  isOpen: boolean
+  onClose: () => void
+  tokenIn: Token
+  tokenOut: Token
+  amountIn: string
+  amountOut: string
+  slippage: string
+  isFormValid: boolean
+  isFormSubmitting: boolean
+  isWalletConnected: boolean
+  handleFormSubmit: () => void
 }
 
 const SwapConfirmationModal = ({
@@ -44,24 +48,15 @@ const SwapConfirmationModal = ({
   isWalletConnected,
   handleFormSubmit,
 }: SwapConfirmationModalProps) => {
-  const amountOutWithSlippage = balanceWithSlippage(
-    amountOut,
-    slippage,
-    tokenOut.decimals
-  );
-
-  const tokenOutPrice = calculatePrice(
-    amountIn,
-    amountOut,
-    tokenIn.decimals,
-    tokenOut.decimals
-  );
-
-  const boxBg = useColorModeValue("gray.100", "gray.600");
+  const amountOutWithSlippage = currencyAmountWithSlippage(
+    parseCurrencyAmount(amountOut, tokenOut.decimals),
+    slippage
+  )
 
   return (
     <Modal
-      size={{ base: "xs", sm: "sm", md: "xl" }}
+      blockScrollOnMount={false}
+      size={{ base: 'xs', sm: 'sm', md: 'xl' }}
       isCentered
       isOpen={isOpen}
       onClose={onClose}
@@ -74,23 +69,23 @@ const SwapConfirmationModal = ({
           <VStack align="stretch" gap={2}>
             <VStack align="stretch" position="relative">
               <HStack
-                bg={boxBg}
+                bg={useColorModeValue('gray.100', 'gray.600')}
                 p={2}
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text fontSize={{ base: "sm", sm: "md" }}>From</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>From</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   {amountIn} {tokenIn.symbol}
                 </Text>
               </HStack>
 
               <ArrowDownIcon
                 position="absolute"
-                top="43%"
+                top="40%"
                 left="50%"
                 transform="translate(-50%, -50%)"
-                bg="black.400"
+                bg="gray.300"
                 borderRadius="full"
                 fontSize="2xl"
                 w="30px"
@@ -99,47 +94,31 @@ const SwapConfirmationModal = ({
               />
 
               <HStack
-                bg={boxBg}
+                bg={useColorModeValue('gray.100', 'gray.600')}
                 p={2}
                 borderRadius="lg"
                 justify="space-between"
               >
-                <Text fontSize={{ base: "sm", sm: "md" }}>To</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>To</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
                   {amountOut} {tokenOut.symbol}
                 </Text>
               </HStack>
             </VStack>
 
-            <Text fontSize={{ base: "sm", sm: "md" }}>
-              1 {tokenIn.symbol} = {tokenOutPrice} {tokenOut.symbol}
-            </Text>
+            <SwapInfo
+              tokenIn={tokenIn}
+              tokenOut={tokenOut}
+              amountIn={amountIn}
+              amountOut={amountOut}
+              slippage={slippage}
+            />
 
-            <VStack align="stretch" bg={boxBg} p={2} borderRadius="lg">
-              <HStack justify="space-between">
-                <Text fontSize={{ base: "sm", sm: "md" }}>Expected Output</Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
-                  {amountOut} {tokenOut.symbol}
-                </Text>
-              </HStack>
-
-              <Divider />
-
-              <HStack justify="space-between">
-                <Text fontSize={{ base: "sm", sm: "md" }}>
-                  Minimum received after slippage <br /> ({slippage}%)
-                </Text>
-                <Text fontSize={{ base: "sm", sm: "md" }}>
-                  <>
-                    {amountOutWithSlippage} {tokenOut.symbol}
-                  </>
-                </Text>
-              </HStack>
-            </VStack>
-            <Text fontSize={{ base: "sm", sm: "md" }}>
-              Output is estimated. You will receive at least{" "}
-              <span style={{ fontWeight: "bold" }}>
-                {amountOutWithSlippage} {tokenOut.symbol}{" "}
+            <Text fontSize={{ base: 'sm', sm: 'md' }}>
+              Output is estimated. You will receive at least{' '}
+              <span style={{ fontWeight: 'bold' }}>
+                {formatCurrencyAmount(amountOutWithSlippage, tokenOut.decimals)}{' '}
+                {tokenOut.symbol}{' '}
               </span>
               or the transaction will revert.
             </Text>
@@ -158,7 +137,7 @@ const SwapConfirmationModal = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default SwapConfirmationModal;
+export default SwapConfirmationModal

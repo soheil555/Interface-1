@@ -8,16 +8,16 @@ import {
   Text,
   Stack,
   IconButton,
-} from "@chakra-ui/react";
-import { BsTwitter, BsGithub, BsDiscord } from "react-icons/bs";
-import AmplifyBadge from "./AmplifyBadge";
-import NextLink from "next/link";
+} from '@chakra-ui/react'
+import { BsTwitter, BsGithub, BsDiscord } from 'react-icons/bs'
+import AmplifyBadge from './AmplifyBadge'
+import NextLink from 'next/link'
 
 const Footer = () => {
   return (
     <VStack align="center" justify="center" p={5} gap={5}>
       <Stack
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: 'column', md: 'row' }}
         align="flex-start"
         justify="space-between"
         w="full"
@@ -26,7 +26,9 @@ const Footer = () => {
         <VStack flex={1} align="stretch">
           <Box>
             <Text fontSize="xl">Axoswap</Text>
-            <Text variant="subtext">Decentralized exchange</Text>
+            <Text fontSize="sm" variant="subtext">
+              Decentralized exchange
+            </Text>
           </Box>
           <HStack>
             <Link href="https://twitter.com/axoswap" isExternal>
@@ -63,14 +65,14 @@ const Footer = () => {
               isExternal
             >
               <Box w={30} h={30} rounded="md" overflow="hidden">
-                <Image src="/images/nftcalendar-logo.png" />
+                <Image alt="nft calendar" src="/images/nftcalendar-logo.png" />
               </Box>
             </Link>
           </HStack>
         </VStack>
 
         <Stack
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: 'column', md: 'row' }}
           gap={5}
           flex={1}
           justify="space-between"
@@ -108,26 +110,26 @@ const Footer = () => {
       <Divider />
       <Stack
         gap={1}
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: 'column', md: 'row' }}
         w="full"
         justify="space-between"
         align="center"
       >
-        <Text fontSize={{ base: "sm", sm: "md" }} textAlign="center">
+        <Text fontSize={{ base: 'sm', sm: 'md' }} textAlign="center">
           © {new Date().getFullYear()} Axoswap. All rights reserved
         </Text>
         <AmplifyBadge />
       </Stack>
     </VStack>
-  );
-};
+  )
+}
 
 const ListHeader = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Text textTransform="uppercase" fontWeight="bold" fontSize={"lg"} mb={2}>
+    <Text textTransform="uppercase" fontWeight="bold" fontSize={'lg'} mb={2}>
       {children}
     </Text>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
