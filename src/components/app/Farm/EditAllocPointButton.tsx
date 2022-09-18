@@ -94,7 +94,7 @@ const EditAllocPointButton = ({
     <>
       <IconButton
         aria-label="edit alloc point"
-        size="sm"
+        size="xs"
         icon={<EditIcon />}
         onClick={onOpen}
       />

@@ -48,7 +48,8 @@ const UpdatePoolButton = ({ pid }: UpdatePoolButtonProps) => {
       hasArrow
       textAlign="center"
       label="Update reward variables of the given pool to be up-to-date"
-      fontSize="md"
+      fontSize={{ base: 'xs', sm: 'md' }}
+      w={{ base: '15rem', sm: 'full' }}
     >
       <Button
         isDisabled={!masterChefContract}

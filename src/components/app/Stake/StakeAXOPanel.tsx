@@ -119,6 +119,7 @@ const StakeAXOPanel = () => {
 
                 <HStack>
                   <NumberInput
+                    size={{ base: 'sm', sm: 'md' }}
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
@@ -128,6 +129,7 @@ const StakeAXOPanel = () => {
                     <NumberInputField placeholder="0 AXO" />
                   </NumberInput>
                   <Button
+                    size={{ base: 'sm', sm: 'md' }}
                     onClick={() => {
                       unstakedAXOBalance &&
                         setFieldValue(

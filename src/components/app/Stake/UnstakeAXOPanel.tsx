@@ -101,6 +101,7 @@ const UnstakeAXOPanel = () => {
 
                 <HStack>
                   <NumberInput
+                    size={{ base: 'sm', sm: 'md' }}
                     w="full"
                     value={values.amount}
                     onChange={(value) => {
@@ -110,6 +111,7 @@ const UnstakeAXOPanel = () => {
                     <NumberInputField placeholder="0 XLT" />
                   </NumberInput>
                   <Button
+                    size={{ base: 'sm', sm: 'md' }}
                     onClick={() => {
                       xltBalance &&
                         setFieldValue(

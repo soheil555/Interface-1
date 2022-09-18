@@ -6,6 +6,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Stack,
 } from '@chakra-ui/react'
 import type { Web3ReactHooks } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
@@ -96,7 +97,7 @@ const Web3ConnectWithSelect = ({
 
   if (isActivate && account) {
     return (
-      <HStack>
+      <Stack direction={{ base: 'column', sm: 'row' }}>
         <ChainSelect chainId={desiredChainId} switchChain={switchChain} />
 
         <Menu>
@@ -119,7 +120,7 @@ const Web3ConnectWithSelect = ({
             </MenuItem>
           </MenuList>
         </Menu>
-      </HStack>
+      </Stack>
     )
   }
 

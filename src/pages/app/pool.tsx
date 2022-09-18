@@ -5,8 +5,6 @@ import {
   Stack,
   Divider,
   HStack,
-  FormControl,
-  FormLabel,
   Switch,
   useBoolean,
 } from '@chakra-ui/react'
@@ -58,7 +56,7 @@ const Farm: NextPage = () => {
         <VStack gap={5} w="full">
           <HStack
             w="full"
-            gap={3}
+            gap={5}
             justify={{ base: 'space-between', sm: 'flex-start' }}
           >
             <Heading fontWeight="light" size={{ base: 'sm', sm: 'lg' }}>
@@ -70,7 +68,7 @@ const Farm: NextPage = () => {
                 isChecked={stakedOnly}
                 onChange={setStakedOnly.toggle}
               />
-              <FormLabel size={{ base: 'sm', sm: 'lg' }}>Staked only</FormLabel>
+              <Text size={{ base: 'sm', sm: 'lg' }}>Staked only</Text>
             </HStack>
           </HStack>
 

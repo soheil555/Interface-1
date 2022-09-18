@@ -32,10 +32,16 @@ const Stake: NextPage = () => {
     <Layout>
       <VStack gap={14} w="full">
         <VStack gap={3}>
-          <Heading size="3xl" fontWeight="light" letterSpacing="wider">
+          <Heading
+            size={{ base: 'xl', sm: '3xl' }}
+            fontWeight="light"
+            letterSpacing="wider"
+          >
             AXO Stake
           </Heading>
-          <Text variant="subtext">Stake Your AXO Tokens Here!</Text>
+          <Text fontSize={{ base: 'sm', sm: 'md' }} variant="subtext">
+            Stake Your AXO Tokens Here!
+          </Text>
         </VStack>
 
         <Stack
@@ -45,10 +51,10 @@ const Stake: NextPage = () => {
           justify="space-between"
         >
           <HStack flex={1}>
-            <XolotlToken fontSize="4rem" />
+            <XolotlToken fontSize={{ base: '3rem', sm: '4rem' }} />
             <Stat>
               <StatLabel> Wallet Balance</StatLabel>
-              <StatNumber>
+              <StatNumber fontSize={{ base: 'md', sm: 'xl' }}>
                 {xltBalance && formatCurrencyAmount(xltBalance)}
               </StatNumber>
               <StatHelpText>XLT</StatHelpText>
@@ -56,10 +62,10 @@ const Stake: NextPage = () => {
           </HStack>
 
           <HStack flex={1}>
-            <AXOToken fontSize="4rem" />
+            <AXOToken fontSize={{ base: '3rem', sm: '4rem' }} />
             <Stat>
               <StatLabel>Wallet Balance</StatLabel>
-              <StatNumber>
+              <StatNumber fontSize={{ base: 'md', sm: 'xl' }}>
                 {unstakedAXOBalance && formatCurrencyAmount(unstakedAXOBalance)}
               </StatNumber>
               <StatHelpText>AXO</StatHelpText>
@@ -69,8 +75,8 @@ const Stake: NextPage = () => {
 
         <Tabs variant="enclosed" w="full" isFitted>
           <TabList>
-            <Tab>Stake AXO</Tab>
-            <Tab>Unstake</Tab>
+            <Tab fontSize={{ base: 'sm', sm: 'md' }}>Stake AXO</Tab>
+            <Tab fontSize={{ base: 'sm', sm: 'md' }}>Unstake</Tab>
           </TabList>
 
           <TabPanels>
@@ -82,7 +88,11 @@ const Stake: NextPage = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <Text textAlign="center" variant="subtext" fontSize="m">
+        <Text
+          textAlign="center"
+          variant="subtext"
+          fontSize={{ base: 'sm', sm: 'md' }}
+        >
           This pool automatically earns 15% of all trade fees to buyback AXO,
           increasing ratio overtime.
         </Text>

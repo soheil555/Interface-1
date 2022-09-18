@@ -44,7 +44,8 @@ const UpdatePoolsButton = () => {
       hasArrow
       textAlign="center"
       label="Update reward variables for all pools. Be careful of gas spending!"
-      fontSize="md"
+      fontSize={{ base: 'xs', sm: 'md' }}
+      w={{ base: '15rem', sm: 'full' }}
     >
       <Button
         w="full"

@@ -79,7 +79,7 @@ const Settings = () => {
               icon={<FiSettings />}
             />
           </PopoverTrigger>
-          <PopoverContent w="270px" p={4}>
+          <PopoverContent w={{ base: '15rem', sm: '20rem' }} p={4}>
             <PopoverArrow />
 
             <Text fontWeight="bold" mb={2}>
@@ -102,6 +102,7 @@ const Settings = () => {
                   variant="outline"
                   onClick={() => setFieldValue('slippage', '0.1')}
                   ml={2}
+                  fontSize="sm"
                 >
                   Default
                 </Button>

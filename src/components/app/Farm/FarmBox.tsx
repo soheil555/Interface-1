@@ -43,8 +43,12 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
 
   return (
     <Box bg={boxBg} w="full" borderRadius="lg">
-      <HStack p={4} justifyContent="space-between">
-        <HStack gap={2}>
+      <Stack
+        direction={{ base: 'column', sm: 'row' }}
+        p={4}
+        justifyContent="space-between"
+      >
+        <HStack justify="center" gap={2}>
           <Flex fontSize="2xl">
             {token0Info.logo && <token0Info.logo mr={1} />}
             {token1Info.logo && <token1Info.logo />}
@@ -55,23 +59,27 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           </Text>
         </HStack>
         <UpdatePoolButton pid={farm.pid} />
-      </HStack>
+      </Stack>
 
       <Divider />
 
       <VStack align="stretch" gap={2} p={4}>
-        <HStack
+        <Stack
+          direction={{ base: 'column', sm: 'row' }}
           border="solid"
           borderRadius="lg"
           borderWidth={1}
           borderColor="gray.400"
           justify="space-between"
           p={2}
+          align={{ base: 'stretch', sm: 'center' }}
         >
           <Stat>
             <StatLabel>Block Reward Multiply</StatLabel>
-            <HStack>
-              <StatNumber>{farm.allocPoint.toString()}</StatNumber>
+            <HStack my={2}>
+              <StatNumber fontSize={{ base: 'lg', sm: '2xl' }}>
+                {farm.allocPoint.toString()}
+              </StatNumber>
               {masterChefOwner && masterChefOwner === account ? (
                 <EditAllocPointButton
                   pid={farm.pid}
@@ -81,27 +89,29 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
             </HStack>
           </Stat>
           <StakeButton pid={farm.pid} lpToken={farm.lpToken} />
-        </HStack>
+        </Stack>
 
-        <HStack
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
           border="solid"
           borderRadius="lg"
           borderWidth={1}
           borderColor="gray.400"
           p={2}
           justify="space-between"
+          align={{ base: 'stretch', md: 'center' }}
         >
-          <Stack direction={{ base: 'column', md: 'row' }} gap={5}>
+          <Stack direction={{ base: 'column', md: 'row' }} gap={4}>
             <Stat>
               <StatLabel>AXO Earned</StatLabel>
-              <StatNumber>
+              <StatNumber fontSize={{ base: 'lg', sm: '2xl' }}>
                 {pendingAXO ? formatCurrencyAmount(pendingAXO) : '0.00'}
               </StatNumber>
             </Stat>
 
             <Stat>
               <StatLabel>Staked LP Token</StatLabel>
-              <StatNumber>
+              <StatNumber fontSize={{ base: 'lg', sm: '2xl' }}>
                 {farmUserInfo
                   ? !farmUserInfo.amount.isZero() &&
                     farmUserInfo.amount.lte(ethers.utils.parseEther('0.000001'))
@@ -113,7 +123,7 @@ const FarmBox = ({ farm }: FarmBoxProps) => {
           </Stack>
 
           <HarvestButton pid={farm.pid} lpToken={farm.lpToken} />
-        </HStack>
+        </Stack>
       </VStack>
     </Box>
   )
