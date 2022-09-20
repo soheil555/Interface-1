@@ -1,31 +1,31 @@
 export interface Address {
-  factory: string;
-  router: string;
-  masterChef: string;
-  axOracle: string;
-  tokens: Record<string, string>;
+  factory: string
+  router: string
+  masterChef: string
+  axOracle: string
+  tokens: Record<string, string>
 }
 
-export type Addresses = Record<number, Address>;
+export type Addresses = Record<number, Address>
 
 export const addresses: Addresses = {
   // Polygon Mainnet
   137: {
-    factory: "0x4A2567DF253DBA236CA7F6549C3434236a7CAfE8",
-    router: "0xa129ffC5b6C32f94FbaBBF89c85c4226A927Ae7C",
-    masterChef: "0x6481b05DB76B5a0781EadDBfc289e9A2A2a530bA",
-    axOracle: "0x36a0E85103114e95D78A94dCb5C54CB1cE8D9f47",
+    factory: '0x4A2567DF253DBA236CA7F6549C3434236a7CAfE8',
+    router: '0xa129ffC5b6C32f94FbaBBF89c85c4226A927Ae7C',
+    masterChef: '0x6481b05DB76B5a0781EadDBfc289e9A2A2a530bA',
+    axOracle: '0x36a0E85103114e95D78A94dCb5C54CB1cE8D9f47',
     tokens: {
-      USDC: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-      USDT: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-      AXO: "0xcDC3fe320914e901F503A678c078F45Bb803F2D5",
-      Xolotl: "0x090092F37de3d68980b971744D3431D505576020",
-      wMATIC: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-      MATIC: "0x0000000000000000000000000000000000001010",
-      wETH: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-      AAVE: "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
-      DAI: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
-      LINK: "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39",
+      USDC: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      USDT: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      AXO: '0xcDC3fe320914e901F503A678c078F45Bb803F2D5',
+      Xolotl: '0x090092F37de3d68980b971744D3431D505576020',
+      wMATIC: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+      MATIC: '0x0000000000000000000000000000000000001010',
+      wETH: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      AAVE: '0xD6DF932A45C0f255f85145f286eA0b292B21C90B',
+      DAI: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      LINK: '0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39',
     },
   },
   //Hardhat
@@ -44,4 +44,4 @@ export const addresses: Addresses = {
   //     DAI: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
   //   },
   // },
-};
+}

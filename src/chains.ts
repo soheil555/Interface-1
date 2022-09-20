@@ -1,25 +1,25 @@
-import { IconProps } from "@chakra-ui/react";
-import type { AddEthereumChainParameter } from "@web3-react/types";
-import { Matic } from "@chakra-icons/cryptocurrency-icons";
+import { IconProps } from '@chakra-ui/react'
+import type { AddEthereumChainParameter } from '@web3-react/types'
+import { Matic } from '@chakra-icons/cryptocurrency-icons'
 
-const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
-  name: "Matic",
-  symbol: "MATIC",
+const MATIC: AddEthereumChainParameter['nativeCurrency'] = {
+  name: 'Matic',
+  symbol: 'MATIC',
   decimals: 18,
-};
+}
 
 export interface ChainInformation {
-  name: string;
-  urls: string[];
-  nativeCurrency: AddEthereumChainParameter["nativeCurrency"];
-  blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"];
-  logo: (props: IconProps) => JSX.Element;
+  name: string
+  urls: string[]
+  nativeCurrency: AddEthereumChainParameter['nativeCurrency']
+  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls']
+  logo: (props: IconProps) => JSX.Element
 }
 
 export function getAddChainParameters(
   chainId: number
 ): AddEthereumChainParameter {
-  const chainInformation = CHAINS[chainId];
+  const chainInformation = CHAINS[chainId]
 
   return {
     chainId,
@@ -27,10 +27,10 @@ export function getAddChainParameters(
     nativeCurrency: chainInformation.nativeCurrency,
     rpcUrls: chainInformation.urls,
     blockExplorerUrls: chainInformation.blockExplorerUrls,
-  };
+  }
 }
 export const CHAINS: {
-  [chainId: number]: ChainInformation;
+  [chainId: number]: ChainInformation
 } = {
   137: {
     urls: process.env.NEXT_PUBLIC_ALCHEMY_KEY
@@ -38,9 +38,9 @@ export const CHAINS: {
           `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         ]
       : [],
-    name: "Polygon Mainnet",
+    name: 'Polygon Mainnet',
     nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://polygonscan.com"],
+    blockExplorerUrls: ['https://polygonscan.com'],
     logo: Matic,
   },
   80001: {
@@ -49,9 +49,9 @@ export const CHAINS: {
           `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_KEY}`,
         ]
       : [],
-    name: "Polygon Mumbai",
+    name: 'Polygon Mumbai',
     nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+    blockExplorerUrls: ['https://mumbai.polygonscan.com'],
     logo: Matic,
   },
   // 31337: {
@@ -61,4 +61,4 @@ export const CHAINS: {
   //   blockExplorerUrls: [],
   //   logo: Matic,
   // },
-};
+}
