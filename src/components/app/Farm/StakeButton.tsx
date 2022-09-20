@@ -15,7 +15,6 @@ import {
   NumberInput,
   NumberInputField,
   HStack,
-  useToast,
 } from '@chakra-ui/react'
 import useLiquidityInfo from '../../../hooks/useLiquidityInfo'
 import useTokenInfo from '../../../hooks/useTokenInfo'
@@ -29,11 +28,11 @@ import {
   isNumeric,
 } from '../../../utils'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
-import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
+import useTokenContract from '../../../hooks/contracts/useTokenContract'
 
 interface StakeButtonProps {
   pid: number
@@ -45,9 +44,8 @@ const initialValues: StakeFormValues = {
 }
 
 const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
-  const toast = useToast()
   const { data: lpTokenBalance } = useTokenBalance(lpToken)
-  const lpTokenContract = useERC20Contract(lpToken)
+  const lpTokenContract = useTokenContract(lpToken)
   const { isOpen, onClose, onOpen } = useDisclosure()
   const tokens = useLiquidityInfo(lpToken)
   const token0Info = useTokenInfo(tokens?.token0)
@@ -66,27 +64,11 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      const tx = await masterChefContract.deposit(pid, amountBigNumber, {
+      await masterChefContract.deposit(pid, amountBigNumber, {
         gasLimit: '1000000',
-      })
-      await tx.wait()
-
-      toast({
-        title: 'Stake liquidity',
-        description: 'Staked successfully',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Stake liquidity',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        duration: 9000,
-      })
     }
 
     resetForm()

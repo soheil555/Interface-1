@@ -3,7 +3,7 @@ import useNotApprovedTokens, {
   NotApprovedToken,
   TokenInfo,
 } from '../../../hooks/useNotApprovedTokens'
-import { Button, useToast } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 
@@ -22,7 +22,6 @@ const ApproveToken = ({
   setIsAllTokensApproved,
   spender,
 }: ApproveTokenProps) => {
-  const toast = useToast()
   const { data: notApprovedTokens } = useNotApprovedTokens(
     tokens,
     amounts,
@@ -41,26 +40,11 @@ const ApproveToken = ({
     setIsLoading(true)
     try {
       const signer = provider.getSigner(owner)
-      const tx = await tokenContract.connect(signer).approve(spender, amount)
-      await tx.wait()
-
-      toast({
-        title: 'Approve Token',
-        description: `Token approved successfully`,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+      await tokenContract.connect(signer).approve(spender, amount, {
+        gasLimit: 1000000,
       })
     } catch (err: any) {
       console.log(err)
-
-      toast({
-        title: 'Approve Token',
-        description: err.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
     }
     setIsLoading(false)
   }

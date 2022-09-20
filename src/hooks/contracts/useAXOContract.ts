@@ -1,9 +1,9 @@
 import useAddresses from '../useAddresses'
-import useERC20Contract from './useERC20Contract'
+import useTokenContract from './useTokenContract'
 
 export default function useAXOContract() {
   const addresses = useAddresses()
   const address = addresses?.tokens['AXO']
 
-  return useERC20Contract(address)
+  return useTokenContract(address)
 }

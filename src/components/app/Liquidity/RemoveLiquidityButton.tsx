@@ -11,7 +11,6 @@ import {
   VStack,
   HStack,
   Text,
-  useToast,
   Checkbox,
   NumberInput,
   NumberInputField,
@@ -22,7 +21,6 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
-import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
 import useRouterContract from '../../../hooks/contracts/useRouterContract'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Liquidity, RemoveLiquidityFormValues } from '../../../types'
@@ -36,6 +34,7 @@ import { settingsAtom } from '../../../store'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
 import RemoveLiquidityConfirmationModal from './RemoveLiquidityConfirmationModal'
+import useTokenContract from '../../../hooks/contracts/useTokenContract'
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity
@@ -47,7 +46,6 @@ const initialValues: RemoveLiquidityFormValues = {
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isOpen: isConfirmOpen,
@@ -58,7 +56,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const token1Info = useTokenInfo(liquidity.token1)
   const { account } = useWeb3React()
   const routerContract = useRouterContract()
-  const liquidityERC20Contract = useERC20Contract(liquidity.address)
+  const liquidityERC20Contract = useTokenContract(liquidity.address)
   const walletConnected =
     !!routerContract &&
     !!liquidityERC20Contract &&
@@ -90,17 +88,17 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
             ? [liquidity.token1, token1Amount, token0Amount]
             : [liquidity.token0, token0Amount, token1Amount]
 
-        const tx = await routerContract.removeLiquidityETH(
+        await routerContract.removeLiquidityETH(
           tokenAddress,
           amountToRemove,
           currencyAmountWithSlippage(tokenAmount, settings.slippage),
           currencyAmountWithSlippage(maticAmount, settings.slippage),
           account,
-          deadline
+          deadline,
+          { gasLimit: 1000000 }
         )
-        await tx.wait()
       } else {
-        const tx = await routerContract.removeLiquidity(
+        await routerContract.removeLiquidity(
           liquidity.token0,
           liquidity.token1,
           amountToRemove,
@@ -110,29 +108,14 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
           deadline,
           { gasLimit: 1000000 }
         )
-        await tx.wait()
       }
-
-      toast({
-        title: 'Removed liquidity',
-        description: 'Liquidity removed successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
 
       onClose()
       onConfirmClose()
       actions.resetForm()
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Removed liquidity',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+
       onClose()
       onConfirmClose()
     }

@@ -15,7 +15,6 @@ import {
   NumberInput,
   NumberInputField,
   HStack,
-  useToast,
 } from '@chakra-ui/react'
 import useFarmUserInfo from '../../../hooks/useFarmUserInfo'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
@@ -42,7 +41,6 @@ const initialValues: UnstakeFormValues = {
 
 const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
   const { data: pendingAXO } = usePendingAXO(pid)
-  const toast = useToast()
   const tokens = useLiquidityInfo(lpToken)
   const token0Info = useTokenInfo(tokens?.token0)
   const token1Info = useTokenInfo(tokens?.token1)
@@ -67,27 +65,11 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
       const amountBigNumber =
         amount.length === 0 ? 0 : parseCurrencyAmount(amount)
 
-      const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
+      await masterChefContract.withdraw(pid, amountBigNumber, {
         gasLimit: '1000000',
-      })
-      await tx.wait()
-
-      toast({
-        title: 'Unstake liquidity',
-        description: 'Unstaked successfully',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Unstake liquidity',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        duration: 9000,
-      })
     }
 
     resetForm()

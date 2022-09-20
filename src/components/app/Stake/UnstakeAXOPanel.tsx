@@ -7,7 +7,6 @@ import {
   FormControl,
   FormLabel,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
 import useXolotlContract from '../../../hooks/contracts/useXolotlContract'
@@ -26,7 +25,6 @@ const initialValues: UnstakeAXOFormValues = {
 }
 
 const UnstakeAXOPanel = () => {
-  const toast = useToast()
   const axoContract = useAXOContract()
   const xolotlContract = useXolotlContract()
   const { data: xltBalance } = useXltBalance()
@@ -42,25 +40,11 @@ const UnstakeAXOPanel = () => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      const tx = await xolotlContract.leave(amountBigNumber)
-      await tx.wait()
-
-      toast({
-        title: 'Unstake AXO',
-        description: 'AXO unstaked successfully',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
+      await xolotlContract.leave(amountBigNumber, {
+        gasLimit: 1000000,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Unstake AXO',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        duration: 9000,
-      })
     }
 
     resetForm()

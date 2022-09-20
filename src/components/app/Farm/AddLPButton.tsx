@@ -16,7 +16,6 @@ import {
   NumberInputField,
   Checkbox,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
@@ -31,7 +30,6 @@ const initialValues: AddLPFormValues = {
 }
 
 const AddLPButton = () => {
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const masterChefContract = useMasterChefContract()
 
@@ -42,27 +40,11 @@ const AddLPButton = () => {
     if (!masterChefContract) return
 
     try {
-      const tx = await masterChefContract.add(allocPoint, lpToken, update, {
+      await masterChefContract.add(allocPoint, lpToken, update, {
         gasLimit: 1000000,
-      })
-      await tx.wait()
-
-      toast({
-        title: 'Add LP',
-        description: 'LP added successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Add LP',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
     }
 
     resetForm()

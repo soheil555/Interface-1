@@ -17,7 +17,6 @@ import {
   NumberInputField,
   Checkbox,
   VStack,
-  useToast,
   IconButton,
 } from '@chakra-ui/react'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
@@ -38,7 +37,6 @@ const EditAllocPointButton = ({
     update: false,
   }
 
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const masterChefContract = useMasterChefContract()
 
@@ -49,27 +47,11 @@ const EditAllocPointButton = ({
     if (!masterChefContract) return
 
     try {
-      const tx = await masterChefContract.set(pid, allocPoint, update, {
+      await masterChefContract.set(pid, allocPoint, update, {
         gasLimit: 1000000,
-      })
-      await tx.wait()
-
-      toast({
-        title: 'Edit AllocPoint',
-        description: 'Edited successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Edit AllocPoint',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
     }
 
     resetForm()

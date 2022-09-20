@@ -1,5 +1,4 @@
 import {
-  useToast,
   VStack,
   Button,
   IconButton,
@@ -40,7 +39,6 @@ const initialValues: LiquidityFormValues = {
 
 const AddLiquidity: NextPage = () => {
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const router = useRouter()
   const { isOpen, onClose, onOpen } = useDisclosure()
   const routerContract = useRouterContract()
@@ -51,16 +49,18 @@ const AddLiquidity: NextPage = () => {
   const [isAllTokensApproved, setIsAllTokensApproved] = useState(false)
 
   const handleAddLiquidity = async (
-    {
+    values: LiquidityFormValues,
+    { resetForm }: FormikHelpers<LiquidityFormValues>
+  ) => {
+    const {
       token1,
       token2,
       token1Amount,
       token2Amount,
       token1Contract,
       token2Contract,
-    }: LiquidityFormValues,
-    { resetForm }: FormikHelpers<LiquidityFormValues>
-  ) => {
+    } = values
+
     if (
       !walletConnected ||
       !token1 ||
@@ -85,7 +85,7 @@ const AddLiquidity: NextPage = () => {
         const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        const tx = await routerContract.addLiquidityETH(
+        await routerContract.addLiquidityETH(
           tokenContract.address,
           tokenAmount,
           currencyAmountWithSlippage(tokenAmount, settings.slippage),
@@ -97,14 +97,12 @@ const AddLiquidity: NextPage = () => {
             value: maticAmount,
           }
         )
-
-        await tx.wait()
       } else {
         const timestamp = (await provider.getBlock('latest')).timestamp
         const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        const tx = await routerContract.addLiquidity(
+        await routerContract.addLiquidity(
           token1Contract.address,
           token2Contract.address,
           amount1,
@@ -115,27 +113,13 @@ const AddLiquidity: NextPage = () => {
           deadline,
           { gasLimit: 1000000 }
         )
-
-        await tx.wait()
       }
 
-      toast({
-        title: 'Add liquidity',
-        description: 'Liquidity added successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+      resetForm({
+        values: { ...values, token1Amount: '', token2Amount: '' },
       })
-
-      resetForm()
     } catch (error: any) {
-      toast({
-        title: 'Add liquidity',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+      console.log(error)
     }
 
     onClose()

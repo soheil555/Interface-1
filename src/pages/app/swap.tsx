@@ -1,5 +1,4 @@
 import {
-  useToast,
   VStack,
   Button,
   Text,
@@ -45,7 +44,6 @@ const initialValues: SwapFormValues = {
 const Swap: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const addresses = useAddresses()
   const routerContract = useRouterContract()
   const factoryContract = useFactoryContract()
@@ -60,9 +58,11 @@ const Swap: NextPage = () => {
     !!addresses
 
   const handleSwap = async (
-    { tokenIn, tokenOut, amountIn, amountOut, wrapType }: SwapFormValues,
+    values: SwapFormValues,
     { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
+    const { tokenIn, tokenOut, amountIn, amountOut, wrapType } = values
+
     if (!walletConnected || !tokenIn || !tokenOut || !amountIn || !amountOut)
       return
 
@@ -88,11 +88,10 @@ const Swap: NextPage = () => {
           routerContract.signer
         ) as WETH9
 
-        const tx = await wMaticContract.deposit({
+        await wMaticContract.deposit({
           value: amountInBigNumber,
           gasLimit: 1000000,
         })
-        await tx.wait()
       }
       // Handle unwrap
       else if (wrapType === 'unwrap') {
@@ -102,10 +101,9 @@ const Swap: NextPage = () => {
           routerContract.signer
         ) as WETH9
 
-        const tx = await wMaticContract.withdraw(amountInBigNumber, {
+        await wMaticContract.withdraw(amountInBigNumber, {
           gasLimit: 1000000,
         })
-        await tx.wait()
       } else if (tokenIn.symbol === 'MATIC') {
         const path = [tokenInaddress, tokenOutaddress]
 
@@ -113,7 +111,7 @@ const Swap: NextPage = () => {
         const deadline = timestamp + Number(settings.deadline) * 60
 
         //TODO: set gasLimit
-        const tx = await routerContract.swapExactETHForTokens(
+        await routerContract.swapExactETHForTokens(
           currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
           path,
           account,
@@ -123,7 +121,6 @@ const Swap: NextPage = () => {
             value: amountInBigNumber,
           }
         )
-        await tx.wait()
       } else {
         const path = [tokenInaddress, tokenOutaddress]
 
@@ -132,7 +129,7 @@ const Swap: NextPage = () => {
 
         if (tokenOut.symbol === 'MATIC') {
           //TODO: set gasLimit
-          const tx = await routerContract.swapExactTokensForETH(
+          await routerContract.swapExactTokensForETH(
             amountInBigNumber,
             currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
@@ -142,11 +139,9 @@ const Swap: NextPage = () => {
               gasLimit: 1000000,
             }
           )
-
-          await tx.wait()
         } else {
           //TODO: set gasLimit
-          const tx = await routerContract.swapExactTokensForTokens(
+          await routerContract.swapExactTokensForTokens(
             amountInBigNumber,
             currencyAmountWithSlippage(amountOutBigNumber, settings.slippage),
             path,
@@ -154,27 +149,12 @@ const Swap: NextPage = () => {
             deadline,
             { gasLimit: 1000000 }
           )
-          await tx.wait()
         }
       }
 
-      toast({
-        title: actionType,
-        description: `${actionType}ped successfully`,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-
-      resetForm()
+      resetForm({ values: { ...values, amountIn: '', amountOut: '' } })
     } catch (error: any) {
-      toast({
-        title: actionType,
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+      console.log(error)
     }
     onClose()
   }
@@ -302,7 +282,7 @@ const Swap: NextPage = () => {
                     tokenOut: values.tokenIn,
                     amountIn: values.amountOut,
                   }
-                  setValues({ ...values, ...newValues })
+                  setValues((values) => ({ ...values, ...newValues }))
                 }}
                 aria-label="swap"
                 icon={<IoSwapVertical />}

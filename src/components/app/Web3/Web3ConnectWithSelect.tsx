@@ -51,6 +51,15 @@ const Web3ConnectWithSelect = ({
   }, [chainId, setDesiredChainId, chainIds, connector])
 
   useEffect(() => {
+    toast({
+      title: 'Error',
+      description: 'hello',
+      status: 'error',
+      duration: null,
+      // duration: 9000,
+      isClosable: true,
+    })
+
     if (error) {
       toast({
         title: 'Error',

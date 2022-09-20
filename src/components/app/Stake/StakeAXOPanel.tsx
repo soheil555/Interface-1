@@ -6,7 +6,6 @@ import {
   VStack,
   FormControl,
   FormLabel,
-  useToast,
   FormHelperText,
 } from '@chakra-ui/react'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
@@ -42,7 +41,6 @@ const AXOForXLT = (
 }
 
 const StakeAXOPanel = () => {
-  const toast = useToast()
   const axoContract = useAXOContract()
   const xolotlContract = useXolotlContract()
   const { data: xolotlTotalSupply } = useXolotTotalSupply()
@@ -62,25 +60,11 @@ const StakeAXOPanel = () => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      const tx = await xolotlContract.enter(amountBigNumber)
-      await tx.wait()
-
-      toast({
-        title: 'Stake AXO',
-        description: 'AXO staked successfully',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
+      await xolotlContract.enter(amountBigNumber, {
+        gasLimit: 1000000,
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Stake AXO',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        duration: 9000,
-      })
     }
 
     resetForm()
