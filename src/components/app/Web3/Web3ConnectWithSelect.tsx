@@ -16,6 +16,8 @@ import { shortenAddress } from '../../../utils'
 import ChainSelect from './ChainSelect'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { BiExit } from 'react-icons/bi'
+import { useAtom } from 'jotai'
+import { accountInfoAtom } from '../../../store'
 
 interface Web3ConnectWithSelectProps {
   connector: MetaMask
@@ -39,6 +41,14 @@ const Web3ConnectWithSelect = ({
   const toast = useToast()
   const [desiredChainId, setDesiredChainId] = useState(137)
   const chainIds = Object.keys(CHAINS).map((chainId) => Number(chainId))
+  const setAccountInfo = useAtom(accountInfoAtom)[1]
+
+  useEffect(() => {
+    setAccountInfo({
+      chainId,
+      address: account,
+    })
+  }, [chainId, account])
 
   useEffect(() => {
     if (chainId) {
@@ -51,15 +61,6 @@ const Web3ConnectWithSelect = ({
   }, [chainId, setDesiredChainId, chainIds, connector])
 
   useEffect(() => {
-    toast({
-      title: 'Error',
-      description: 'hello',
-      status: 'error',
-      duration: null,
-      // duration: 9000,
-      isClosable: true,
-    })
-
     if (error) {
       toast({
         title: 'Error',

@@ -13,9 +13,11 @@ import { appRoutes } from '../../../routes'
 import MetaMaskConnect from '../../app/Web3/MetaMaskConnect'
 import Settings from '../../app/Settings/Settings'
 import SideDrawer from '../SideDrawer/SideDrawer'
+import useUpdateTransactionsStatus from '../../../hooks/useUpdateTransactionsStatus'
 
 const Header = () => {
   const router = useRouter()
+  useUpdateTransactionsStatus()
 
   return (
     <Flex

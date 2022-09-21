@@ -19,7 +19,7 @@ import LiquiditySelectToken from '../../../components/app/SelectToken/LiquidityS
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { useAtom } from 'jotai'
-import { settingsAtom } from '../../../store'
+import { addTransactionAtom, settingsAtom } from '../../../store'
 import ApproveToken from '../../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
@@ -47,6 +47,7 @@ const AddLiquidity: NextPage = () => {
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider
   const [isAllTokensApproved, setIsAllTokensApproved] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleAddLiquidity = async (
     values: LiquidityFormValues,
@@ -85,7 +86,7 @@ const AddLiquidity: NextPage = () => {
         const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        await routerContract.addLiquidityETH(
+        const tx = await routerContract.addLiquidityETH(
           tokenContract.address,
           tokenAmount,
           currencyAmountWithSlippage(tokenAmount, settings.slippage),
@@ -97,12 +98,17 @@ const AddLiquidity: NextPage = () => {
             value: maticAmount,
           }
         )
+
+        addTransaction({
+          transactionHash: tx.hash,
+          description: 'new tx',
+        })
       } else {
         const timestamp = (await provider.getBlock('latest')).timestamp
         const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
 
         //TODO: set gasLimit
-        await routerContract.addLiquidity(
+        const tx = await routerContract.addLiquidity(
           token1Contract.address,
           token2Contract.address,
           amount1,
@@ -113,6 +119,11 @@ const AddLiquidity: NextPage = () => {
           deadline,
           { gasLimit: 1000000 }
         )
+
+        addTransaction({
+          transactionHash: tx.hash,
+          description: 'new tx',
+        })
       }
 
       resetForm({

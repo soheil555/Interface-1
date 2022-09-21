@@ -93,3 +93,24 @@ export interface Farm {
 }
 
 export type WrapType = 'wrap' | 'unwrap' | 'invalid'
+
+export interface TransactionInfo {
+  description: string
+  isConfirmed: boolean
+}
+
+export type Transactions = {
+  [chainId: number]: {
+    [account: string]: { [transactionHash: string]: TransactionInfo }
+  }
+}
+
+export interface NewTransaction {
+  transactionHash: string
+  description: string
+}
+
+export interface AccountInfo {
+  address?: string
+  chainId?: number
+}

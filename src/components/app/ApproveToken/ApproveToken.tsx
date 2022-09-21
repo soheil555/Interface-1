@@ -6,6 +6,8 @@ import useNotApprovedTokens, {
 import { Button } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 interface ApproveTokenProps {
   tokens: TokenInfo[]
@@ -29,6 +31,7 @@ const ApproveToken = ({
   )
   const [isLoading, setIsLoading] = useState(false)
   const { provider } = useWeb3React()
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleApproveToken = async ({
     tokenContract,
@@ -40,8 +43,13 @@ const ApproveToken = ({
     setIsLoading(true)
     try {
       const signer = provider.getSigner(owner)
-      await tokenContract.connect(signer).approve(spender, amount, {
+      const tx = await tokenContract.connect(signer).approve(spender, amount, {
         gasLimit: 1000000,
+      })
+
+      addTransaction({
+        transactionHash: tx.hash,
+        description: 'new tx',
       })
     } catch (err: any) {
       console.log(err)
