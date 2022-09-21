@@ -38,6 +38,7 @@ const ApproveToken = ({
     owner,
     spender,
     amount,
+    tokenInfo,
   }: NotApprovedToken) => {
     if (!provider) return
     setIsLoading(true)
@@ -49,7 +50,7 @@ const ApproveToken = ({
 
       addTransaction({
         transactionHash: tx.hash,
-        description: 'new tx',
+        description: `Approve ${tokenInfo.symbol}`,
       })
     } catch (err: any) {
       console.log(err)

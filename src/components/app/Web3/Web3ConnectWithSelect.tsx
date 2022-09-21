@@ -4,6 +4,8 @@ import {
   useToast,
   Stack,
   useDisclosure,
+  Spinner,
+  Text,
 } from '@chakra-ui/react'
 import type { Web3ReactHooks } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
@@ -13,7 +15,10 @@ import { shortenAddress } from '../../../utils'
 import ChainSelect from './ChainSelect'
 
 import { useAtom } from 'jotai'
-import { accountInfoAtom } from '../../../store'
+import {
+  accountInfoAtom,
+  accountPendingTransactionsLenAtom,
+} from '../../../store'
 import AccountDetails from '../AccountDetails/AccountDetails'
 
 interface Web3ConnectWithSelectProps {
@@ -40,6 +45,7 @@ const Web3ConnectWithSelect = ({
   const [desiredChainId, setDesiredChainId] = useState(137)
   const chainIds = Object.keys(CHAINS).map((chainId) => Number(chainId))
   const setAccountInfo = useAtom(accountInfoAtom)[1]
+  const [pendingTransactionLen] = useAtom(accountPendingTransactionsLenAtom)
 
   useEffect(() => {
     setAccountInfo({
@@ -120,7 +126,22 @@ const Web3ConnectWithSelect = ({
           as={Button}
           variant="brand"
         >
-          {shortenAddress(account)}
+          <HStack>
+            <Text>{shortenAddress(account)}</Text>
+
+            {pendingTransactionLen > 0 && (
+              <HStack
+                bg="white"
+                fontWeight="normal"
+                color="black"
+                p={1}
+                rounded="lg"
+              >
+                <Text>{pendingTransactionLen} Pending</Text>
+                <Spinner size="sm" />
+              </HStack>
+            )}
+          </HStack>
         </Button>
       </Stack>
     )

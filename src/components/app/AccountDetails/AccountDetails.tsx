@@ -14,13 +14,21 @@ import {
   useClipboard,
   VStack,
   useColorModeValue,
+  Spinner,
 } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
 import { shortenAddress } from '../../../utils'
-import { FiCopy, FiExternalLink } from 'react-icons/fi'
+import { FiCopy, FiExternalLink, FiArrowUpRight } from 'react-icons/fi'
+import { GiConfirmed } from 'react-icons/gi'
 import { getAddChainParameters } from '../../../chains'
 import { join } from 'path'
+import { useAtom } from 'jotai'
+import {
+  accountTransactionsAtom,
+  accountTransactionsLenAtom,
+  resetAccountTransactionsAtom,
+} from '../../../store'
 
 interface AccountDetailsProps {
   isOpen: boolean
@@ -35,7 +43,19 @@ const AccountDetails = ({
 }: AccountDetailsProps) => {
   const { account, chainId } = useWeb3React()
   const { onCopy, hasCopied } = useClipboard(account!)
-  const chainInfo = getAddChainParameters(chainId!)
+  const chainInfo =
+    typeof chainId !== 'undefined' ? getAddChainParameters(chainId) : undefined
+
+  const blockExplorerURL =
+    chainInfo &&
+    chainInfo.blockExplorerUrls &&
+    chainInfo.blockExplorerUrls.length > 0
+      ? chainInfo.blockExplorerUrls[0]
+      : undefined
+
+  const [transactions] = useAtom(accountTransactionsAtom)
+  const [transactionsLen] = useAtom(accountTransactionsLenAtom)
+  const resetTransactions = useAtom(resetAccountTransactionsAtom)[1]
 
   return (
     <Modal
@@ -98,9 +118,8 @@ const AccountDetails = ({
                   textDecoration: 'none',
                 }}
                 href={
-                  chainInfo.blockExplorerUrls &&
-                  chainInfo.blockExplorerUrls.length > 0
-                    ? join(chainInfo.blockExplorerUrls[0], 'address', account!)
+                  blockExplorerURL
+                    ? join(blockExplorerURL, 'address', account!)
                     : '#'
                 }
                 isExternal
@@ -114,10 +133,46 @@ const AccountDetails = ({
         </ModalBody>
 
         <ModalFooter
-          justifyContent="flex-start"
+          as={VStack}
+          alignItems="stretch"
           bg={useColorModeValue('gray.200', 'gray.700')}
         >
-          <Text>Your transactions will appear here...</Text>
+          {transactionsLen > 0 ? (
+            <>
+              <HStack justify="space-between">
+                <Text>Recent Transactions</Text>
+                <Button onClick={resetTransactions} size="sm" variant="ghost">
+                  clear all
+                </Button>
+              </HStack>
+              {Object.entries(transactions).map(([txHash, txInfo]) => (
+                <HStack key={txHash} justify="space-between">
+                  <Link
+                    href={
+                      blockExplorerURL
+                        ? join(blockExplorerURL, 'tx', txHash)
+                        : '#'
+                    }
+                    isExternal
+                  >
+                    <HStack>
+                      <Text>{txInfo.description}</Text>
+
+                      <FiArrowUpRight />
+                    </HStack>
+                  </Link>
+
+                  {txInfo.isConfirmed ? (
+                    <GiConfirmed color="green" />
+                  ) : (
+                    <Spinner size="sm" />
+                  )}
+                </HStack>
+              ))}
+            </>
+          ) : (
+            <Text>Your transactions will appear here...</Text>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -21,12 +21,31 @@ export const transactionsAtom = atomWithStorage<Transactions>(
 
 export const accountTransactionsAtom = atom((get) => {
   const { chainId, address } = get(accountInfoAtom)
-  if (!chainId || !address) return {}
+  if (typeof chainId === 'undefined' || !address) return {}
   return get(transactionsAtom)[chainId][address]
+})
+
+export const accountTransactionsLenAtom = atom((get) => {
+  const accountTransactions = get(accountTransactionsAtom)
+  if (!accountTransactions) return 0
+  return Object.keys(accountTransactions).length
+})
+
+export const resetAccountTransactionsAtom = atom(null, (get, set) => {
+  const transactions = get(transactionsAtom)
+  const { chainId, address } = get(accountInfoAtom)
+  if (!chainId || !address) return
+
+  if (transactions[chainId]) {
+    transactions[chainId][address] = {}
+  }
+
+  set(transactionsAtom, { ...transactions })
 })
 
 export const accountPendingTransactionsAtom = atom((get) => {
   const accountTransactions = get(accountTransactionsAtom)
+  if (!accountTransactions) return {}
   const pendingTransactions: typeof accountTransactions = {}
 
   for (const [txHash, txInfo] of Object.entries(accountTransactions)) {
@@ -36,6 +55,11 @@ export const accountPendingTransactionsAtom = atom((get) => {
   }
 
   return pendingTransactions
+})
+
+export const accountPendingTransactionsLenAtom = atom((get) => {
+  const accountPendingTransactions = get(accountPendingTransactionsAtom)
+  return Object.keys(accountPendingTransactions).length
 })
 
 export const addTransactionAtom = atom(
