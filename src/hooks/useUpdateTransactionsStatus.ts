@@ -5,7 +5,7 @@ import { RESET } from 'jotai/utils'
 import { SetStateAction } from 'react'
 import useSWR from 'swr'
 import { accountInfoAtom, transactionsAtom } from '../store'
-import { Transactions } from '../types'
+import { TransactionInfo, Transactions } from '../types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
 
 //TODO: what about failed transactions
@@ -19,21 +19,22 @@ function updateTransactionsStatus(provider: Web3Provider) {
       update: typeof RESET | SetStateAction<Transactions>
     ) => void
   ) => {
-    const accountTransactions = transactions[chainId][address]
+    const chainTransactions: TransactionInfo[] = []
 
-    for (const [txHash, txInfo] of Object.entries(accountTransactions)) {
-      if (!txInfo.isConfirmed) {
-        const receipt = await provider.getTransactionReceipt(txHash)
+    for (const transactionInfo of transactions[chainId]) {
+      if (!transactionInfo.isConfirmed) {
+        const receipt = await provider.getTransactionReceipt(
+          transactionInfo.hash
+        )
         if (!!receipt) {
-          accountTransactions[txHash] = {
-            ...txInfo,
-            isConfirmed: true,
-          }
+          transactionInfo.isConfirmed = true
         }
       }
+
+      chainTransactions.push(transactionInfo)
     }
 
-    setTransactions({ ...transactions })
+    setTransactions((prev) => ({ ...prev, [chainId]: chainTransactions }))
   }
 }
 
@@ -42,12 +43,7 @@ export default function useUpdateTransactionsStatus() {
   const [{ chainId, address }] = useAtom(accountInfoAtom)
   const { provider } = useWeb3React()
 
-  const shouldFetch =
-    !!provider &&
-    !!address &&
-    !!chainId &&
-    !!transactions[chainId] &&
-    !!transactions[chainId][address]
+  const shouldFetch = !!provider && !!address && !!chainId
 
   const result = useSWR(
     shouldFetch

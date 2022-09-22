@@ -100,7 +100,7 @@ const AddLiquidity: NextPage = () => {
         )
 
         addTransaction({
-          transactionHash: tx.hash,
+          hash: tx.hash,
           description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
         })
 
@@ -125,7 +125,7 @@ const AddLiquidity: NextPage = () => {
         )
 
         addTransaction({
-          transactionHash: tx.hash,
+          hash: tx.hash,
           description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
         })
       }

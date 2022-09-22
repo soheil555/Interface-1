@@ -1,10 +1,11 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+import { CHAINS } from './chains'
 import {
   AccountInfo,
-  NewTransaction,
   SettingsFormValues,
   Transactions,
+  TransactionInfo,
 } from './types'
 
 export const settingsAtom = atomWithStorage<SettingsFormValues>('settings', {
@@ -14,75 +15,57 @@ export const settingsAtom = atomWithStorage<SettingsFormValues>('settings', {
 
 export const accountInfoAtom = atom<AccountInfo>({})
 
+const transactionsInitialValue: Transactions = Object.fromEntries(
+  Object.keys(CHAINS).map((chainId) => [chainId, []])
+)
+
 export const transactionsAtom = atomWithStorage<Transactions>(
   'transactions',
-  {}
+  transactionsInitialValue
 )
 
 export const accountTransactionsAtom = atom((get) => {
-  const { chainId, address } = get(accountInfoAtom)
-  if (typeof chainId === 'undefined' || !address) return {}
-  return get(transactionsAtom)[chainId][address]
+  const { address, chainId } = get(accountInfoAtom)
+  if (!address || !chainId) return []
+
+  return get(transactionsAtom)[chainId].filter((tx) => tx.sender === address)
 })
 
 export const accountTransactionsLenAtom = atom((get) => {
-  const accountTransactions = get(accountTransactionsAtom)
-  if (!accountTransactions) return 0
-  return Object.keys(accountTransactions).length
+  return Object.keys(get(accountTransactionsAtom)).length
 })
 
 export const resetAccountTransactionsAtom = atom(null, (get, set) => {
-  const transactions = get(transactionsAtom)
   const { chainId, address } = get(accountInfoAtom)
   if (!chainId || !address) return
 
-  if (transactions[chainId]) {
-    transactions[chainId][address] = {}
-  }
+  const accountTransactions = get(transactionsAtom)[chainId].filter(
+    (tx) => tx.sender !== address
+  )
 
-  set(transactionsAtom, { ...transactions })
+  set(transactionsAtom, (prev) => ({ ...prev, [chainId]: accountTransactions }))
 })
 
 export const accountPendingTransactionsAtom = atom((get) => {
-  const accountTransactions = get(accountTransactionsAtom)
-  if (!accountTransactions) return {}
-  const pendingTransactions: typeof accountTransactions = {}
-
-  for (const [txHash, txInfo] of Object.entries(accountTransactions)) {
-    if (!txInfo.isConfirmed) {
-      pendingTransactions[txHash] = txInfo
-    }
-  }
-
-  return pendingTransactions
+  return get(accountTransactionsAtom).filter((tx) => tx.isConfirmed === false)
 })
 
 export const accountPendingTransactionsLenAtom = atom((get) => {
-  const accountPendingTransactions = get(accountPendingTransactionsAtom)
-  return Object.keys(accountPendingTransactions).length
+  return Object.keys(get(accountPendingTransactionsAtom)).length
 })
 
 export const addTransactionAtom = atom(
   null,
-  (get, set, { transactionHash, ...transactionInfo }: NewTransaction) => {
+  (get, set, update: Omit<TransactionInfo, 'sender' | 'isConfirmed'>) => {
     const { chainId, address } = get(accountInfoAtom)
     if (!chainId || !address) return
 
-    const transactions = get(transactionsAtom)
-    if (!Object.keys(transactions).includes(String(chainId))) {
-      transactions[chainId] = {}
-    }
-
-    if (!Object.keys(transactions[chainId]).includes(address)) {
-      transactions[chainId][address] = {}
-    }
-
-    const accountTransactions = transactions[chainId][address]
-    accountTransactions[transactionHash] = {
-      ...transactionInfo,
-      isConfirmed: false,
-    }
-
-    set(transactionsAtom, { ...transactions })
+    set(transactionsAtom, (prev) => ({
+      ...prev,
+      [chainId]: [
+        { ...update, sender: address, isConfirmed: false },
+        ...prev[chainId],
+      ],
+    }))
   }
 )

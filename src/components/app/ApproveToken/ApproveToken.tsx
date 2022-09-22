@@ -49,7 +49,7 @@ const ApproveToken = ({
       })
 
       addTransaction({
-        transactionHash: tx.hash,
+        hash: tx.hash,
         description: `Approve ${tokenInfo.symbol}`,
       })
     } catch (err: any) {

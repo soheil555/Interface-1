@@ -133,7 +133,7 @@ const Web3ConnectWithSelect = ({
               <HStack
                 bg="white"
                 fontWeight="normal"
-                color="black"
+                color="gray.700"
                 p={1}
                 rounded="lg"
               >
