@@ -101,7 +101,11 @@ const AddLiquidity: NextPage = () => {
 
         addTransaction({
           transactionHash: tx.hash,
-          description: 'new tx',
+          description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
+        })
+
+        resetForm({
+          values: { ...values, token1Amount: '', token2Amount: '' },
         })
       } else {
         const timestamp = (await provider.getBlock('latest')).timestamp
@@ -122,7 +126,7 @@ const AddLiquidity: NextPage = () => {
 
         addTransaction({
           transactionHash: tx.hash,
-          description: 'new tx',
+          description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
         })
       }
 

@@ -15,6 +15,8 @@ import {
   VStack,
   useColorModeValue,
   Spinner,
+  Stack,
+  Box,
 } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
@@ -63,6 +65,7 @@ const AccountDetails = ({
       isCentered
       isOpen={isOpen}
       onClose={onClose}
+      size={{ base: 'xs', sm: 'md' }}
     >
       <ModalOverlay />
       <ModalContent>
@@ -79,13 +82,16 @@ const AccountDetails = ({
             rounded="xl"
           >
             <HStack justify="space-between">
-              <Text variant="subtext">Connected with MetaMask</Text>
+              <Text fontSize={{ base: 'xs', sm: 'md' }} variant="subtext">
+                Connected with MetaMask
+              </Text>
               <Button
                 onClick={() => {
                   connector.deactivate()
                   onClose()
                 }}
-                size="sm"
+                size={{ base: 'xs', sm: 'sm' }}
+                fontSize={{ base: 'xs', sm: 'sm' }}
                 variant="outline"
                 rounded="full"
               >
@@ -104,12 +110,12 @@ const AccountDetails = ({
                 {shortenAddress(account!)}
               </Text>
             </Tooltip>
-            <HStack>
+            <Stack align="flex-start" direction={{ base: 'column', sm: 'row' }}>
               <Button
                 onClick={onCopy}
                 leftIcon={<FiCopy />}
                 variant="ghost"
-                size="sm"
+                size={{ base: 'xs', sm: 'sm' }}
               >
                 {hasCopied ? 'Copied' : 'Copy Address'}
               </Button>
@@ -124,11 +130,15 @@ const AccountDetails = ({
                 }
                 isExternal
               >
-                <Button leftIcon={<FiExternalLink />} variant="ghost" size="sm">
+                <Button
+                  leftIcon={<FiExternalLink />}
+                  variant="ghost"
+                  size={{ base: 'xs', sm: 'sm' }}
+                >
                   View on Explorer
                 </Button>
               </Link>
-            </HStack>
+            </Stack>
           </VStack>
         </ModalBody>
 
@@ -136,17 +146,20 @@ const AccountDetails = ({
           as={VStack}
           alignItems="stretch"
           bg={useColorModeValue('gray.200', 'gray.700')}
+          gap={1}
         >
           {transactionsLen > 0 ? (
             <>
               <HStack justify="space-between">
-                <Text>Recent Transactions</Text>
+                <Text fontSize={{ base: 'sm', sm: 'md' }}>
+                  Recent Transactions
+                </Text>
                 <Button onClick={resetTransactions} size="sm" variant="ghost">
                   clear all
                 </Button>
               </HStack>
               {Object.entries(transactions).map(([txHash, txInfo]) => (
-                <HStack key={txHash} justify="space-between">
+                <HStack align="flex-start" justify="space-between" key={txHash}>
                   <Link
                     href={
                       blockExplorerURL
@@ -154,12 +167,14 @@ const AccountDetails = ({
                         : '#'
                     }
                     isExternal
+                    w="80%"
                   >
-                    <HStack>
-                      <Text>{txInfo.description}</Text>
-
-                      <FiArrowUpRight />
-                    </HStack>
+                    <Text fontSize={{ base: 'xs', sm: 'md' }}>
+                      {txInfo.description}{' '}
+                      <Box display="inline-block">
+                        <FiArrowUpRight />
+                      </Box>
+                    </Text>
                   </Link>
 
                   {txInfo.isConfirmed ? (
