@@ -23,7 +23,7 @@ import { Contract } from 'ethers'
 import WETH9ABI from '../../abis/WETH9.json'
 import { WETH9 } from '../../abis/types'
 import { settingsAtom } from '../../store'
-import SwapConfirmationModal from '../../components/app/Swap/SwapConfirmationModal'
+import SwapConfirmModal from '../../components/app/Swap/SwapConfirmModal'
 import NextLink from 'next/link'
 import ApproveToken from '../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
@@ -348,7 +348,7 @@ const Swap: NextPage = () => {
               values.tokenOut &&
               values.amountIn &&
               values.amountOut ? (
-                <SwapConfirmationModal
+                <SwapConfirmModal
                   isOpen={isOpen}
                   onClose={onClose}
                   amountIn={values.amountIn}

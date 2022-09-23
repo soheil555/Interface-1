@@ -21,7 +21,7 @@ import {
 } from '../../../utils'
 import SwapInfo from './SwapInfo'
 
-interface SwapConfirmationModalProps {
+interface SwapConfirmModalProps {
   isOpen: boolean
   onClose: () => void
   tokenIn: Token
@@ -35,7 +35,7 @@ interface SwapConfirmationModalProps {
   handleFormSubmit: () => void
 }
 
-const SwapConfirmationModal = ({
+const SwapConfirmModal = ({
   isOpen,
   onClose,
   tokenIn,
@@ -47,7 +47,7 @@ const SwapConfirmationModal = ({
   isFormSubmitting,
   isWalletConnected,
   handleFormSubmit,
-}: SwapConfirmationModalProps) => {
+}: SwapConfirmModalProps) => {
   const amountOutWithSlippage = currencyAmountWithSlippage(
     parseCurrencyAmount(amountOut, tokenOut.decimals),
     slippage
@@ -140,4 +140,4 @@ const SwapConfirmationModal = ({
   )
 }
 
-export default SwapConfirmationModal
+export default SwapConfirmModal

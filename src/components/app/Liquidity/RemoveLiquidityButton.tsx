@@ -33,7 +33,7 @@ import { useAtom } from 'jotai'
 import { settingsAtom } from '../../../store'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
-import RemoveLiquidityConfirmationModal from './RemoveLiquidityConfirmationModal'
+import RemoveLiquidityConfirmModal from './RemoveLiquidityConfirmModal'
 import useTokenContract from '../../../hooks/contracts/useTokenContract'
 
 interface RemoveLiquidityButtonProps {
@@ -239,7 +239,7 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   </VStack>
                 </ModalBody>
                 <ModalFooter flexDirection="column" gap={2}>
-                  <RemoveLiquidityConfirmationModal
+                  <RemoveLiquidityConfirmModal
                     isOpen={isConfirmOpen}
                     onClose={onConfirmClose}
                     token1={token0Info}

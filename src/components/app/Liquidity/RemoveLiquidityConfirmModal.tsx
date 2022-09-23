@@ -17,7 +17,7 @@ import {
 import { formatCurrencyAmount } from '../../../utils'
 import { AiOutlinePlus } from 'react-icons/ai'
 
-interface RemoveLiquidityConfirmationModalProps {
+interface RemoveLiquidityConfirmModalProps {
   isOpen: boolean
   onClose: () => void
   token1: Token
@@ -32,7 +32,7 @@ interface RemoveLiquidityConfirmationModalProps {
   handleFormSubmit: () => void
 }
 
-const RemoveLiquidityConfirmationModal = ({
+const RemoveLiquidityConfirmModal = ({
   isOpen,
   onClose,
   token1,
@@ -45,7 +45,7 @@ const RemoveLiquidityConfirmationModal = ({
   isFormSubmitting,
   isWalletConnected,
   handleFormSubmit,
-}: RemoveLiquidityConfirmationModalProps) => {
+}: RemoveLiquidityConfirmModalProps) => {
   return (
     <Modal
       blockScrollOnMount={false}
@@ -116,4 +116,4 @@ const RemoveLiquidityConfirmationModal = ({
   )
 }
 
-export default RemoveLiquidityConfirmationModal
+export default RemoveLiquidityConfirmModal

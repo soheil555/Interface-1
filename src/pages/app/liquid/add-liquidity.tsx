@@ -24,7 +24,7 @@ import ApproveToken from '../../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
 import AddLiquidityInfo from '../../../components/app/Liquidity/AddLiquidityInfo'
-import AddLiquidityConfirmationModal from '../../../components/app/Liquidity/AddLiquidityConfirmationModal'
+import AddLiquidityConfirmModal from '../../../components/app/Liquidity/AddLiquidityConfirmModal'
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -40,7 +40,11 @@ const initialValues: LiquidityFormValues = {
 const AddLiquidity: NextPage = () => {
   const [settings] = useAtom(settingsAtom)
   const router = useRouter()
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: showConfirm,
+    onClose: onConfirmClose,
+    onOpen: onConfirmOpen,
+  } = useDisclosure()
   const routerContract = useRouterContract()
   const factoryContract = useFactoryContract()
   const { account, provider } = useWeb3React()
@@ -48,6 +52,14 @@ const AddLiquidity: NextPage = () => {
     !!routerContract && !!factoryContract && !!account && !!provider
   const [isAllTokensApproved, setIsAllTokensApproved] = useState(false)
   const addTransaction = useAtom(addTransactionAtom)[1]
+  const [txHash, setTxHash] = useState<string | undefined>(undefined)
+  const [isConfirmed, setIsConfirmed] = useState(false)
+
+  const handleConfirmDismiss = () => {
+    setIsConfirmed(false)
+    setTxHash(undefined)
+    onConfirmClose()
+  }
 
   const handleAddLiquidity = async (
     values: LiquidityFormValues,
@@ -99,6 +111,8 @@ const AddLiquidity: NextPage = () => {
           }
         )
 
+        setTxHash(tx.hash)
+
         addTransaction({
           hash: tx.hash,
           description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
@@ -124,6 +138,8 @@ const AddLiquidity: NextPage = () => {
           { gasLimit: 1000000 }
         )
 
+        setTxHash(tx.hash)
+
         addTransaction({
           hash: tx.hash,
           description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
@@ -135,9 +151,8 @@ const AddLiquidity: NextPage = () => {
       })
     } catch (error: any) {
       console.log(error)
+      handleConfirmDismiss()
     }
-
-    onClose()
   }
 
   const validator = ({
@@ -227,27 +242,28 @@ const AddLiquidity: NextPage = () => {
               />
             ) : null}
 
-            {values.token1 &&
-            values.token2 &&
-            values.token1Amount &&
-            values.token2Amount ? (
-              <AddLiquidityConfirmationModal
-                isOpen={isOpen}
-                onClose={onClose}
-                token1={values.token1}
-                token2={values.token2}
-                token1Amount={values.token1Amount}
-                token2Amount={values.token2Amount}
+            {showConfirm && (
+              <AddLiquidityConfirmModal
+                isOpen={showConfirm}
+                onClose={handleConfirmDismiss}
+                token1={values.token1!}
+                token2={values.token2!}
+                token1Amount={values.token1Amount!}
+                token2Amount={values.token2Amount!}
                 slippage={settings.slippage}
                 isFormSubmitting={isSubmitting}
                 isFormValid={isValid}
                 isWalletConnected={walletConnected}
                 handleFormSubmit={handleSubmit}
+                txHash={txHash}
+                setTxHash={setTxHash}
+                isConfirmed={isConfirmed}
+                setIsConfirmed={setIsConfirmed}
               />
-            ) : null}
+            )}
 
             <Button
-              onClick={onOpen}
+              onClick={onConfirmOpen}
               isLoading={isSubmitting}
               isDisabled={!isValid || !walletConnected || !isAllTokensApproved}
               variant="brand-outline"
