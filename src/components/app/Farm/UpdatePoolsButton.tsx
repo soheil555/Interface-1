@@ -1,10 +1,13 @@
 import { Button, Tooltip } from '@chakra-ui/react'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import { addTransactionAtom } from '../../../store'
 
 const UpdatePoolsButton = () => {
   const masterChefContract = useMasterChefContract()
   const [isLoading, setIsLoading] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleUpdatePools = async () => {
     if (!masterChefContract) return
@@ -12,8 +15,13 @@ const UpdatePoolsButton = () => {
     setIsLoading(true)
 
     try {
-      await masterChefContract.massUpdatePools({
+      const tx = await masterChefContract.massUpdatePools({
         gasLimit: '1000000',
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: 'Update pools',
       })
     } catch (error: any) {
       console.log(error)

@@ -25,6 +25,8 @@ import { useState } from 'react'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { BigNumber } from 'ethers'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 const initialValues: StakeAXOFormValues = {
   amount: '',
@@ -50,6 +52,7 @@ const StakeAXOPanel = () => {
   const walletConnected = !!axoContract && !!xolotlContract && !!account
   const axoTokenInfo = useTokenInfo(axoContract?.address)
   const [isAXOTokenApproved, setIsAXOTokenApproved] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleStakeAXO = async (
     { amount }: StakeAXOFormValues,
@@ -60,8 +63,13 @@ const StakeAXOPanel = () => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      await xolotlContract.enter(amountBigNumber, {
+      const tx = await xolotlContract.enter(amountBigNumber, {
         gasLimit: 1000000,
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: `Stake ${amount} AXO`,
       })
     } catch (error: any) {
       console.log(error)

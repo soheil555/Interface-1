@@ -251,12 +251,10 @@ const AddLiquidity: NextPage = () => {
                 token1Amount={values.token1Amount!}
                 token2Amount={values.token2Amount!}
                 slippage={settings.slippage}
-                isFormSubmitting={isSubmitting}
                 isFormValid={isValid}
                 isWalletConnected={walletConnected}
                 handleFormSubmit={handleSubmit}
                 txHash={txHash}
-                setTxHash={setTxHash}
                 isConfirmed={isConfirmed}
                 setIsConfirmed={setIsConfirmed}
               />

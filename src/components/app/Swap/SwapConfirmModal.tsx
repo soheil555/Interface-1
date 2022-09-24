@@ -3,13 +3,9 @@ import {
   VStack,
   Button,
   Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   HStack,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -19,6 +15,7 @@ import {
   formatCurrencyAmount,
   parseCurrencyAmount,
 } from '../../../utils'
+import TransactionConfirmModal from '../TransactionConfirmModal/TransactionConfirmModal'
 import SwapInfo from './SwapInfo'
 
 interface SwapConfirmModalProps {
@@ -30,9 +27,11 @@ interface SwapConfirmModalProps {
   amountOut: string
   slippage: string
   isFormValid: boolean
-  isFormSubmitting: boolean
   isWalletConnected: boolean
   handleFormSubmit: () => void
+  isConfirmed: boolean
+  setIsConfirmed: (isConfirmed: boolean) => void
+  txHash?: string
 }
 
 const SwapConfirmModal = ({
@@ -44,99 +43,100 @@ const SwapConfirmModal = ({
   amountOut,
   slippage,
   isFormValid,
-  isFormSubmitting,
   isWalletConnected,
   handleFormSubmit,
+  isConfirmed,
+  setIsConfirmed,
+  txHash,
 }: SwapConfirmModalProps) => {
-  const amountOutWithSlippage = currencyAmountWithSlippage(
-    parseCurrencyAmount(amountOut, tokenOut.decimals),
-    slippage
-  )
-
   return (
-    <Modal
-      blockScrollOnMount={false}
-      size={{ base: 'xs', sm: 'sm', md: 'xl' }}
-      isCentered
+    <TransactionConfirmModal
+      isConfirmed={isConfirmed}
       isOpen={isOpen}
       onClose={onClose}
+      txHash={txHash}
+      txDescription={`Swapping ${amountIn} ${tokenIn.symbol} for ${amountOut} ${tokenOut.symbol}`}
     >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Confirm Swap</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <VStack align="stretch" gap={2}>
-            <VStack align="stretch" position="relative">
-              <HStack
-                bg={useColorModeValue('gray.100', 'gray.600')}
-                p={2}
-                borderRadius="lg"
-                justify="space-between"
-              >
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>From</Text>
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>
-                  {amountIn} {tokenIn.symbol}
-                </Text>
-              </HStack>
+      <ModalHeader>Confirm Swap</ModalHeader>
+      <ModalBody>
+        <VStack align="stretch" gap={2}>
+          <VStack align="stretch" position="relative">
+            <HStack
+              bg={useColorModeValue('gray.100', 'gray.600')}
+              p={2}
+              borderRadius="lg"
+              justify="space-between"
+            >
+              <Text fontSize={{ base: 'sm', sm: 'md' }}>From</Text>
+              <Text fontSize={{ base: 'sm', sm: 'md' }}>
+                {amountIn} {tokenIn.symbol}
+              </Text>
+            </HStack>
 
-              <ArrowDownIcon
-                position="absolute"
-                top="40%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                bg="gray.300"
-                borderRadius="full"
-                fontSize="2xl"
-                w="30px"
-                h="30px"
-                p={1}
-              />
-
-              <HStack
-                bg={useColorModeValue('gray.100', 'gray.600')}
-                p={2}
-                borderRadius="lg"
-                justify="space-between"
-              >
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>To</Text>
-                <Text fontSize={{ base: 'sm', sm: 'md' }}>
-                  {amountOut} {tokenOut.symbol}
-                </Text>
-              </HStack>
-            </VStack>
-
-            <SwapInfo
-              tokenIn={tokenIn}
-              tokenOut={tokenOut}
-              amountIn={amountIn}
-              amountOut={amountOut}
-              slippage={slippage}
+            <ArrowDownIcon
+              position="absolute"
+              top="40%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              bg="gray.300"
+              borderRadius="full"
+              fontSize="2xl"
+              w="30px"
+              h="30px"
+              p={1}
             />
 
-            <Text fontSize={{ base: 'sm', sm: 'md' }}>
-              Output is estimated. You will receive at least{' '}
-              <span style={{ fontWeight: 'bold' }}>
-                {formatCurrencyAmount(amountOutWithSlippage, tokenOut.decimals)}{' '}
-                {tokenOut.symbol}{' '}
-              </span>
-              or the transaction will revert.
-            </Text>
+            <HStack
+              bg={useColorModeValue('gray.100', 'gray.600')}
+              p={2}
+              borderRadius="lg"
+              justify="space-between"
+            >
+              <Text fontSize={{ base: 'sm', sm: 'md' }}>To</Text>
+              <Text fontSize={{ base: 'sm', sm: 'md' }}>
+                {amountOut} {tokenOut.symbol}
+              </Text>
+            </HStack>
           </VStack>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            isLoading={isFormSubmitting}
-            isDisabled={!isFormValid || !isWalletConnected}
-            onClick={handleFormSubmit}
-            w="full"
-            fontSize="xl"
-          >
-            Confirm Swap
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+
+          <SwapInfo
+            tokenIn={tokenIn}
+            tokenOut={tokenOut}
+            amountIn={amountIn}
+            amountOut={amountOut}
+            slippage={slippage}
+          />
+
+          <Text fontSize={{ base: 'sm', sm: 'md' }}>
+            Output is estimated. You will receive at least{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {formatCurrencyAmount(
+                currencyAmountWithSlippage(
+                  parseCurrencyAmount(amountOut, tokenOut.decimals),
+                  slippage
+                ),
+                tokenOut.decimals
+              )}{' '}
+              {tokenOut.symbol}{' '}
+            </span>
+            or the transaction will revert.
+          </Text>
+        </VStack>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          isDisabled={!isFormValid || !isWalletConnected}
+          onClick={() => {
+            setIsConfirmed(true)
+            handleFormSubmit()
+          }}
+          w="full"
+          fontSize="xl"
+        >
+          Confirm Swap
+        </Button>
+      </ModalFooter>
+    </TransactionConfirmModal>
   )
 }
 

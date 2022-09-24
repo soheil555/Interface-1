@@ -21,11 +21,9 @@ interface AddLiquidityConfirmModalProps {
   token2Amount: string
   slippage: string
   isFormValid: boolean
-  isFormSubmitting: boolean
   isWalletConnected: boolean
   handleFormSubmit: () => void
   txHash?: string
-  setTxHash: (txHash: string | undefined) => void
   isConfirmed: boolean
   setIsConfirmed: (isConfirmed: boolean) => void
 }
@@ -51,7 +49,7 @@ const AddLiquidityConfirmModal = ({
       isOpen={isOpen}
       onClose={onClose}
       txHash={txHash}
-      txDescription={`Add ${token1Amount} ${token1?.symbol} and ${token2Amount} ${token2?.symbol}`}
+      txDescription={`Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`}
     >
       <ModalHeader>You will receive</ModalHeader>
 

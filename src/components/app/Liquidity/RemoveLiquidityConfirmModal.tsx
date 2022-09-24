@@ -3,19 +3,16 @@ import { Token } from '../../../types'
 import {
   Button,
   HStack,
-  Modal,
   ModalBody,
-  ModalCloseButton,
-  ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   VStack,
   Text,
   Icon,
 } from '@chakra-ui/react'
 import { formatCurrencyAmount } from '../../../utils'
 import { AiOutlinePlus } from 'react-icons/ai'
+import TransactionConfirmModal from '../TransactionConfirmModal/TransactionConfirmModal'
 
 interface RemoveLiquidityConfirmModalProps {
   isOpen: boolean
@@ -27,9 +24,11 @@ interface RemoveLiquidityConfirmModalProps {
   percent: number
   slippage: string
   isFormValid: boolean
-  isFormSubmitting: boolean
   isWalletConnected: boolean
   handleFormSubmit: () => void
+  isConfirmed: boolean
+  txHash?: string
+  setIsConfirmed: (isConfirmed: boolean) => void
 }
 
 const RemoveLiquidityConfirmModal = ({
@@ -42,77 +41,77 @@ const RemoveLiquidityConfirmModal = ({
   percent,
   slippage,
   isFormValid,
-  isFormSubmitting,
   isWalletConnected,
   handleFormSubmit,
+  isConfirmed,
+  txHash,
+  setIsConfirmed,
 }: RemoveLiquidityConfirmModalProps) => {
+  const token1Amount = formatCurrencyAmount(
+    liquidityToken1Amount.mul(percent).div(100),
+    token1.decimals
+  )
+
+  const token2Amount = formatCurrencyAmount(
+    liquidityToken2Amount.mul(percent).div(100),
+    token2.decimals
+  )
+
   return (
-    <Modal
-      blockScrollOnMount={false}
-      size={{ base: 'xs', sm: 'sm', md: 'xl' }}
-      isCentered
+    <TransactionConfirmModal
+      isConfirmed={isConfirmed}
       isOpen={isOpen}
       onClose={onClose}
+      txHash={txHash}
+      txDescription={`Remove ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`}
     >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>You will receive</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <VStack fontSize="xl" align="flex-start" gap={2}>
-            <HStack justify="space-between" w="full">
-              <HStack gap={2}>
-                {token1.logo && <token1.logo />}
-                <>
-                  {formatCurrencyAmount(
-                    liquidityToken1Amount.mul(percent).div(100),
-                    token1.decimals
-                  )}
-                </>
-              </HStack>
-              <Text>{token1.symbol}</Text>
+      <ModalHeader>You will receive</ModalHeader>
+      <ModalBody>
+        <VStack fontSize="xl" align="flex-start" gap={2}>
+          <HStack justify="space-between" w="full">
+            <HStack gap={2}>
+              {token1.logo && <token1.logo />}
+              <>{token1Amount}</>
             </HStack>
-
-            <Icon as={AiOutlinePlus} fontSize="xl" />
-
-            <HStack justify="space-between" w="full">
-              <HStack gap={2}>
-                {token2.logo && <token2.logo />}
-                <>
-                  {formatCurrencyAmount(
-                    liquidityToken2Amount.mul(percent).div(100),
-                    token2.decimals
-                  )}
-                </>
-              </HStack>
-              <Text>{token2.symbol}</Text>
-            </HStack>
-          </VStack>
-          <Text mt={5} variant="subtext">
-            Output is estimated. If the price changes by more than {slippage}%
-            your transaction will revert.
-          </Text>
-
-          <HStack mt={7} justify="space-between">
-            <Text variant="subtext">
-              {token1.symbol}/{token2.symbol} Burned
-            </Text>
-            <Text>0.00</Text>
+            <Text>{token1.symbol}</Text>
           </HStack>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            isDisabled={!isFormValid || !isWalletConnected}
-            isLoading={isFormSubmitting}
-            w="full"
-            onClick={handleFormSubmit}
-            variant="brand"
-          >
-            Confirm
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+
+          <Icon as={AiOutlinePlus} fontSize="xl" />
+
+          <HStack justify="space-between" w="full">
+            <HStack gap={2}>
+              {token2.logo && <token2.logo />}
+              <>{token2Amount}</>
+            </HStack>
+            <Text>{token2.symbol}</Text>
+          </HStack>
+        </VStack>
+        <Text mt={5} variant="subtext">
+          Output is estimated. If the price changes by more than {slippage}%
+          your transaction will revert.
+        </Text>
+
+        <HStack mt={7} justify="space-between">
+          <Text variant="subtext">
+            {token1.symbol}/{token2.symbol} Burned
+          </Text>
+          <Text>0.00</Text>
+        </HStack>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          isDisabled={!isFormValid || !isWalletConnected}
+          w="full"
+          onClick={() => {
+            setIsConfirmed(true)
+            handleFormSubmit()
+          }}
+          variant="brand"
+        >
+          Confirm
+        </Button>
+      </ModalFooter>
+    </TransactionConfirmModal>
   )
 }
 

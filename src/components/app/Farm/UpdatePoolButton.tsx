@@ -1,6 +1,8 @@
 import { Button, Tooltip } from '@chakra-ui/react'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import { addTransactionAtom } from '../../../store'
 
 interface UpdatePoolButtonProps {
   pid: number
@@ -9,6 +11,7 @@ interface UpdatePoolButtonProps {
 const UpdatePoolButton = ({ pid }: UpdatePoolButtonProps) => {
   const masterChefContract = useMasterChefContract()
   const [isLoading, setIsLoading] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleUpdatePool = async () => {
     if (!masterChefContract) return
@@ -16,8 +19,13 @@ const UpdatePoolButton = ({ pid }: UpdatePoolButtonProps) => {
     setIsLoading(true)
 
     try {
-      await masterChefContract.updatePool(pid, {
+      const tx = await masterChefContract.updatePool(pid, {
         gasLimit: '1000000',
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: 'Update pool',
       })
     } catch (error: any) {
       console.log(error)

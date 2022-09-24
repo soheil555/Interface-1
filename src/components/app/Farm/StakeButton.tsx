@@ -33,6 +33,8 @@ import { ethers } from 'ethers'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
 import useTokenContract from '../../../hooks/contracts/useTokenContract'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 interface StakeButtonProps {
   pid: number
@@ -53,6 +55,7 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
   const masterChefContract = useMasterChefContract()
   const { account } = useWeb3React()
   const [isLPTokenApproved, setIsLPTokenApproved] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const walletConnected = !!masterChefContract && !!lpTokenContract && !!account
 
@@ -64,8 +67,13 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      await masterChefContract.deposit(pid, amountBigNumber, {
+      const tx = await masterChefContract.deposit(pid, amountBigNumber, {
         gasLimit: '1000000',
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: 'Stake LP tokens',
       })
     } catch (error: any) {
       console.log(error)

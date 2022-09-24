@@ -20,7 +20,9 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
+import { useAtom } from 'jotai'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import { addTransactionAtom } from '../../../store'
 import { EditAllocPointFormValues } from '../../../types'
 
 interface EditAllocPointButtonProps {
@@ -39,6 +41,7 @@ const EditAllocPointButton = ({
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const masterChefContract = useMasterChefContract()
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleEditAllocPoint = async (
     { allocPoint, update }: EditAllocPointFormValues,
@@ -47,8 +50,13 @@ const EditAllocPointButton = ({
     if (!masterChefContract) return
 
     try {
-      await masterChefContract.set(pid, allocPoint, update, {
+      const tx = await masterChefContract.set(pid, allocPoint, update, {
         gasLimit: 1000000,
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: 'Set alloc point',
       })
     } catch (error: any) {
       console.log(error)

@@ -19,6 +19,8 @@ import {
 import useAXOContract from '../../../hooks/contracts/useAXOContract'
 import { useWeb3React } from '@web3-react/core'
 import useXltBalance from '../../../hooks/useXltBalance'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 const initialValues: UnstakeAXOFormValues = {
   amount: '',
@@ -30,6 +32,7 @@ const UnstakeAXOPanel = () => {
   const { data: xltBalance } = useXltBalance()
   const { account } = useWeb3React()
   const walletConnected = !!axoContract && !!xolotlContract && !!account
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleUnstakeAXO = async (
     { amount }: UnstakeAXOFormValues,
@@ -40,8 +43,13 @@ const UnstakeAXOPanel = () => {
     try {
       const amountBigNumber = parseCurrencyAmount(amount)
 
-      await xolotlContract.leave(amountBigNumber, {
+      const tx = await xolotlContract.leave(amountBigNumber, {
         gasLimit: 1000000,
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: `Unstake ${amount} AXO`,
       })
     } catch (error: any) {
       console.log(error)

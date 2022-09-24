@@ -29,6 +29,8 @@ import useTokenInfo from '../../../hooks/useTokenInfo'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 import usePendingAXO from '../../../hooks/usePendingAXO'
 import { ethers } from 'ethers'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 interface HarvestButtonProps {
   pid: number
@@ -51,6 +53,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
     pendingAXO &&
     (!userInfo.amount.isZero() || !pendingAXO.isZero())
   const masterChefContract = useMasterChefContract()
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const isAmountZero = (amount: string) => {
     return amount.length === 0 || parseCurrencyAmount(amount).isZero()
@@ -65,8 +68,13 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
       const amountBigNumber =
         amount.length === 0 ? 0 : parseCurrencyAmount(amount)
 
-      await masterChefContract.withdraw(pid, amountBigNumber, {
+      const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
         gasLimit: '1000000',
+      })
+
+      addTransaction({
+        hash: tx.hash,
+        description: 'Harvest LP tokens',
       })
     } catch (error: any) {
       console.log(error)

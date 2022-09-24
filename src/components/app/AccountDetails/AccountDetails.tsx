@@ -158,32 +158,39 @@ const AccountDetails = ({
                   clear all
                 </Button>
               </HStack>
-              {Object.entries(transactions).map(([txHash, txInfo]) => (
-                <HStack align="flex-start" justify="space-between" key={txHash}>
-                  <Link
-                    href={
-                      blockExplorerURL
-                        ? join(blockExplorerURL, 'tx', txHash)
-                        : '#'
-                    }
-                    isExternal
-                    w="80%"
+              <VStack align="stretch" gap={2} maxH="20rem" overflowY="scroll">
+                {Object.entries(transactions).map(([txHash, txInfo]) => (
+                  <HStack
+                    align="flex-start"
+                    justify="space-between"
+                    key={txHash}
+                    pr={2}
                   >
-                    <Text fontSize={{ base: 'xs', sm: 'md' }}>
-                      {txInfo.description}{' '}
-                      <Box display="inline-block">
-                        <FiArrowUpRight />
-                      </Box>
-                    </Text>
-                  </Link>
+                    <Link
+                      href={
+                        blockExplorerURL
+                          ? join(blockExplorerURL, 'tx', txHash)
+                          : '#'
+                      }
+                      isExternal
+                      w="80%"
+                    >
+                      <Text fontSize={{ base: 'xs', sm: 'md' }}>
+                        {txInfo.description}{' '}
+                        <Box display="inline-block">
+                          <FiArrowUpRight />
+                        </Box>
+                      </Text>
+                    </Link>
 
-                  {txInfo.isConfirmed ? (
-                    <GiConfirmed color="green" />
-                  ) : (
-                    <Spinner size="sm" />
-                  )}
-                </HStack>
-              ))}
+                    {txInfo.isConfirmed ? (
+                      <GiConfirmed color="green" />
+                    ) : (
+                      <Spinner size="sm" />
+                    )}
+                  </HStack>
+                ))}
+              </VStack>
             </>
           ) : (
             <Text>Your transactions will appear here...</Text>
