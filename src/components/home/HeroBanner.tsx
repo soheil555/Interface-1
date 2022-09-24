@@ -6,9 +6,9 @@ import {
   VStack,
   Button,
   Stack,
-  Center,
 } from '@chakra-ui/react'
 import Counter from './Counter'
+import { Player } from '@lottiefiles/react-lottie-player'
 
 const HeroBanner = () => {
   return (
@@ -64,10 +64,14 @@ const HeroBanner = () => {
           </Button>
         </VStack>
       </VStack>
-
-      <Center flex={1} w={{ base: '80%', md: 'full' }}>
-        <Image alt="hero image" src="/images/hero-img.png" />
-      </Center>
+      <VStack flex={1} align={{ base: 'right', md: 'justify' }}>
+        <Player
+          autoplay
+          loop
+          src="lottie/Hero.json"
+          style={{ height: '520px', width: '520px' }}
+        ></Player>
+      </VStack>
     </Stack>
   )
 }

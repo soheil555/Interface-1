@@ -59,15 +59,6 @@ const Footer = () => {
                 icon={<BsDiscord />}
               />
             </Link>
-
-            <Link
-              href="https://nftcalendar.io/event/axoswap-announces-release-of-collection-featuring-3333-axolotl-nfts-with-unique-traits"
-              isExternal
-            >
-              <Box w={30} h={30} rounded="md" overflow="hidden">
-                <Image alt="nft calendar" src="/images/nftcalendar-logo.png" />
-              </Box>
-            </Link>
           </HStack>
         </VStack>
 
