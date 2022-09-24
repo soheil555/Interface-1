@@ -69,6 +69,7 @@ const Web3ConnectWithSelect = ({
       toast({
         title: 'Error',
         description: error.message,
+        position: 'bottom-right',
         status: 'error',
         duration: 9000,
         isClosable: true,

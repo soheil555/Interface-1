@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { useAtom } from 'jotai'
@@ -9,7 +10,7 @@ import { TransactionInfo, Transactions } from '../types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
 
 //TODO: what about failed transactions
-function updateTransactionsStatus(provider: Web3Provider) {
+function updateTransactionsStatus(provider: Web3Provider, toast: any) {
   return async (
     _: string,
     transactions: Transactions,
@@ -20,6 +21,7 @@ function updateTransactionsStatus(provider: Web3Provider) {
     ) => void
   ) => {
     const chainTransactions: TransactionInfo[] = []
+    const confirmedTransactions: TransactionInfo[] = []
 
     for (const transactionInfo of transactions[chainId]) {
       if (!transactionInfo.isConfirmed) {
@@ -28,17 +30,34 @@ function updateTransactionsStatus(provider: Web3Provider) {
         )
         if (!!receipt) {
           transactionInfo.isConfirmed = true
+          confirmedTransactions.push(transactionInfo)
         }
       }
 
       chainTransactions.push(transactionInfo)
     }
 
-    setTransactions((prev) => ({ ...prev, [chainId]: chainTransactions }))
+    if (confirmedTransactions.length > 0) {
+      setTransactions((prev) => ({ ...prev, [chainId]: chainTransactions }))
+    }
+
+    confirmedTransactions.forEach((tx) => {
+      toast({
+        description: tx.description,
+      })
+    })
   }
 }
 
 export default function useUpdateTransactionsStatus() {
+  const toast = useToast({
+    title: 'Transaction confirmed',
+    position: 'bottom-right',
+    status: 'info',
+    duration: 9000,
+    variant: 'top-accent',
+    isClosable: true,
+  })
   const [transactions, setTransactions] = useAtom(transactionsAtom)
   const [{ chainId, address }] = useAtom(accountInfoAtom)
   const { provider } = useWeb3React()
@@ -55,7 +74,7 @@ export default function useUpdateTransactionsStatus() {
           setTransactions,
         ]
       : null,
-    updateTransactionsStatus(provider!)
+    updateTransactionsStatus(provider!, toast)
   )
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate)
