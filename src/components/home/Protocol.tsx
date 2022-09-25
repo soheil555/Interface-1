@@ -5,18 +5,19 @@ export default function Protocol() {
   return (
     <VStack justify="flex-start" gap={{ base: 10, lg: 40 }}>
       <Box
+        w="50%"
         position="absolute"
         zIndex={100}
-        bottom={-110}
+        bottom={0}
         right={0}
         display={{ base: 'none', lg: 'block' }}
       >
         <Player
           autoplay
           loop
-          src="lottie/scene.json"
-          style={{ height: '700px', width: '700px' }}
-        ></Player>
+          src="/lottie/Scene.json"
+          style={{ width: '100%', height: '100%' }}
+        />
       </Box>
 
       <Text

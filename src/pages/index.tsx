@@ -13,17 +13,16 @@ const Home: NextPage = () => {
         <HeroBanner />
       </Container>
 
-      <Box
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        position="relative"
-        h={{ base: undefined, lg: '80vh' }}
-      >
-        <Container pt={10} maxW="container.xl" h="full">
-          <Protocol />
-        </Container>
-      </Box>
-      <Box bg={useColorModeValue('gray.50', 'gray.900')} px={10} pt={10}>
-        <Footer />
+      <Box bg={useColorModeValue('gray.50', 'gray.900')}>
+        <Box position="relative" h={{ base: undefined, lg: '40rem' }}>
+          <Container pt={10} maxW="container.xl" h="full">
+            <Protocol />
+          </Container>
+        </Box>
+
+        <Box px={10} pt={10}>
+          <Footer />
+        </Box>
       </Box>
     </>
   )

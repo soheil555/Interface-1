@@ -4,20 +4,19 @@ import {
   Image,
   HStack,
   Link,
-  Center,
   Button,
   useDisclosure,
-  Collapse,
-  VStack,
   Icon,
+  IconButton,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import ThemeToggler from '../common/ThemeToggler'
-import { Fade as Hamburger } from 'hamburger-react'
 import { homeRoutes } from '../../routes'
+import SideDrawer from './SideDrawer'
+import { HamburgerIcon } from '@chakra-ui/icons'
 
 const Header = () => {
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <Box minH="20vh">
@@ -39,6 +38,7 @@ const Header = () => {
           fontSize={22}
           gap={16}
           mx={10}
+          color="white"
         >
           {getLinks()}
         </HStack>
@@ -58,38 +58,33 @@ const Header = () => {
             </Button>
           </NextLink>
 
-          <Box onClick={onToggle} display={{ lg: 'none' }}>
-            <Hamburger color="white" direction="left" />
-          </Box>
+          <IconButton
+            fontSize="2xl"
+            variant="unstyled"
+            color="white"
+            aria-label="hamburger"
+            icon={<HamburgerIcon />}
+            onClick={onOpen}
+            display={{ lg: 'none' }}
+          />
         </HStack>
       </Flex>
 
-      <Box display={{ lg: 'none' }}>
-        <Collapse in={isOpen}>
-          <VStack fontSize={22} gap={3}>
-            {getLinks()}
-            <NextLink href="/app/swap">
-              <Button rounded="full" variant="brand-solid">
-                Launch App
-              </Button>
-            </NextLink>
-          </VStack>
-        </Collapse>
-      </Box>
+      <SideDrawer isOpen={isOpen} onClose={onClose} />
     </Box>
   )
 }
 
-const getLinks = () => {
+export const getLinks = () => {
   return homeRoutes.map((route) => {
     return (
       <NextLink href={route.href} key={route.label} passHref>
-        <Link color="white" isExternal={route.isExternal}>
+        <Link isExternal={route.isExternal}>
           {route.icon ? (
-            <Center gap={1}>
+            <HStack gap={1}>
               <Icon as={route.icon} />
-              {route.label}
-            </Center>
+              <>{route.label}</>
+            </HStack>
           ) : (
             route.label
           )}

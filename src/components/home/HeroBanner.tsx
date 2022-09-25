@@ -64,14 +64,14 @@ const HeroBanner = () => {
           </Button>
         </VStack>
       </VStack>
-      <VStack flex={1} align={{ base: 'right', md: 'justify' }}>
+      <Box w={{ base: '280px', sm: '400px', md: '500px' }}>
         <Player
           autoplay
           loop
-          src="lottie/Hero.json"
-          style={{ height: '520px', width: '520px' }}
-        ></Player>
-      </VStack>
+          src="/lottie/Hero.json"
+          style={{ width: '100%', height: '100%' }}
+        />
+      </Box>
     </Stack>
   )
 }

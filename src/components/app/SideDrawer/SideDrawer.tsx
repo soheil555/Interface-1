@@ -19,13 +19,13 @@ import { useEffect } from 'react'
 
 const SideDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const isModalOpen = useBreakpointValue({ base: isOpen, lg: false }) || false
+  const isDrawerOpen = useBreakpointValue({ base: isOpen, lg: false }) || false
 
   useEffect(() => {
-    if (!isModalOpen) {
+    if (!isDrawerOpen) {
       onClose()
     }
-  }, [isModalOpen, onClose])
+  }, [isDrawerOpen, onClose])
 
   return (
     <Box display={{ base: 'block', lg: 'none' }}>
@@ -38,7 +38,7 @@ const SideDrawer = () => {
       />
       <Drawer
         size="full"
-        isOpen={isModalOpen}
+        isOpen={isDrawerOpen}
         placement="left"
         onClose={onClose}
         preserveScrollBarGap={true}
