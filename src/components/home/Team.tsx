@@ -109,12 +109,20 @@ const Team = () => {
 
       <HStack gap={5}>
         <NextLink href="#">
-          <Button rightIcon={<FiArrowRight />} variant="brand">
+          <Button
+            size={{ base: 'sm', sm: 'md' }}
+            rightIcon={<FiArrowRight />}
+            variant="brand"
+          >
             Leadership
           </Button>
         </NextLink>
         <NextLink href="#">
-          <Button rightIcon={<FiArrowRight />} variant="brand-outline">
+          <Button
+            size={{ base: 'sm', sm: 'md' }}
+            rightIcon={<FiArrowRight />}
+            variant="brand-outline"
+          >
             Advisors
           </Button>
         </NextLink>
