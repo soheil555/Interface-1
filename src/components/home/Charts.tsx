@@ -1,6 +1,13 @@
 import { Pie } from 'react-chartjs-2'
 import 'chart.js/auto'
-import { Box, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Center,
+  Stack,
+  Text,
+  useColorModeValue,
+  VStack,
+} from '@chakra-ui/react'
 
 const Charts = () => {
   const tokenDistroData = {
@@ -43,35 +50,37 @@ const Charts = () => {
       align="center"
       direction={{ base: 'column', lg: 'row' }}
     >
-      <VStack
-        gap={2}
-        justify="center"
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        w="30rem"
-        h="30rem"
-      >
-        <Text fontWeight="bold" fontSize={25}>
+      <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
+        <Text
+          textAlign="center"
+          fontWeight="bold"
+          fontSize={{ base: 15, sm: 20, md: 25 }}
+        >
           Initial Token Distribution
         </Text>
 
-        <Box>
+        <Box
+          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+        >
           <Pie data={tokenDistroData} />
         </Box>
       </VStack>
 
-      <VStack
-        gap={2}
-        justify="center"
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        w="30rem"
-        h="30rem"
-      >
-        <Text fontWeight="bold" fontSize={25}>
-          Sale Proceed Allocation
+      <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
+        <Text
+          textAlign="center"
+          fontWeight="bold"
+          fontSize={{ base: 15, sm: 20, md: 25 }}
+        >
+          Initial Token Distribution
         </Text>
 
-        <Box>
-          <Pie data={saleProceedAllocData} />
+        <Box
+          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+        >
+          <Pie data={tokenDistroData} />
         </Box>
       </VStack>
     </Stack>

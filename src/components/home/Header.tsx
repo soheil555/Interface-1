@@ -25,7 +25,7 @@ const Header = () => {
           <Link>
             <Image
               alt="logo"
-              width={{ base: 50, sm: 70, md: 100 }}
+              width={{ base: 50, sm: 70 }}
               src="/images/logo@2x.png"
             />
           </Link>
