@@ -12,19 +12,28 @@ const RoadmapResponsive = () => {
           Crypto Road Map
         </Text>
       </VStack>
-      <HStack h="60rem" gap={2}>
-        <Box h="full" w="2rem" bg="brand.gradient" rounded="xl" />
+      <HStack h="55rem" w="full">
+        <Box
+          h="full"
+          w={{ base: '1rem', md: '2rem' }}
+          bg="brand.gradient"
+          rounded="xl"
+        />
 
-        <VStack h="full" justify="space-between">
+        <VStack h="full" align="flex-start" justify="space-between">
           {items.map((item, i) => (
-            <HStack gap={2} key={i}>
+            <HStack
+              justify={{ base: 'space-between', md: 'flex-start' }}
+              gap={2}
+              key={i}
+            >
               {item.position === 'right' ? (
                 <Center
                   mt={2}
                   bg="brand.100"
                   p={2}
-                  w="50px"
-                  h="50px"
+                  w={{ base: '35px', md: '50px' }}
+                  h={{ base: '35px', md: '50px' }}
                   rounded="full"
                 >
                   <Image
@@ -35,7 +44,7 @@ const RoadmapResponsive = () => {
                   />
                 </Center>
               ) : (
-                <Box w="100px" h="100px">
+                <Box w="80px">
                   <Image
                     w="full"
                     h="full"
@@ -45,7 +54,10 @@ const RoadmapResponsive = () => {
                 </Box>
               )}
 
-              <VStack w={{ base: '90%', md: '70%' }} align="stretch">
+              <VStack
+                w={{ base: '90%', sm: '100%', md: '70%' }}
+                align="stretch"
+              >
                 <Text fontWeight="bold">{item.title}</Text>
                 <Text fontSize={{ base: 'xs', sm: 'sm', md: 'md' }}>
                   {item.description}
