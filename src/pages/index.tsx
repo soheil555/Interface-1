@@ -7,7 +7,6 @@ import { NextPage } from 'next'
 import Roadmap from '../components/home/Roadmap/Roadmap'
 import Charts from '../components/home/Charts'
 import RoadmapResponsive from '../components/home/Roadmap/RoadmapResponsive'
-import Team from '../components/home/Team'
 import Partners from '../components/home/Partners'
 
 const Home: NextPage = () => {
@@ -34,7 +33,6 @@ const Home: NextPage = () => {
       </Box>
 
       <Charts />
-      <Team />
       <Partners />
 
       <Box bg={useColorModeValue('gray.50', 'gray.900')} px={10} pt={10}>

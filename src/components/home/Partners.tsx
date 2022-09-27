@@ -20,36 +20,6 @@ const partners: Partner[] = [
     website: 'https://www.alchemy.com/',
     iconPath: '/images/alchemy.svg',
   },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
-  {
-    name: 'Alchemy',
-    website: 'https://www.alchemy.com/',
-    iconPath: '/images/alchemy.svg',
-  },
 ]
 
 const PartnerDiv = ({ partner }: { partner: Partner }) => {
@@ -82,9 +52,7 @@ const Partners = () => {
       <VStack gap={3} my="6rem">
         <VStack>
           <Text fontWeight="bold">Partners</Text>
-          <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}>
-            ico Axoswap Partners
-          </Text>
+          <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}></Text>
         </VStack>
 
         <Wrap justify="center" spacing="2rem">
