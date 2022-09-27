@@ -6,6 +6,7 @@ import {
   Text,
   VStack,
   Link,
+  Container,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import {
@@ -99,41 +100,43 @@ const TeamMemberDiv = ({ teamMember }: { teamMember: TeamMember }) => {
 
 const Team = () => {
   return (
-    <VStack my={20} gap={10}>
-      <VStack>
-        <Text fontWeight="bold">Our Team</Text>
-        <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}>
-          Our Team Member
-        </Text>
+    <Container maxW="container.xl">
+      <VStack my={20} gap={10}>
+        <VStack>
+          <Text fontWeight="bold">Our Team</Text>
+          <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}>
+            Our Team Member
+          </Text>
+        </VStack>
+
+        <HStack gap={5}>
+          <NextLink href="#">
+            <Button
+              size={{ base: 'sm', sm: 'md' }}
+              rightIcon={<FiArrowRight />}
+              variant="brand"
+            >
+              Leadership
+            </Button>
+          </NextLink>
+          <NextLink href="#">
+            <Button
+              size={{ base: 'sm', sm: 'md' }}
+              rightIcon={<FiArrowRight />}
+              variant="brand-outline"
+            >
+              Advisors
+            </Button>
+          </NextLink>
+        </HStack>
+
+        <SimpleGrid columns={[1, 2, 3, 4]} spacing="2rem">
+          {teamMembers.map((teamMember, i) => (
+            <TeamMemberDiv key={i} teamMember={teamMember} />
+          ))}
+        </SimpleGrid>
       </VStack>
-
-      <HStack gap={5}>
-        <NextLink href="#">
-          <Button
-            size={{ base: 'sm', sm: 'md' }}
-            rightIcon={<FiArrowRight />}
-            variant="brand"
-          >
-            Leadership
-          </Button>
-        </NextLink>
-        <NextLink href="#">
-          <Button
-            size={{ base: 'sm', sm: 'md' }}
-            rightIcon={<FiArrowRight />}
-            variant="brand-outline"
-          >
-            Advisors
-          </Button>
-        </NextLink>
-      </HStack>
-
-      <SimpleGrid columns={[1, 2, 3, 4]} spacing="2rem">
-        {teamMembers.map((teamMember, i) => (
-          <TeamMemberDiv key={i} teamMember={teamMember} />
-        ))}
-      </SimpleGrid>
-    </VStack>
+    </Container>
   )
 }
 

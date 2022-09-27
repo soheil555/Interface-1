@@ -2,7 +2,7 @@ import { Pie } from 'react-chartjs-2'
 import 'chart.js/auto'
 import {
   Box,
-  Center,
+  Container,
   Stack,
   Text,
   useColorModeValue,
@@ -43,47 +43,49 @@ const Charts = () => {
   }
 
   return (
-    <Stack
-      mb={10}
-      gap={10}
-      justify="center"
-      align="center"
-      direction={{ base: 'column', lg: 'row' }}
-    >
-      <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
-        <Text
-          textAlign="center"
-          fontWeight="bold"
-          fontSize={{ base: 15, sm: 20, md: 25 }}
-        >
-          Initial Token Distribution
-        </Text>
+    <Container maxW="container.xl">
+      <Stack
+        mb={10}
+        gap={10}
+        justify="center"
+        align="center"
+        direction={{ base: 'column', lg: 'row' }}
+      >
+        <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
+          <Text
+            textAlign="center"
+            fontWeight="bold"
+            fontSize={{ base: 15, sm: 20, md: 25 }}
+          >
+            Initial Token Distribution
+          </Text>
 
-        <Box
-          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-        >
-          <Pie data={tokenDistroData} />
-        </Box>
-      </VStack>
+          <Box
+            w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+            h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          >
+            <Pie data={tokenDistroData} />
+          </Box>
+        </VStack>
 
-      <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
-        <Text
-          textAlign="center"
-          fontWeight="bold"
-          fontSize={{ base: 15, sm: 20, md: 25 }}
-        >
-          Initial Token Distribution
-        </Text>
+        <VStack gap={2} bg={useColorModeValue('gray.50', 'gray.900')} p={10}>
+          <Text
+            textAlign="center"
+            fontWeight="bold"
+            fontSize={{ base: 15, sm: 20, md: 25 }}
+          >
+            Sale Proceed Allocation
+          </Text>
 
-        <Box
-          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-        >
-          <Pie data={tokenDistroData} />
-        </Box>
-      </VStack>
-    </Stack>
+          <Box
+            w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+            h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          >
+            <Pie data={saleProceedAllocData} />
+          </Box>
+        </VStack>
+      </Stack>
+    </Container>
   )
 }
 

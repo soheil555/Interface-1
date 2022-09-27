@@ -1,4 +1,12 @@
-import { Box, Center, HStack, Image, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Center,
+  Container,
+  HStack,
+  Image,
+  Text,
+  VStack,
+} from '@chakra-ui/react'
 
 export const items: {
   title: string
@@ -66,104 +74,106 @@ export const items: {
 
 const Roadmap = () => {
   return (
-    <VStack mb="10rem" gap="6rem">
-      <VStack>
-        <Text fontWeight="bold">Cryptoland Road Map</Text>
-        <Text fontWeight="bold" fontSize="4xl">
-          Crypto Road Map
-        </Text>
-      </VStack>
+    <Container maxW="container.xl">
+      <VStack mb="10rem" gap="6rem">
+        <VStack>
+          <Text fontWeight="bold">Axoswap Road Map</Text>
+          <Text fontWeight="bold" fontSize="4xl">
+            Axoswap.io Road Map
+          </Text>
+        </VStack>
 
-      <Center zIndex={-100} w="full">
-        <Box position="relative" h="60em" w="full">
-          <Image
-            w="full"
-            h="full"
-            alt="roadmap"
-            src="/images/bg-roadmap-center-desktop.svg"
-          />
+        <Center zIndex={-100} w="full">
+          <Box position="relative" h="60em" w="full">
+            <Image
+              w="full"
+              h="full"
+              alt="roadmap"
+              src="/images/bg-roadmap-center-desktop.svg"
+            />
 
-          {items
-            .filter((item) => item.position === 'right')
-            .map((item, i) => (
-              <HStack
-                key={i}
-                position="absolute"
-                top={item.top}
-                left={item.left}
-                align="flex-start"
-                gap={12}
-              >
-                <Box
-                  mt={2}
-                  bg="brand.100"
-                  w="50px"
-                  h="50px"
-                  rounded="full"
-                  position="relative"
+            {items
+              .filter((item) => item.position === 'right')
+              .map((item, i) => (
+                <HStack
+                  key={i}
+                  position="absolute"
+                  top={item.top}
+                  left={item.left}
+                  align="flex-start"
+                  gap={12}
                 >
-                  <Image
-                    width={10}
-                    height={10}
-                    position="absolute"
-                    top={1}
-                    left={6}
-                    alt={item.imagePath}
-                    src={item.imagePath}
-                  />
-                </Box>
-
-                <Box w="70%">
-                  <Text
-                    textTransform="capitalize"
-                    fontWeight="bold"
-                    fontSize={22}
-                    mb={2}
+                  <Box
+                    mt={2}
+                    bg="brand.100"
+                    w="50px"
+                    h="50px"
+                    rounded="full"
+                    position="relative"
                   >
-                    {item.title}
-                  </Text>
+                    <Image
+                      width={10}
+                      height={10}
+                      position="absolute"
+                      top={1}
+                      left={6}
+                      alt={item.imagePath}
+                      src={item.imagePath}
+                    />
+                  </Box>
 
-                  <Text>{item.description}</Text>
-                </Box>
-              </HStack>
-            ))}
+                  <Box w="70%">
+                    <Text
+                      textTransform="capitalize"
+                      fontWeight="bold"
+                      fontSize={22}
+                      mb={2}
+                    >
+                      {item.title}
+                    </Text>
 
-          {items
-            .filter((item) => item.position === 'left')
-            .map((item, i) => (
-              <HStack
-                key={i}
-                position="absolute"
-                top={item.top}
-                left={item.left}
-                align="flex-start"
-                gap={12}
-              >
-                <Box w="34%">
-                  <Text
-                    textTransform="capitalize"
-                    fontWeight="bold"
-                    fontSize={22}
-                    mb={2}
-                  >
-                    {item.title}
-                  </Text>
+                    <Text>{item.description}</Text>
+                  </Box>
+                </HStack>
+              ))}
 
-                  <Text>{item.description}</Text>
-                </Box>
-                <Box w="140px" h="140px">
-                  <Image
-                    w="full"
-                    h="full"
-                    alt={item.imagePath}
-                    src={item.imagePath}
-                  />
-                </Box>
-              </HStack>
-            ))}
-        </Box>
-      </Center>
-    </VStack>
+            {items
+              .filter((item) => item.position === 'left')
+              .map((item, i) => (
+                <HStack
+                  key={i}
+                  position="absolute"
+                  top={item.top}
+                  left={item.left}
+                  align="flex-start"
+                  gap={12}
+                >
+                  <Box w="34%">
+                    <Text
+                      textTransform="capitalize"
+                      fontWeight="bold"
+                      fontSize={22}
+                      mb={2}
+                    >
+                      {item.title}
+                    </Text>
+
+                    <Text>{item.description}</Text>
+                  </Box>
+                  <Box w="140px" h="140px">
+                    <Image
+                      w="full"
+                      h="full"
+                      alt={item.imagePath}
+                      src={item.imagePath}
+                    />
+                  </Box>
+                </HStack>
+              ))}
+          </Box>
+        </Center>
+      </VStack>
+    </Container>
   )
 }
 
