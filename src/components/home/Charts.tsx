@@ -2,7 +2,7 @@ import { Pie } from 'react-chartjs-2'
 import 'chart.js/auto'
 import {
   Box,
-  Center,
+  Container,
   Stack,
   Text,
   useColorModeValue,

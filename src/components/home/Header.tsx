@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Image,
   HStack,
@@ -8,6 +7,7 @@ import {
   useDisclosure,
   Icon,
   IconButton,
+  Container,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import ThemeToggler from '../common/ThemeToggler'
@@ -19,7 +19,7 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <Box minH="20vh">
+    <Container maxW="container.xl" minH="20vh">
       <Flex h="full" justify="space-between" align="center" py={10}>
         <NextLink href="/" passHref>
           <Link>
@@ -71,7 +71,7 @@ const Header = () => {
       </Flex>
 
       <SideDrawer isOpen={isOpen} onClose={onClose} />
-    </Box>
+    </Container>
   )
 }
 
