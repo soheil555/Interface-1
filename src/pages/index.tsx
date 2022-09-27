@@ -24,14 +24,6 @@ const Home: NextPage = () => {
         <Protocol />
       </Box>
 
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <Roadmap />
-      </Box>
-
-      <Box display={{ base: 'block', lg: 'none' }}>
-        <RoadmapResponsive />
-      </Box>
-
       <Charts />
       <Partners />
 
