@@ -16,11 +16,12 @@ import {
   NumberInputField,
   Checkbox,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { ethers } from 'ethers'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
+import { useAtom } from 'jotai'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import { addTransactionAtom } from '../../../store'
 import { AddLPFormValues } from '../../../types'
 import LPTokenSelect from './LPTokenSelect'
 
@@ -31,9 +32,9 @@ const initialValues: AddLPFormValues = {
 }
 
 const AddLPButton = () => {
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const masterChefContract = useMasterChefContract()
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const handleAddLP = async (
     { lpToken, allocPoint, update }: AddLPFormValues,
@@ -45,24 +46,13 @@ const AddLPButton = () => {
       const tx = await masterChefContract.add(allocPoint, lpToken, update, {
         gasLimit: 1000000,
       })
-      await tx.wait()
 
-      toast({
-        title: 'Add LP',
-        description: 'LP added successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+      addTransaction({
+        hash: tx.hash,
+        description: 'Add new lp to the pool',
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Add LP',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
     }
 
     resetForm()

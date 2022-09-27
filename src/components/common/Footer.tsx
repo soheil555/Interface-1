@@ -1,6 +1,5 @@
 import {
   HStack,
-  Image,
   Link,
   Box,
   VStack,
@@ -109,6 +108,7 @@ const Footer = () => {
         <Text fontSize={{ base: 'sm', sm: 'md' }} textAlign="center">
           © {new Date().getFullYear()} Axoswap. All rights reserved
         </Text>
+
         <AmplifyBadge />
       </Stack>
     </VStack>

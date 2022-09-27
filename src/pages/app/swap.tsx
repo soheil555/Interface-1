@@ -1,5 +1,4 @@
 import {
-  useToast,
   VStack,
   Button,
   Text,
@@ -23,8 +22,8 @@ import useAddresses from '../../hooks/useAddresses'
 import { Contract } from 'ethers'
 import WETH9ABI from '../../abis/WETH9.json'
 import { WETH9 } from '../../abis/types'
-import { settingsAtom } from '../../store'
-import SwapConfirmationModal from '../../components/app/Swap/SwapConfirmationModal'
+import { settingsAtom, addTransactionAtom } from '../../store'
+import SwapConfirmModal from '../../components/app/Swap/SwapConfirmModal'
 import NextLink from 'next/link'
 import ApproveToken from '../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
@@ -43,14 +42,26 @@ const initialValues: SwapFormValues = {
 }
 
 const Swap: NextPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: showConfirm,
+    onOpen: onConfirmOpen,
+    onClose: onConfirmClose,
+  } = useDisclosure()
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const addresses = useAddresses()
   const routerContract = useRouterContract()
   const factoryContract = useFactoryContract()
   const { account, provider } = useWeb3React()
   const [isTokenInApproved, setIsTokenInApproved] = useState(false)
+  const [txHash, setTxHash] = useState<string | undefined>(undefined)
+  const [isConfirmed, setIsConfirmed] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
+
+  const handleConfirmDismiss = () => {
+    setTxHash(undefined)
+    setIsConfirmed(false)
+    onConfirmClose()
+  }
 
   const walletConnected =
     !!routerContract &&
@@ -60,14 +71,13 @@ const Swap: NextPage = () => {
     !!addresses
 
   const handleSwap = async (
-    { tokenIn, tokenOut, amountIn, amountOut, wrapType }: SwapFormValues,
+    values: SwapFormValues,
     { resetForm }: FormikHelpers<SwapFormValues>
   ) => {
+    const { tokenIn, tokenOut, amountIn, amountOut, wrapType } = values
+
     if (!walletConnected || !tokenIn || !tokenOut || !amountIn || !amountOut)
       return
-
-    const actionType =
-      wrapType === 'invalid' ? 'Swap' : wrapType === 'wrap' ? 'Wrap' : 'Unwrap'
 
     try {
       const amountInBigNumber = parseCurrencyAmount(amountIn, tokenIn.decimals)
@@ -92,7 +102,11 @@ const Swap: NextPage = () => {
           value: amountInBigNumber,
           gasLimit: 1000000,
         })
-        await tx.wait()
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Wrap ${amountIn} ${tokenIn.symbol} to ${tokenOut.symbol}`,
+        })
       }
       // Handle unwrap
       else if (wrapType === 'unwrap') {
@@ -105,7 +119,11 @@ const Swap: NextPage = () => {
         const tx = await wMaticContract.withdraw(amountInBigNumber, {
           gasLimit: 1000000,
         })
-        await tx.wait()
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Unwrap ${amountIn} ${tokenIn.symbol} to ${tokenOut.symbol}`,
+        })
       } else if (tokenIn.symbol === 'MATIC') {
         const path = [tokenInaddress, tokenOutaddress]
 
@@ -123,7 +141,12 @@ const Swap: NextPage = () => {
             value: amountInBigNumber,
           }
         )
-        await tx.wait()
+
+        setTxHash(tx.hash)
+        addTransaction({
+          hash: tx.hash,
+          description: `Swapping ${amountIn} ${tokenIn.symbol} for ${amountOut} ${tokenOut.symbol}`,
+        })
       } else {
         const path = [tokenInaddress, tokenOutaddress]
 
@@ -143,7 +166,11 @@ const Swap: NextPage = () => {
             }
           )
 
-          await tx.wait()
+          setTxHash(tx.hash)
+          addTransaction({
+            hash: tx.hash,
+            description: `Swapping ${amountIn} ${tokenIn.symbol} for ${amountOut} ${tokenOut.symbol}`,
+          })
         } else {
           //TODO: set gasLimit
           const tx = await routerContract.swapExactTokensForTokens(
@@ -154,29 +181,21 @@ const Swap: NextPage = () => {
             deadline,
             { gasLimit: 1000000 }
           )
-          await tx.wait()
+
+          setTxHash(tx.hash)
+          addTransaction({
+            hash: tx.hash,
+            description: `Swapping ${amountIn} ${tokenIn.symbol} for ${amountOut} ${tokenOut.symbol}`,
+          })
         }
       }
 
-      toast({
-        title: actionType,
-        description: `${actionType}ped successfully`,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-
-      resetForm()
+      resetForm({ values: { ...values, amountIn: '', amountOut: '' } })
     } catch (error: any) {
-      toast({
-        title: actionType,
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+      console.log(error)
+
+      handleConfirmDismiss()
     }
-    onClose()
   }
 
   const validator = ({
@@ -194,6 +213,8 @@ const Swap: NextPage = () => {
       errors.tokenIn = 'Select a token'
       return errors
     }
+
+    console.log('wrapType inside validator:', wrapType)
 
     if (wrapType !== 'invalid') {
       if (!amountIn || !amountOut) {
@@ -302,7 +323,7 @@ const Swap: NextPage = () => {
                     tokenOut: values.tokenIn,
                     amountIn: values.amountOut,
                   }
-                  setValues({ ...values, ...newValues })
+                  setValues((values) => ({ ...values, ...newValues }))
                 }}
                 aria-label="swap"
                 icon={<IoSwapVertical />}
@@ -319,7 +340,8 @@ const Swap: NextPage = () => {
               {values.tokenIn &&
               values.tokenOut &&
               values.amountIn &&
-              values.amountOut ? (
+              values.amountOut &&
+              values.wrapType === 'invalid' ? (
                 <SwapInfo
                   tokenIn={values.tokenIn}
                   tokenOut={values.tokenOut}
@@ -350,7 +372,7 @@ const Swap: NextPage = () => {
                     ? () => {
                         handleSubmit()
                       }
-                    : onOpen
+                    : onConfirmOpen
                 }
               >
                 {walletConnected
@@ -364,22 +386,21 @@ const Swap: NextPage = () => {
                   : 'Connect Wallet to Continue'}
               </Button>
 
-              {values.tokenIn &&
-              values.tokenOut &&
-              values.amountIn &&
-              values.amountOut ? (
-                <SwapConfirmationModal
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  amountIn={values.amountIn}
-                  amountOut={values.amountOut}
-                  tokenIn={values.tokenIn}
-                  tokenOut={values.tokenOut}
-                  slippage={settings.slippage}
-                  isFormSubmitting={isSubmitting}
+              {showConfirm ? (
+                <SwapConfirmModal
+                  isOpen={showConfirm}
+                  onClose={handleConfirmDismiss}
+                  amountIn={values.amountIn!}
+                  amountOut={values.amountOut!}
+                  tokenIn={values.tokenIn!}
+                  tokenOut={values.tokenOut!}
+                  slippage={settings.slippage!}
                   isFormValid={isValid}
                   isWalletConnected={walletConnected}
                   handleFormSubmit={handleSubmit}
+                  isConfirmed={isConfirmed}
+                  setIsConfirmed={setIsConfirmed}
+                  txHash={txHash}
                 />
               ) : null}
             </VStack>

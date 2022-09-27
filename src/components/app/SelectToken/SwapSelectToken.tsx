@@ -65,7 +65,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         amountOut: '',
       }
 
-      if (wrapType !== 'invalid') {
+      if (values.wrapType !== 'invalid') {
         amounts['amountOut'] = value
         return amounts
       }
@@ -93,7 +93,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
 
       return amounts
     },
-    [reserves, tokenIn, tokenOut, wrapType]
+    [reserves, tokenIn, tokenOut, values.wrapType]
   )
 
   const getAmountIn = useCallback(
@@ -103,7 +103,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         amountOut: value,
       }
 
-      if (wrapType !== 'invalid') {
+      if (values.wrapType !== 'invalid') {
         amounts['amountIn'] = value
         return amounts
       }
@@ -127,7 +127,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
 
       return amounts
     },
-    [reserves, tokenIn, tokenOut, wrapType]
+    [reserves, tokenIn, tokenOut, values.wrapType]
   )
 
   useEffect(() => {
@@ -156,12 +156,17 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         amounts = getAmountIn(amountOut)
       }
 
-      setValues((values) => ({
-        ...values,
-        ...amounts,
-        tokenInReserve: reserves?.reserve1,
-        tokenOutReserve: reserves?.reserve2,
-      }))
+      setValues((values) => {
+        console.log('here1')
+        console.log(values)
+
+        return {
+          ...values,
+          ...amounts,
+          tokenInReserve: reserves?.reserve1,
+          tokenOutReserve: reserves?.reserve2,
+        }
+      })
     }
   }, [reserves, isTokenIn, amountIn, amountOut, getAmountIn, getAmountOut])
 

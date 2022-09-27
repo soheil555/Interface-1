@@ -1,5 +1,4 @@
 import {
-  useToast,
   VStack,
   Button,
   IconButton,
@@ -20,12 +19,12 @@ import LiquiditySelectToken from '../../../components/app/SelectToken/LiquidityS
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { useAtom } from 'jotai'
-import { settingsAtom } from '../../../store'
+import { addTransactionAtom, settingsAtom } from '../../../store'
 import ApproveToken from '../../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
 import AddLiquidityInfo from '../../../components/app/Liquidity/AddLiquidityInfo'
-import AddLiquidityConfirmationModal from '../../../components/app/Liquidity/AddLiquidityConfirmationModal'
+import AddLiquidityConfirmModal from '../../../components/app/Liquidity/AddLiquidityConfirmModal'
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -40,27 +39,41 @@ const initialValues: LiquidityFormValues = {
 
 const AddLiquidity: NextPage = () => {
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const router = useRouter()
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  const {
+    isOpen: showConfirm,
+    onClose: onConfirmClose,
+    onOpen: onConfirmOpen,
+  } = useDisclosure()
   const routerContract = useRouterContract()
   const factoryContract = useFactoryContract()
   const { account, provider } = useWeb3React()
   const walletConnected =
     !!routerContract && !!factoryContract && !!account && !!provider
   const [isAllTokensApproved, setIsAllTokensApproved] = useState(false)
+  const addTransaction = useAtom(addTransactionAtom)[1]
+  const [txHash, setTxHash] = useState<string | undefined>(undefined)
+  const [isConfirmed, setIsConfirmed] = useState(false)
+
+  const handleConfirmDismiss = () => {
+    setIsConfirmed(false)
+    setTxHash(undefined)
+    onConfirmClose()
+  }
 
   const handleAddLiquidity = async (
-    {
+    values: LiquidityFormValues,
+    { resetForm }: FormikHelpers<LiquidityFormValues>
+  ) => {
+    const {
       token1,
       token2,
       token1Amount,
       token2Amount,
       token1Contract,
       token2Contract,
-    }: LiquidityFormValues,
-    { resetForm }: FormikHelpers<LiquidityFormValues>
-  ) => {
+    } = values
+
     if (
       !walletConnected ||
       !token1 ||
@@ -98,7 +111,16 @@ const AddLiquidity: NextPage = () => {
           }
         )
 
-        await tx.wait()
+        setTxHash(tx.hash)
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
+        })
+
+        resetForm({
+          values: { ...values, token1Amount: '', token2Amount: '' },
+        })
       } else {
         const timestamp = (await provider.getBlock('latest')).timestamp
         const deadline = timestamp + Math.floor(Number(settings.deadline) * 60)
@@ -116,29 +138,21 @@ const AddLiquidity: NextPage = () => {
           { gasLimit: 1000000 }
         )
 
-        await tx.wait()
+        setTxHash(tx.hash)
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Add ${token1Amount} ${token1.symbol} and ${token2Amount} ${token2.symbol}`,
+        })
       }
 
-      toast({
-        title: 'Add liquidity',
-        description: 'Liquidity added successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+      resetForm({
+        values: { ...values, token1Amount: '', token2Amount: '' },
       })
-
-      resetForm()
     } catch (error: any) {
-      toast({
-        title: 'Add liquidity',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+      console.log(error)
+      handleConfirmDismiss()
     }
-
-    onClose()
   }
 
   const validator = ({
@@ -228,27 +242,26 @@ const AddLiquidity: NextPage = () => {
               />
             ) : null}
 
-            {values.token1 &&
-            values.token2 &&
-            values.token1Amount &&
-            values.token2Amount ? (
-              <AddLiquidityConfirmationModal
-                isOpen={isOpen}
-                onClose={onClose}
-                token1={values.token1}
-                token2={values.token2}
-                token1Amount={values.token1Amount}
-                token2Amount={values.token2Amount}
+            {showConfirm && (
+              <AddLiquidityConfirmModal
+                isOpen={showConfirm}
+                onClose={handleConfirmDismiss}
+                token1={values.token1!}
+                token2={values.token2!}
+                token1Amount={values.token1Amount!}
+                token2Amount={values.token2Amount!}
                 slippage={settings.slippage}
-                isFormSubmitting={isSubmitting}
                 isFormValid={isValid}
                 isWalletConnected={walletConnected}
                 handleFormSubmit={handleSubmit}
+                txHash={txHash}
+                isConfirmed={isConfirmed}
+                setIsConfirmed={setIsConfirmed}
               />
-            ) : null}
+            )}
 
             <Button
-              onClick={onOpen}
+              onClick={onConfirmOpen}
               isLoading={isSubmitting}
               isDisabled={!isValid || !walletConnected || !isAllTokensApproved}
               variant="brand-outline"

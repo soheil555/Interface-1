@@ -11,7 +11,6 @@ import {
   VStack,
   HStack,
   Text,
-  useToast,
   Checkbox,
   NumberInput,
   NumberInputField,
@@ -22,7 +21,6 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
-import useERC20Contract from '../../../hooks/contracts/useERC20Contract'
 import useRouterContract from '../../../hooks/contracts/useRouterContract'
 import useTokenInfo from '../../../hooks/useTokenInfo'
 import { Liquidity, RemoveLiquidityFormValues } from '../../../types'
@@ -32,10 +30,11 @@ import {
 } from '../../../utils'
 import { Formik, FormikHelpers, FormikErrors } from 'formik'
 import { useAtom } from 'jotai'
-import { settingsAtom } from '../../../store'
+import { addTransactionAtom, settingsAtom } from '../../../store'
 import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
-import RemoveLiquidityConfirmationModal from './RemoveLiquidityConfirmationModal'
+import RemoveLiquidityConfirmModal from './RemoveLiquidityConfirmModal'
+import useTokenContract from '../../../hooks/contracts/useTokenContract'
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity
@@ -47,10 +46,9 @@ const initialValues: RemoveLiquidityFormValues = {
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const [settings] = useAtom(settingsAtom)
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
-    isOpen: isConfirmOpen,
+    isOpen: showConfirm,
     onOpen: onConfirmOpen,
     onClose: onConfirmClose,
   } = useDisclosure()
@@ -58,7 +56,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const token1Info = useTokenInfo(liquidity.token1)
   const { account } = useWeb3React()
   const routerContract = useRouterContract()
-  const liquidityERC20Contract = useERC20Contract(liquidity.address)
+  const liquidityERC20Contract = useTokenContract(liquidity.address)
+  const addTransaction = useAtom(addTransactionAtom)[1]
   const walletConnected =
     !!routerContract &&
     !!liquidityERC20Contract &&
@@ -68,6 +67,15 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
   const isOneOfTokenswMatic =
     token0Info?.symbol === 'wMATIC' || token1Info?.symbol === 'wMATIC'
   const [isLPTokenApproved, setIsLPTokenApproved] = useState(false)
+  const [isConfirmed, setIsConfirmed] = useState(false)
+  const [txHash, setTxHash] = useState<undefined | string>(undefined)
+
+  const handleConfirmDismiss = () => {
+    setIsConfirmed(false)
+    setTxHash(undefined)
+    onConfirmClose()
+    onClose()
+  }
 
   const handleRemoveLiquidity = async (
     { percent, receiveMatic }: RemoveLiquidityFormValues,
@@ -96,9 +104,22 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
           currencyAmountWithSlippage(tokenAmount, settings.slippage),
           currencyAmountWithSlippage(maticAmount, settings.slippage),
           account,
-          deadline
+          deadline,
+          { gasLimit: 1000000 }
         )
-        await tx.wait()
+
+        setTxHash(tx.hash)
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Remove ${formatCurrencyAmount(
+            token0Amount,
+            token0Info.decimals
+          )} ${token0Info.symbol} and ${formatCurrencyAmount(
+            token1Amount,
+            token1Info.decimals
+          )} ${token1Info.symbol}`,
+        })
       } else {
         const tx = await routerContract.removeLiquidity(
           liquidity.token0,
@@ -110,31 +131,27 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
           deadline,
           { gasLimit: 1000000 }
         )
-        await tx.wait()
+
+        setTxHash(tx.hash)
+
+        addTransaction({
+          hash: tx.hash,
+          description: `Remove ${formatCurrencyAmount(
+            token0Amount,
+            token0Info.decimals
+          )} ${token0Info.symbol} and ${formatCurrencyAmount(
+            token1Amount,
+            token1Info.decimals
+          )} ${token1Info.symbol}`,
+        })
       }
 
-      toast({
-        title: 'Removed liquidity',
-        description: 'Liquidity removed successfully',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-
-      onClose()
-      onConfirmClose()
       actions.resetForm()
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Removed liquidity',
-        description: error.message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
+
       onClose()
-      onConfirmClose()
+      handleConfirmDismiss()
     }
   }
 
@@ -256,19 +273,21 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
                   </VStack>
                 </ModalBody>
                 <ModalFooter flexDirection="column" gap={2}>
-                  <RemoveLiquidityConfirmationModal
-                    isOpen={isConfirmOpen}
-                    onClose={onConfirmClose}
+                  <RemoveLiquidityConfirmModal
+                    isOpen={showConfirm}
+                    onClose={handleConfirmDismiss}
                     token1={token0Info}
                     token2={token1Info}
                     liquidityToken1Amount={liquidity.amount0}
                     liquidityToken2Amount={liquidity.amount1}
                     percent={values.percent}
                     slippage={settings.slippage}
-                    isFormSubmitting={isSubmitting}
                     isFormValid={isValid}
                     isWalletConnected={walletConnected}
                     handleFormSubmit={handleSubmit}
+                    isConfirmed={isConfirmed}
+                    setIsConfirmed={setIsConfirmed}
+                    txHash={txHash}
                   />
 
                   {values.percent > 0 && !!routerContract ? (

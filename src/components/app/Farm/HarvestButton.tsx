@@ -15,7 +15,6 @@ import {
   NumberInput,
   NumberInputField,
   HStack,
-  useToast,
 } from '@chakra-ui/react'
 import useFarmUserInfo from '../../../hooks/useFarmUserInfo'
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik'
@@ -30,6 +29,8 @@ import useTokenInfo from '../../../hooks/useTokenInfo'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
 import usePendingAXO from '../../../hooks/usePendingAXO'
 import { ethers } from 'ethers'
+import { useAtom } from 'jotai'
+import { addTransactionAtom } from '../../../store'
 
 interface HarvestButtonProps {
   pid: number
@@ -42,7 +43,6 @@ const initialValues: UnstakeFormValues = {
 
 const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
   const { data: pendingAXO } = usePendingAXO(pid)
-  const toast = useToast()
   const tokens = useLiquidityInfo(lpToken)
   const token0Info = useTokenInfo(tokens?.token0)
   const token1Info = useTokenInfo(tokens?.token1)
@@ -53,6 +53,7 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
     pendingAXO &&
     (!userInfo.amount.isZero() || !pendingAXO.isZero())
   const masterChefContract = useMasterChefContract()
+  const addTransaction = useAtom(addTransactionAtom)[1]
 
   const isAmountZero = (amount: string) => {
     return amount.length === 0 || parseCurrencyAmount(amount).isZero()
@@ -70,24 +71,13 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
       const tx = await masterChefContract.withdraw(pid, amountBigNumber, {
         gasLimit: '1000000',
       })
-      await tx.wait()
 
-      toast({
-        title: 'Unstake liquidity',
-        description: 'Unstaked successfully',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
+      addTransaction({
+        hash: tx.hash,
+        description: 'Harvest LP tokens',
       })
     } catch (error: any) {
       console.log(error)
-      toast({
-        title: 'Unstake liquidity',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        duration: 9000,
-      })
     }
 
     resetForm()

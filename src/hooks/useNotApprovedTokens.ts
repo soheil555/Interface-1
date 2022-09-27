@@ -37,7 +37,7 @@ async function getNotApprovedTokens(
     const token = tokens[i]
     const amount = amounts[i]
 
-    if (token.isCoin) continue
+    if (token.isCoin || token.symbol === 'wMATIC') continue
 
     const amountBigNumber =
       amount instanceof BigNumber

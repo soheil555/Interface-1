@@ -1,6 +1,8 @@
 import Web3ConnectWithSelect from './Web3ConnectWithSelect'
 import { metaMask, metaMaskHooks } from '../../../connectors/metaMask'
 import { useState, useEffect } from 'react'
+import { useAtom } from 'jotai'
+import { accountInfoAtom } from '../../../store'
 
 const MetaMaskConnect = () => {
   const [error, setError] = useState<Error>()
@@ -9,10 +11,16 @@ const MetaMaskConnect = () => {
   const isActivate = useIsActive()
   const isActivating = useIsActivating()
   const account = useAccount()
+  const setAccountInfo = useAtom(accountInfoAtom)[1]
 
   // attempt to connect eagerly on mount
   useEffect(() => {
     void metaMask.connectEagerly()
+
+    setAccountInfo({
+      chainId,
+      address: account,
+    })
   }, [])
 
   return (

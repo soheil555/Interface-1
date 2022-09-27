@@ -2,11 +2,10 @@ import {
   HStack,
   Button,
   useToast,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Stack,
+  useDisclosure,
+  Spinner,
+  Text,
 } from '@chakra-ui/react'
 import type { Web3ReactHooks } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
@@ -14,8 +13,13 @@ import { useCallback, useEffect, useState } from 'react'
 import { CHAINS, getAddChainParameters } from '../../../chains'
 import { shortenAddress } from '../../../utils'
 import ChainSelect from './ChainSelect'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import { BiExit } from 'react-icons/bi'
+
+import { useAtom } from 'jotai'
+import {
+  accountInfoAtom,
+  accountPendingTransactionsLenAtom,
+} from '../../../store'
+import AccountDetails from '../AccountDetails/AccountDetails'
 
 interface Web3ConnectWithSelectProps {
   connector: MetaMask
@@ -36,9 +40,19 @@ const Web3ConnectWithSelect = ({
   error,
   setError,
 }: Web3ConnectWithSelectProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
   const [desiredChainId, setDesiredChainId] = useState(137)
   const chainIds = Object.keys(CHAINS).map((chainId) => Number(chainId))
+  const setAccountInfo = useAtom(accountInfoAtom)[1]
+  const [pendingTransactionLen] = useAtom(accountPendingTransactionsLenAtom)
+
+  useEffect(() => {
+    setAccountInfo({
+      chainId,
+      address: account,
+    })
+  }, [chainId, account])
 
   useEffect(() => {
     if (chainId) {
@@ -55,6 +69,7 @@ const Web3ConnectWithSelect = ({
       toast({
         title: 'Error',
         description: error.message,
+        position: 'bottom-right',
         status: 'error',
         duration: 9000,
         isClosable: true,
@@ -100,26 +115,35 @@ const Web3ConnectWithSelect = ({
       <Stack direction={{ base: 'column', sm: 'row' }}>
         <ChainSelect chainId={desiredChainId} switchChain={switchChain} />
 
-        <Menu>
-          <MenuButton
-            fontSize={{ base: 'xs', sm: 'md' }}
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            variant="brand"
-          >
-            {shortenAddress(account)}
-          </MenuButton>
-          <MenuList fontSize="xl">
-            <MenuItem
-              onClick={() => {
-                connector.deactivate()
-              }}
-              icon={<BiExit />}
-            >
-              Disconnect
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <AccountDetails
+          connector={connector}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+
+        <Button
+          onClick={onOpen}
+          fontSize={{ base: 'xs', sm: 'md' }}
+          as={Button}
+          variant="brand"
+        >
+          <HStack>
+            <Text>{shortenAddress(account)}</Text>
+
+            {pendingTransactionLen > 0 && (
+              <HStack
+                bg="white"
+                fontWeight="normal"
+                color="gray.700"
+                p={1}
+                rounded="lg"
+              >
+                <Text>{pendingTransactionLen} Pending</Text>
+                <Spinner size="sm" />
+              </HStack>
+            )}
+          </HStack>
+        </Button>
       </Stack>
     )
   }
