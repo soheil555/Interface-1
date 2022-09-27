@@ -11,15 +11,25 @@ import {
 
 const Charts = () => {
   const tokenDistroData = {
-    labels: ['Red', 'Blue', 'Yellow'],
+    labels: [
+      'Airdrop Event',
+      'ICO Sale',
+      'IFO Bonus',
+      'Int. Platform Allocation',
+      'Developer Fee',
+      'Liquidity Bonus',
+    ],
     datasets: [
       {
-        label: 'My First Dataset',
-        data: [40, 30, 20],
+        label: 'Planned Emmission',
+        data: [6, 5, 7, 2, 5, 80],
         backgroundColor: [
-          'rgb(255, 99, 132)',
+          'rgb(204, 0, 0)',
           'rgb(54, 162, 235)',
           'rgb(255, 205, 86)',
+          'rgb(128, 0, 0)',
+          'rgb(51, 255, 51)',
+          'rgb(255, 153, 204)',
         ],
         hoverOffset: 4,
       },
@@ -27,16 +37,12 @@ const Charts = () => {
   }
 
   const saleProceedAllocData = {
-    labels: ['Red', 'Blue', 'Yellow'],
+    labels: ['Initial Platform Liquidity', 'Locked Sushiswap Contract'],
     datasets: [
       {
-        label: 'My First Dataset',
-        data: [40, 30, 20],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-        ],
+        label: 'ICO Sale Proceeds',
+        data: [75, 25],
+        backgroundColor: ['rgb(255, 153, 204)', 'rgb(204, 153, 255)'],
         hoverOffset: 4,
       },
     ],
@@ -56,9 +62,11 @@ const Charts = () => {
           fontWeight="bold"
           fontSize={{ base: 15, sm: 20, md: 25 }}
         >
-          Initial Token Distribution
+          Planned Token Emission
         </Text>
-
+        <Text textAlign="center" fontSize={{ base: 5, sm: 10, md: 15 }}>
+          25,000,000 AxoSwap Token
+        </Text>
         <Box
           w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
           h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
@@ -73,14 +81,16 @@ const Charts = () => {
           fontWeight="bold"
           fontSize={{ base: 15, sm: 20, md: 25 }}
         >
-          Initial Token Distribution
+          ICO Funding Allocation
         </Text>
-
+        <Text textAlign="center" fontSize={{ base: 5, sm: 10, md: 15 }}>
+          ICO Target: 75000 MATIC
+        </Text>
         <Box
           w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
           h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
         >
-          <Pie data={tokenDistroData} />
+          <Pie data={saleProceedAllocData} />
         </Box>
       </VStack>
     </Stack>

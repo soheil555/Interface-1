@@ -7,7 +7,6 @@ import { NextPage } from 'next'
 import Roadmap from '../components/home/Roadmap/Roadmap'
 import Charts from '../components/home/Charts'
 import RoadmapResponsive from '../components/home/Roadmap/RoadmapResponsive'
-import Team from '../components/home/Team'
 import Partners from '../components/home/Partners'
 
 const Home: NextPage = () => {
@@ -17,21 +16,20 @@ const Home: NextPage = () => {
         <Header />
         <HeroBanner />
         <Box display={{ base: 'none', lg: 'block' }}>
-          <Roadmap />
+          <Protocol />
         </Box>
 
         <Box display={{ base: 'block', lg: 'none' }}>
           <RoadmapResponsive />
         </Box>
         <Charts />
-        <Team />
         <Partners />
       </Container>
 
       <Box bg={useColorModeValue('gray.50', 'gray.900')}>
         <Box position="relative" h={{ base: undefined, lg: '40rem' }}>
           <Container pt={10} maxW="container.xl" h="full">
-            <Protocol />
+            <Roadmap />
           </Container>
         </Box>
 

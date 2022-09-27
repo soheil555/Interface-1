@@ -7,26 +7,11 @@ const Partners = () => {
       <VStack>
         <Text fontWeight="bold">Partners</Text>
         <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}>
-          ico Crypto Partners
+          Partnering Platforms
         </Text>
       </VStack>
 
       <Wrap justify="center" spacing="2rem">
-        <WrapItem>
-          <AmplifyBadge />
-        </WrapItem>
-        <WrapItem>
-          <AmplifyBadge />
-        </WrapItem>
-        <WrapItem>
-          <AmplifyBadge />
-        </WrapItem>
-        <WrapItem>
-          <AmplifyBadge />
-        </WrapItem>
-        <WrapItem>
-          <AmplifyBadge />
-        </WrapItem>
         <WrapItem>
           <AmplifyBadge />
         </WrapItem>
