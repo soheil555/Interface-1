@@ -150,16 +150,13 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
     if (isTokenIn) {
       let amounts: Record<string, string> = {}
 
-      if (amountIn) {
+      if (amountIn && !amountOut) {
         amounts = getAmountOut(amountIn)
-      } else if (amountOut) {
+      } else if (amountOut && !amountIn) {
         amounts = getAmountIn(amountOut)
       }
 
       setValues((values) => {
-        console.log('here1')
-        console.log(values)
-
         return {
           ...values,
           ...amounts,

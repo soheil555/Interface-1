@@ -5,7 +5,11 @@ export function formatCurrencyAmount(
   decimals = 18,
   decimalToDisplay = 6
 ) {
-  return parseFloat(ethers.utils.formatUnits(amount, decimals)).toFixed(
-    decimalToDisplay
+  return String(
+    parseFloat(
+      parseFloat(ethers.utils.formatUnits(amount, decimals)).toFixed(
+        decimalToDisplay
+      )
+    )
   )
 }

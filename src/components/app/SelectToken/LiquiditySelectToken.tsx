@@ -112,7 +112,7 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
 
   useEffect(() => {
     setFieldValue(`${tokenFieldName}Contract`, tokenContract)
-  }, [tokenContract, tokenFieldName])
+  }, [tokenContract, tokenFieldName, token])
 
   useEffect(() => {
     if (token?.isCoin) {
@@ -124,15 +124,22 @@ const LiquiditySelectToken = ({ isToken1 }: LiquiditySelectTokenProps) => {
 
   useEffect(() => {
     if (isToken1) {
-      if (amount) {
+      if (amount && !otherAmount) {
         const amounts = getQuote(amount)
         setValues((values) => ({ ...values, ...amounts }))
-      } else if (otherAmount) {
+      } else if (otherAmount && !amount) {
         const amounts = getQuote(otherAmount, true)
         setValues((values) => ({ ...values, ...amounts }))
       }
     }
-  }, [reserves, amount, getQuote, isToken1, otherAmount])
+  }, [amount, getQuote, isToken1, otherAmount])
+
+  useEffect(() => {
+    if (isToken1 && amount) {
+      const amounts = getQuote(amount)
+      setValues((values) => ({ ...values, ...amounts }))
+    }
+  }, [reserves, getQuote])
 
   return (
     <Box w="full">
