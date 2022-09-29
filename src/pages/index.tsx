@@ -19,9 +19,9 @@ const Home: NextPage = () => {
 
       <Box
         bg={useColorModeValue('gray.50', 'gray.900')}
-        my={10}
         position="relative"
-        h={{ base: undefined, lg: '40rem' }}
+        py={{ base: 5, lg: 20 }}
+        h={{ base: undefined, lg: '50rem' }}
       >
         <Protocol />
       </Box>

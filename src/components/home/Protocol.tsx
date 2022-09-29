@@ -24,7 +24,7 @@ export default function Protocol() {
         <Text
           textAlign="center"
           fontWeight="bold"
-          fontSize={{ base: 'xl', sm: '2xl', lg: '3xl' }}
+          fontSize={{ base: '2xl', lg: '4xl' }}
         >
           Swap tokens, farm liquidity and
           <br /> explore DeFi cutting-edge technology.

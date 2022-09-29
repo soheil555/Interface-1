@@ -11,7 +11,7 @@ import { items } from './Roadmap'
 
 const RoadmapResponsive = () => {
   return (
-    <Container maxW="container.xl">
+    <Container mt={10} maxW="container.xl">
       <VStack mb="4rem" gap="4rem">
         <VStack>
           <Text fontWeight="bold" textAlign="center">
