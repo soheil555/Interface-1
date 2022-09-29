@@ -23,7 +23,6 @@ import { MetaMask } from '@web3-react/metamask'
 import { shortenAddress } from '../../../utils'
 import { FiCopy, FiExternalLink, FiArrowUpRight } from 'react-icons/fi'
 import { GiConfirmed } from 'react-icons/gi'
-import { getAddChainParameters } from '../../../chains'
 import { join } from 'path'
 import { useAtom } from 'jotai'
 import {
@@ -31,6 +30,7 @@ import {
   accountTransactionsLenAtom,
   resetAccountTransactionsAtom,
 } from '../../../store'
+import useBlockExplorerURL from '../../../hooks/useBlockExplorerURL'
 
 interface AccountDetailsProps {
   isOpen: boolean
@@ -43,17 +43,9 @@ const AccountDetails = ({
   onClose,
   connector,
 }: AccountDetailsProps) => {
-  const { account, chainId } = useWeb3React()
+  const { account } = useWeb3React()
   const { onCopy, hasCopied } = useClipboard(account!)
-  const chainInfo =
-    typeof chainId !== 'undefined' ? getAddChainParameters(chainId) : undefined
-
-  const blockExplorerURL =
-    chainInfo &&
-    chainInfo.blockExplorerUrls &&
-    chainInfo.blockExplorerUrls.length > 0
-      ? chainInfo.blockExplorerUrls[0]
-      : undefined
+  const blockExplorerURL = useBlockExplorerURL()
 
   const [transactions] = useAtom(accountTransactionsAtom)
   const [transactionsLen] = useAtom(accountTransactionsLenAtom)
