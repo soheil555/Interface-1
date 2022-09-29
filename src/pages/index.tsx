@@ -12,8 +12,10 @@ import Partners from '../components/home/Partners'
 const Home: NextPage = () => {
   return (
     <>
-      <Header />
-      <HeroBanner />
+      <Box position="relative">
+        <Header />
+        <HeroBanner />
+      </Box>
 
       <Box
         bg={useColorModeValue('gray.50', 'gray.900')}
