@@ -51,7 +51,7 @@ const Partners = () => {
     <Container maxW="container.xl">
       <VStack gap={3} my="6rem">
         <VStack>
-          <Text fontWeight="bold">Partners</Text>
+          <Text fontWeight="bold">Partnering Platform</Text>
           <Text fontWeight="bold" fontSize={{ base: '2xl', lg: '4xl' }}></Text>
         </VStack>
 
