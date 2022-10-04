@@ -116,7 +116,7 @@ const SwapSelectToken = ({ isTokenIn }: SwapSelectTokenProps) => {
         reserves.reserve2.gt(0) &&
         value.length > 0
       ) {
-        const amountOut = parseCurrencyAmount(value, tokenIn.decimals)
+        const amountOut = parseCurrencyAmount(value, tokenOut.decimals)
         if (amountOut.gt(0)) {
           const numerator = reserves.reserve1.mul(amountOut).mul(1000)
           const denominator = reserves.reserve2.sub(amountOut).mul(998)
