@@ -47,7 +47,7 @@ export const resetAccountTransactionsAtom = atom(null, (get, set) => {
 })
 
 export const accountPendingTransactionsAtom = atom((get) => {
-  return get(accountTransactionsAtom).filter((tx) => tx.isConfirmed === false)
+  return get(accountTransactionsAtom).filter((tx) => !tx.receipt)
 })
 
 export const accountPendingTransactionsLenAtom = atom((get) => {

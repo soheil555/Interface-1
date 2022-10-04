@@ -35,6 +35,7 @@ import ApproveToken from '../ApproveToken/ApproveToken'
 import { useState } from 'react'
 import RemoveLiquidityConfirmModal from './RemoveLiquidityConfirmModal'
 import useTokenContract from '../../../hooks/contracts/useTokenContract'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 interface RemoveLiquidityButtonProps {
   liquidity: Liquidity
@@ -45,6 +46,7 @@ const initialValues: RemoveLiquidityFormValues = {
 }
 
 const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
+  const toast = useFailedTransactionToast()
   const [settings] = useAtom(settingsAtom)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
@@ -148,7 +150,8 @@ const RemoveLiquidityButton = ({ liquidity }: RemoveLiquidityButtonProps) => {
 
       actions.resetForm()
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
 
       onClose()
       handleConfirmDismiss()

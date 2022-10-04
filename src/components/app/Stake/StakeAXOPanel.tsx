@@ -27,6 +27,7 @@ import useTokenInfo from '../../../hooks/useTokenInfo'
 import { BigNumber } from 'ethers'
 import { useAtom } from 'jotai'
 import { addTransactionAtom } from '../../../store'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 const initialValues: StakeAXOFormValues = {
   amount: '',
@@ -43,6 +44,7 @@ const AXOForXLT = (
 }
 
 const StakeAXOPanel = () => {
+  const toast = useFailedTransactionToast()
   const axoContract = useAXOContract()
   const xolotlContract = useXolotlContract()
   const { data: xolotlTotalSupply } = useXolotTotalSupply()
@@ -72,7 +74,8 @@ const StakeAXOPanel = () => {
         description: `Stake ${amount} AXO`,
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

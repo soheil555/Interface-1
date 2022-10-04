@@ -21,12 +21,14 @@ import { useWeb3React } from '@web3-react/core'
 import useXltBalance from '../../../hooks/useXltBalance'
 import { useAtom } from 'jotai'
 import { addTransactionAtom } from '../../../store'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 const initialValues: UnstakeAXOFormValues = {
   amount: '',
 }
 
 const UnstakeAXOPanel = () => {
+  const toast = useFailedTransactionToast()
   const axoContract = useAXOContract()
   const xolotlContract = useXolotlContract()
   const { data: xltBalance } = useXltBalance()
@@ -52,7 +54,8 @@ const UnstakeAXOPanel = () => {
         description: `Unstake ${amount} AXO`,
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

@@ -31,6 +31,7 @@ import usePendingAXO from '../../../hooks/usePendingAXO'
 import { ethers } from 'ethers'
 import { useAtom } from 'jotai'
 import { addTransactionAtom } from '../../../store'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 interface HarvestButtonProps {
   pid: number
@@ -42,6 +43,7 @@ const initialValues: UnstakeFormValues = {
 }
 
 const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
+  const toast = useFailedTransactionToast()
   const { data: pendingAXO } = usePendingAXO(pid)
   const tokens = useLiquidityInfo(lpToken)
   const token0Info = useTokenInfo(tokens?.token0)
@@ -77,7 +79,8 @@ const HarvestButton = ({ pid, lpToken }: HarvestButtonProps) => {
         description: 'Harvest LP tokens',
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

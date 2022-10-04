@@ -22,6 +22,7 @@ import {
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
 import { useAtom } from 'jotai'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 import { addTransactionAtom } from '../../../store'
 import { EditAllocPointFormValues } from '../../../types'
 
@@ -34,6 +35,7 @@ const EditAllocPointButton = ({
   pid,
   currentAllocPoint,
 }: EditAllocPointButtonProps) => {
+  const toast = useFailedTransactionToast()
   const initialValues: EditAllocPointFormValues = {
     allocPoint: currentAllocPoint,
     update: false,
@@ -59,7 +61,8 @@ const EditAllocPointButton = ({
         description: 'Set alloc point',
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

@@ -28,12 +28,12 @@ function updateTransactionsStatus(
     const confirmedTransactions: TransactionInfo[] = []
 
     for (const transactionInfo of transactions[chainId]) {
-      if (!transactionInfo.isConfirmed) {
+      if (!transactionInfo.receipt) {
         const receipt = await provider.getTransactionReceipt(
           transactionInfo.hash
         )
         if (!!receipt) {
-          transactionInfo.isConfirmed = true
+          transactionInfo.receipt = { status: receipt.status! }
           confirmedTransactions.push(transactionInfo)
         }
       }
@@ -51,6 +51,7 @@ function updateTransactionsStatus(
           <TransactionConfirmedToast
             txDescription={tx.description}
             txHash={tx.hash}
+            txStatus={tx.receipt!.status}
             onClose={onClose}
           />
         ),

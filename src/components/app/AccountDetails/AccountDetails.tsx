@@ -31,6 +31,7 @@ import {
   resetAccountTransactionsAtom,
 } from '../../../store'
 import useBlockExplorerURL from '../../../hooks/useBlockExplorerURL'
+import { BiError } from 'react-icons/bi'
 
 interface AccountDetailsProps {
   isOpen: boolean
@@ -60,7 +61,7 @@ const AccountDetails = ({
       size={{ base: 'xs', sm: 'md' }}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent overflow="hidden">
         <ModalHeader>Account</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -137,7 +138,7 @@ const AccountDetails = ({
         <ModalFooter
           as={VStack}
           alignItems="stretch"
-          bg={useColorModeValue('gray.200', 'gray.700')}
+          bg={useColorModeValue('gray.200', 'gray.600')}
           gap={1}
         >
           {transactionsLen > 0 ? (
@@ -175,8 +176,12 @@ const AccountDetails = ({
                       </Text>
                     </Link>
 
-                    {txInfo.isConfirmed ? (
-                      <GiConfirmed color="green" />
+                    {txInfo.receipt ? (
+                      txInfo.receipt.status === 0 ? (
+                        <BiError color="red" />
+                      ) : (
+                        <GiConfirmed color="green" />
+                      )
                     ) : (
                       <Spinner size="sm" />
                     )}

@@ -26,6 +26,8 @@ export function computeLiquidityRate(
     token2.decimals
   )
 
+  if (token1AmountBigNumber.isZero()) return undefined
+
   return token2AmountBigNumber
     .mul(parseCurrencyAmount('1', token1.decimals))
     .div(token1AmountBigNumber)

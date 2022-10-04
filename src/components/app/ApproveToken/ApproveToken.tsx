@@ -3,11 +3,12 @@ import useNotApprovedTokens, {
   NotApprovedToken,
   TokenInfo,
 } from '../../../hooks/useNotApprovedTokens'
-import { Button } from '@chakra-ui/react'
+import { Button, useToast } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'ethers'
 import { useAtom } from 'jotai'
 import { addTransactionAtom } from '../../../store'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 interface ApproveTokenProps {
   tokens: TokenInfo[]
@@ -24,6 +25,7 @@ const ApproveToken = ({
   setIsAllTokensApproved,
   spender,
 }: ApproveTokenProps) => {
+  const toast = useFailedTransactionToast()
   const { data: notApprovedTokens } = useNotApprovedTokens(
     tokens,
     amounts,
@@ -52,8 +54,9 @@ const ApproveToken = ({
         hash: tx.hash,
         description: `Approve ${tokenInfo.symbol}`,
       })
-    } catch (err: any) {
-      console.log(err)
+    } catch (error: any) {
+      console.error(error)
+      toast({ description: error.message })
     }
     setIsLoading(false)
   }
