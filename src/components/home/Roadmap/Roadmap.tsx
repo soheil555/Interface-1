@@ -74,7 +74,7 @@ export const items: {
 
 const Roadmap = () => {
   return (
-    <Container maxW="container.xl">
+    <Container mt={10} maxW="container.xl">
       <VStack mb="10rem" gap="6rem">
         <VStack>
           <Text fontWeight="bold">Axoswap Road Map</Text>

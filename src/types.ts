@@ -98,7 +98,9 @@ export interface TransactionInfo {
   hash: string
   sender: string
   description: string
-  isConfirmed: boolean
+  receipt?: {
+    status: number // 0 -> transaction was reverted  1 -> transaction is successful
+  }
 }
 
 export type Transactions = {

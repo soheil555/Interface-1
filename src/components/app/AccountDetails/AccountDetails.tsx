@@ -23,7 +23,6 @@ import { MetaMask } from '@web3-react/metamask'
 import { shortenAddress } from '../../../utils'
 import { FiCopy, FiExternalLink, FiArrowUpRight } from 'react-icons/fi'
 import { GiConfirmed } from 'react-icons/gi'
-import { getAddChainParameters } from '../../../chains'
 import { join } from 'path'
 import { useAtom } from 'jotai'
 import {
@@ -31,6 +30,8 @@ import {
   accountTransactionsLenAtom,
   resetAccountTransactionsAtom,
 } from '../../../store'
+import useBlockExplorerURL from '../../../hooks/useBlockExplorerURL'
+import { BiError } from 'react-icons/bi'
 
 interface AccountDetailsProps {
   isOpen: boolean
@@ -43,17 +44,9 @@ const AccountDetails = ({
   onClose,
   connector,
 }: AccountDetailsProps) => {
-  const { account, chainId } = useWeb3React()
+  const { account } = useWeb3React()
   const { onCopy, hasCopied } = useClipboard(account!)
-  const chainInfo =
-    typeof chainId !== 'undefined' ? getAddChainParameters(chainId) : undefined
-
-  const blockExplorerURL =
-    chainInfo &&
-    chainInfo.blockExplorerUrls &&
-    chainInfo.blockExplorerUrls.length > 0
-      ? chainInfo.blockExplorerUrls[0]
-      : undefined
+  const blockExplorerURL = useBlockExplorerURL()
 
   const [transactions] = useAtom(accountTransactionsAtom)
   const [transactionsLen] = useAtom(accountTransactionsLenAtom)
@@ -68,7 +61,7 @@ const AccountDetails = ({
       size={{ base: 'xs', sm: 'md' }}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent overflow="hidden">
         <ModalHeader>Account</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -145,7 +138,7 @@ const AccountDetails = ({
         <ModalFooter
           as={VStack}
           alignItems="stretch"
-          bg={useColorModeValue('gray.200', 'gray.700')}
+          bg={useColorModeValue('gray.200', 'gray.600')}
           gap={1}
         >
           {transactionsLen > 0 ? (
@@ -183,8 +176,12 @@ const AccountDetails = ({
                       </Text>
                     </Link>
 
-                    {txInfo.isConfirmed ? (
-                      <GiConfirmed color="green" />
+                    {txInfo.receipt ? (
+                      txInfo.receipt.status === 0 ? (
+                        <BiError color="red" />
+                      ) : (
+                        <GiConfirmed color="green" />
+                      )
                     ) : (
                       <Spinner size="sm" />
                     )}

@@ -54,7 +54,7 @@ const AddLiquidityInfo = ({
           <Text variant="subtext" alignSelf="flex-start">
             Rates
           </Text>
-          <VStack>
+          <VStack align="stretch">
             {token1Rate && (
               <Text fontSize={{ base: 'sm', md: 'md' }}>
                 <>

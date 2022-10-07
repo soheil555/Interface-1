@@ -16,6 +16,7 @@
     "@chakra-icons/cryptocurrency-icons": "^1.0.0",
     "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^2.2.1",
+    "@chakra-ui/styled-system": "2.3.3",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@fontsource/inter": "^4.5.12",

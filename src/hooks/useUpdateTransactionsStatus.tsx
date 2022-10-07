@@ -8,9 +8,13 @@ import useSWR from 'swr'
 import { accountInfoAtom, transactionsAtom } from '../store'
 import { TransactionInfo, Transactions } from '../types'
 import { useKeepSWRDataLiveAsBlocksArrive } from './useKeepSWRDataLiveAsBlocksArrive'
+import TransactionConfirmedToast from '../components/app/Toast/TransactionConfirmedToast'
 
 //TODO: what about failed transactions
-function updateTransactionsStatus(provider: Web3Provider, toast: any) {
+function updateTransactionsStatus(
+  provider: Web3Provider,
+  toast: ReturnType<typeof useToast>
+) {
   return async (
     _: string,
     transactions: Transactions,
@@ -24,12 +28,12 @@ function updateTransactionsStatus(provider: Web3Provider, toast: any) {
     const confirmedTransactions: TransactionInfo[] = []
 
     for (const transactionInfo of transactions[chainId]) {
-      if (!transactionInfo.isConfirmed) {
+      if (!transactionInfo.receipt) {
         const receipt = await provider.getTransactionReceipt(
           transactionInfo.hash
         )
         if (!!receipt) {
-          transactionInfo.isConfirmed = true
+          transactionInfo.receipt = { status: receipt.status! }
           confirmedTransactions.push(transactionInfo)
         }
       }
@@ -43,7 +47,14 @@ function updateTransactionsStatus(provider: Web3Provider, toast: any) {
 
     confirmedTransactions.forEach((tx) => {
       toast({
-        description: tx.description,
+        render: ({ onClose }) => (
+          <TransactionConfirmedToast
+            txDescription={tx.description}
+            txHash={tx.hash}
+            txStatus={tx.receipt!.status}
+            onClose={onClose}
+          />
+        ),
       })
     })
   }
@@ -51,13 +62,12 @@ function updateTransactionsStatus(provider: Web3Provider, toast: any) {
 
 export default function useUpdateTransactionsStatus() {
   const toast = useToast({
-    title: 'Transaction confirmed',
     position: 'bottom-right',
-    status: 'info',
     duration: 9000,
     variant: 'top-accent',
     isClosable: true,
   })
+
   const [transactions, setTransactions] = useAtom(transactionsAtom)
   const [{ chainId, address }] = useAtom(accountInfoAtom)
   const { provider } = useWeb3React()

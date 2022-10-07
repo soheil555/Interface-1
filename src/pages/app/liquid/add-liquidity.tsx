@@ -25,6 +25,7 @@ import { useState } from 'react'
 import { NextPage } from 'next'
 import AddLiquidityInfo from '../../../components/app/Liquidity/AddLiquidityInfo'
 import AddLiquidityConfirmModal from '../../../components/app/Liquidity/AddLiquidityConfirmModal'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 const initialValues: LiquidityFormValues = {
   token1: undefined,
@@ -38,6 +39,7 @@ const initialValues: LiquidityFormValues = {
 }
 
 const AddLiquidity: NextPage = () => {
+  const toast = useFailedTransactionToast()
   const [settings] = useAtom(settingsAtom)
   const router = useRouter()
   const {
@@ -150,7 +152,8 @@ const AddLiquidity: NextPage = () => {
         values: { ...values, token1Amount: '', token2Amount: '' },
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
       handleConfirmDismiss()
     }
   }

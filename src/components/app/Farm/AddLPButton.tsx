@@ -21,6 +21,7 @@ import { ethers } from 'ethers'
 import { Formik, Form, Field, FormikErrors, FormikHelpers } from 'formik'
 import { useAtom } from 'jotai'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 import { addTransactionAtom } from '../../../store'
 import { AddLPFormValues } from '../../../types'
 import LPTokenSelect from './LPTokenSelect'
@@ -32,6 +33,7 @@ const initialValues: AddLPFormValues = {
 }
 
 const AddLPButton = () => {
+  const toast = useFailedTransactionToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const masterChefContract = useMasterChefContract()
   const addTransaction = useAtom(addTransactionAtom)[1]
@@ -52,7 +54,8 @@ const AddLPButton = () => {
         description: 'Add new lp to the pool',
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

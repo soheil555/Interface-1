@@ -2,9 +2,11 @@ import { Button, Tooltip } from '@chakra-ui/react'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
 import useMasterChefContract from '../../../hooks/contracts/useMasterChefContract'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 import { addTransactionAtom } from '../../../store'
 
 const UpdatePoolsButton = () => {
+  const toast = useFailedTransactionToast()
   const masterChefContract = useMasterChefContract()
   const [isLoading, setIsLoading] = useState(false)
   const addTransaction = useAtom(addTransactionAtom)[1]
@@ -24,7 +26,8 @@ const UpdatePoolsButton = () => {
         description: 'Update pools',
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     setIsLoading(false)

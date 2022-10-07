@@ -29,6 +29,7 @@ import ApproveToken from '../../components/app/ApproveToken/ApproveToken'
 import { useState } from 'react'
 import { NextPage } from 'next'
 import SwapInfo from '../../components/app/Swap/SwapInfo'
+import useFailedTransactionToast from '../../hooks/useFailedTransactionToast'
 
 const initialValues: SwapFormValues = {
   tokenIn: undefined,
@@ -42,6 +43,7 @@ const initialValues: SwapFormValues = {
 }
 
 const Swap: NextPage = () => {
+  const toast = useFailedTransactionToast()
   const {
     isOpen: showConfirm,
     onOpen: onConfirmOpen,
@@ -192,8 +194,8 @@ const Swap: NextPage = () => {
 
       resetForm({ values: { ...values, amountIn: '', amountOut: '' } })
     } catch (error: any) {
-      console.log(error)
-
+      toast({ description: error.message })
+      console.error(error)
       handleConfirmDismiss()
     }
   }
@@ -213,8 +215,6 @@ const Swap: NextPage = () => {
       errors.tokenIn = 'Select a token'
       return errors
     }
-
-    console.log('wrapType inside validator:', wrapType)
 
     if (wrapType !== 'invalid') {
       if (!amountIn || !amountOut) {

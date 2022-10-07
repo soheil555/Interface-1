@@ -11,10 +11,9 @@ import {
   Link,
   Box,
 } from '@chakra-ui/react'
-import { useWeb3React } from '@web3-react/core'
 import { join } from 'path'
 import { BsArrowUpCircle } from 'react-icons/bs'
-import { getAddChainParameters } from '../../../chains'
+import useBlockExplorerURL from '../../../hooks/useBlockExplorerURL'
 
 interface TransactionConfirmModalProps {
   isConfirmed: boolean
@@ -33,16 +32,7 @@ const TransactionConfirmModal = ({
   onClose,
   isConfirmed,
 }: TransactionConfirmModalProps) => {
-  const { chainId } = useWeb3React()
-  const chainInfo =
-    typeof chainId !== 'undefined' ? getAddChainParameters(chainId) : undefined
-
-  const blockExplorerURL =
-    chainInfo &&
-    chainInfo.blockExplorerUrls &&
-    chainInfo.blockExplorerUrls.length > 0
-      ? chainInfo.blockExplorerUrls[0]
-      : undefined
+  const blockExplorerURL = useBlockExplorerURL()
 
   return (
     <Modal

@@ -1,13 +1,6 @@
 import { Pie } from 'react-chartjs-2'
 import 'chart.js/auto'
-import {
-  Box,
-  Container,
-  Stack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react'
+import { Box, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
 
 const Charts = () => {
   const tokenDistroData = {
@@ -64,12 +57,12 @@ const Charts = () => {
         >
           Planned Token Emission
         </Text>
-        <Text textAlign="center" fontSize={{ base: 5, sm: 10, md: 15 }}>
+        <Text textAlign="center" fontSize={{ base: 'xs', sm: 'sm' }}>
           25,000,000 AxoSwap Token
         </Text>
         <Box
-          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          w={{ base: '16rem', sm: '20rem', lg: '25rem' }}
+          h={{ base: '16rem', sm: '20rem', lg: '25rem' }}
         >
           <Pie data={tokenDistroData} />
         </Box>
@@ -83,12 +76,12 @@ const Charts = () => {
         >
           ICO Funding Allocation
         </Text>
-        <Text textAlign="center" fontSize={{ base: 5, sm: 10, md: 15 }}>
+        <Text textAlign="center" fontSize={{ base: 'xs', sm: 'sm' }}>
           ICO Target: 75000 MATIC
         </Text>
         <Box
-          w={{ base: '13rem', sm: '20rem', lg: '25rem' }}
-          h={{ base: '13rem', sm: '20rem', lg: '25rem' }}
+          w={{ base: '16rem', sm: '20rem', lg: '25rem' }}
+          h={{ base: '16rem', sm: '20rem', lg: '25rem' }}
         >
           <Pie data={saleProceedAllocData} />
         </Box>

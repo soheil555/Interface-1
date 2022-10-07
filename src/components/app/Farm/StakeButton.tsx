@@ -35,6 +35,7 @@ import { useState } from 'react'
 import useTokenContract from '../../../hooks/contracts/useTokenContract'
 import { useAtom } from 'jotai'
 import { addTransactionAtom } from '../../../store'
+import useFailedTransactionToast from '../../../hooks/useFailedTransactionToast'
 
 interface StakeButtonProps {
   pid: number
@@ -46,6 +47,7 @@ const initialValues: StakeFormValues = {
 }
 
 const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
+  const toast = useFailedTransactionToast()
   const { data: lpTokenBalance } = useTokenBalance(lpToken)
   const lpTokenContract = useTokenContract(lpToken)
   const { isOpen, onClose, onOpen } = useDisclosure()
@@ -76,7 +78,8 @@ const StakeButton = ({ pid, lpToken }: StakeButtonProps) => {
         description: 'Stake LP tokens',
       })
     } catch (error: any) {
-      console.log(error)
+      toast({ description: error.message })
+      console.error(error)
     }
 
     resetForm()

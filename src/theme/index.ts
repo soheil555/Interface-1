@@ -6,7 +6,6 @@ import {
 import { globalStyles } from './styles'
 import Button from './components/Button'
 import Menu from './components/Menu'
-import Modal from './components/Modal'
 import Popover from './components/Popover'
 import Text from './components/Text'
 
@@ -22,7 +21,6 @@ const theme = extendTheme(
     components: {
       Button,
       Menu,
-      Modal,
       Popover,
       Text,
     },

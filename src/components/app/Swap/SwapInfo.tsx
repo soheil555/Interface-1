@@ -50,8 +50,8 @@ const SwapInfo = ({
   const tokenInPrice = computeSwapRate(
     amountOut,
     amountIn,
-    tokenIn.decimals,
-    tokenOut.decimals
+    tokenOut.decimals,
+    tokenIn.decimals
   )
 
   return (
